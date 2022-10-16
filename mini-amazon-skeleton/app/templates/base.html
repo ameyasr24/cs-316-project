@@ -48,6 +48,7 @@
 <body>
   <div class="sidenav">
     {% block msg %}
+
       <h1 style="color:aliceblue">Welcome to CompSci 316 MAKES Change!</h1>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
@@ -62,15 +63,16 @@
     <nav>  
       <ul>  
       <li>  
-      <a href="candidate.html"> Explore by Candidate </a>  
+      <a href="{{ url_for('users.committee') }}">committee</a>
       </li>  
       <li>  
-      <a href="committees.html"> Explore by Committee </a>  
+      <a href="{{ url_for('users.candidate') }}">candidate</a>
       </li>  
       <li>  
-      <a href="issues.html"> Explore by Issue </a>  
+      <a href="{{ url_for('users.correlation') }}">correlation</a>  
       </li>  
-      <li> <a href="correlation.html"> What this means for policy </a>  
+      <li> 
+      <a href="{{ url_for('users.issue') }}">issue</a>
       </li>  
       </ul>  
       </nav>  
