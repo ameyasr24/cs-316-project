@@ -18,6 +18,24 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
+@bp.route('/committee', methods=['GET', 'POST'])
+def committee():
+    
+    return render_template('committees.html')
+    
+@bp.route('/candidate', methods=['GET', 'POST'])
+def candidate():
+    
+    return render_template('candidate.html')
+@bp.route('/correlation', methods=['GET', 'POST'])
+def correlation():
+    
+    return render_template('correlation.html')
+@bp.route('/issue', methods=['GET', 'POST'])
+def issue():
+    
+    return render_template('issue.html')
+
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
