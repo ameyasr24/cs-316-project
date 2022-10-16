@@ -18,6 +18,8 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
+#move these to respective python files later
+
 @bp.route('/committee', methods=['GET', 'POST'])
 def committee():
     
