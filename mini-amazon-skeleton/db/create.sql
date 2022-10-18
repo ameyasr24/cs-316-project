@@ -28,8 +28,8 @@ CREATE TABLE Committees (
     from_entity VARCHAR(255) NOT NULL,
     to_entity VARCHAR(255) NOT NULL,
     donation_amount DECIMAL(20,2) NOT NULL,
-    from_category VARCHAR(255) CHECK (from_category="PAC" ),
-    to_category VARCHAR (255) CHECK (to_category="candidate"),
+    from_category VARCHAR(255), --!CHECK (from_category="PAC" ),--
+    to_category VARCHAR (255), --!CHECK (to_category="candidate"),--
     year INT(4) NOT NULL
 ) 
 --implement search bar by category
