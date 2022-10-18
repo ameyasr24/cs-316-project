@@ -1,14 +1,16 @@
 from flask import current_app as app
 
 
-class Committee:
-    def __init__(id, from_entity, to_entity, donation_amount, from_category, to_category):
+class Committees:
+    def __init__(self, id, from_entity, to_entity,donation_amount,from_category,to_category, year):
         self.id = id
         self.from_entity = from_entity
         self.to_entity = to_entity
         self.donation_amount = donation_amount
-        self.from_category = from_category
-        self.to_category = to_category
+        self.from_category=from_category
+        self.to_category=to_category
+        self.year = year
+
 
     @staticmethod
     def get(id):
@@ -28,3 +30,4 @@ FROM Committees
 ''',
                               )
         return [Committee(*row) for row in rows]
+            
