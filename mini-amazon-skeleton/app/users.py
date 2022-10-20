@@ -36,6 +36,10 @@ def issue():
     
     return render_template('issue.html')
 
+@bp.route('/', methods=['GET', 'POST'])
+def home():
+    return render_template('index.html')
+
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
