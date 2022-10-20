@@ -31,5 +31,15 @@ CREATE TABLE Committees (
     from_category VARCHAR(255) CHECK (from_category="PAC" ),
     to_category VARCHAR (255) CHECK (to_category="candidate")
 ) 
+
+CREATE TABLE States (
+    state_id VARCHAR(255) NOT NULL,
+    year DECIMAL(20,2) NOT NULL,
+    candidate_name VARCHAR(255) NOT NULL,
+    party VARCHAR(255) NOT NULL,
+    total_receipts DECIMAL(20,2) NOT NULL,
+    percent_vote DECIMAL (20,2) NOT NULL
+) 
+
 --implement search bar by category
 --search by from and to whichever entity

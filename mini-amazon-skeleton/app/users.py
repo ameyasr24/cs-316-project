@@ -37,6 +37,14 @@ def correlation():
 def issue():
     
     return render_template('issue.html')
+@bp.route('/', methods=['GET', 'POST'])
+def home():
+    return render_template('index.html')
+
+@bp.route('/map', methods=['GET', 'POST'])
+def map():
+    return render_template('map/index.html')
+
 
 
 @bp.route('/login', methods=['GET', 'POST'])

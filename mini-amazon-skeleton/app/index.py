@@ -8,6 +8,10 @@ from .models.purchase import Purchase
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
+@bp.route('/state', methods=['GET', 'POST'])
+def state():
+    return render_template('/state.html')
+
 
 @bp.route('/')
 def index():

@@ -19,3 +19,8 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 SELECT pg_catalog.setval('public.committees_id_seq',
                          (SELECT MAX(id)+1 FROM Committees),
                          false);
+
+\COPY States FROM 'States.csv' WITH DELIMITER ',' NULL '' CSV
+SELECT pg_catalog.setval('public.states_id_seq',
+                         (SELECT MAX(id)+1 FROM States),
+                         false);
