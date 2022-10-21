@@ -2,23 +2,15 @@ from flask import render_template
 from flask_login import current_user
 import datetime
 
-from .models.committees import Committee
+from .models.committees import Committees
 
 
 from flask import Blueprint
-bp = Blueprint('committee', __name__)
+bp = Blueprint('committees', __name__)
 
 @bp.route('/committee', methods=['GET', 'POST'])
-def committee():
-    committees = Committee.get_all(True)
-    print(committees)
-    print("hey")
+def committees():
+    comms = Committees.get_all()
     return render_template('committees.html',
-                           all_committees=committees)
+                           all_committees=comms)
 
-# @bp.route('/committee')
-# def committees():
-#     # get all committees:
-#     committees = Committee.get_all(True)
-#     return render_template('committees.html',
-#                            all_committees=committees)
