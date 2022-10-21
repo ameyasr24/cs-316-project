@@ -13,10 +13,12 @@ class State:
         self.percent_vote = percent_vote
     
     @staticmethod
-    def get_all(available=True):
+    def get_all(state_abb):
         rows = app.db.execute('''
 SELECT *
 FROM States
-'''
-                             )
+WHERE state_id = :state_abb
+''',
+                            state_abb = state_abb)
+        print(state_abb)
         return [State(*row) for row in rows]
