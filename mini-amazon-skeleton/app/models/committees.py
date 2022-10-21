@@ -1,7 +1,7 @@
 from flask import current_app as app
 
 
-class Committees:
+class Committee:
     def __init__(self, id, from_entity, to_entity,donation_amount,from_category,to_category, year):
         self.id = id
         self.from_entity = from_entity
@@ -15,7 +15,7 @@ class Committees:
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, from_entity, to_entity, donation_amount, from_category, to_category
+SELECT id, from_entity, to_entity, donation_amount, from_category, to_category, year
 FROM Committees
 WHERE id = :id
 ''',
@@ -25,7 +25,7 @@ WHERE id = :id
     @staticmethod
     def get_all(available=True):
         rows = app.db.execute('''
-SELECT id, from_entity, to_entity, donation_amount, from_category, to_category
+SELECT id, from_entity, to_entity, donation_amount, from_category, to_category, year
 FROM Committees
 ''',
                               )

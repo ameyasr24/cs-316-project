@@ -4,14 +4,13 @@ import datetime
 
 from .models.committees import Committee
 
-
 from flask import Blueprint
 bp = Blueprint('committee', __name__)
 
 @bp.route('/committee', methods=['GET', 'POST'])
 def committee():
     committees = Committee.get_all(True)
-    print(committees)
+    # print(committees)
     print("hey")
     return render_template('committees.html',
                            all_committees=committees)
