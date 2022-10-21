@@ -4,13 +4,16 @@ import datetime
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.states import State
 
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
 @bp.route('/state', methods=['GET', 'POST'])
 def state():
-    return render_template('/state.html')
+    state = State.get_all(True)
+    return render_template('/states.html',
+                            all_states = state)
 
 
 @bp.route('/')
