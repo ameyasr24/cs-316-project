@@ -15,7 +15,7 @@ We could also do the same donation analysis/data visualization for Senate subcom
 {% extends "base.html" %}
 
 {% block content %}
-
+<br><br>
 <h2>All committees:</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
@@ -24,19 +24,17 @@ We could also do the same donation analysis/data visualization for Senate subcom
       <th scope="col">From</th>
       <th scope="col">To</th>
       <th scope="col">Donation Amount</th>
-      <th scope="col">From Category</th>
-      <th scope="col">To Category</th>
+      <th scope="col">Year</th>
     </tr>
   </thead>
   <tbody>
-    {% for committee in all_committees%}
+    {% for c in all_committees %}
       <tr>
-        <th scope="row">{{committee.id}}</th>
-        <td>{{committee.from_entity}}</td>
-        <td>{{committee.to_entity}}</td>
-        <td>{{committee.donation_amount}}</td>
-        <td>{{committee.from_category}}</td>
-        <td>{{committee.to_category}}</td>
+        <th scope="row">{{c.cid}}</th>
+        <td>{{c.from_entity}}</td>
+        <td>{{c.to_entity}}</td>
+        <td>{{c.donation_amount}}</td>
+        <td>{{c.yr}}</td>
       </tr>
     {% endfor %}
   </tbody>
