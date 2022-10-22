@@ -4,11 +4,18 @@ import datetime
 
 from .models.product import Product
 from .models.purchase import Purchase
-from .models.user import User
+
+from .models.states import State
 
 
 from flask import Blueprint
 bp = Blueprint('index', __name__)
+
+@bp.route('/state/<state_abb>', methods=['GET', 'POST'])
+def state(state_abb):
+    state = State.get_all(state_abb)
+    return render_template('/states.html',
+                            all_states = state)
 
 
 @bp.route('/')
@@ -25,5 +32,6 @@ def index():
     users = User.get_all(True)
     return render_template('index.html',
                            avail_products=products,
-                           purchase_history=purchases,
-                           current_users=users)
+
+                           purchase_history=purchases)
+
