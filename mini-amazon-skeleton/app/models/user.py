@@ -67,3 +67,12 @@ WHERE id = :id
 """,
                               id=id)
         return User(*(rows[0])) if rows else None
+
+    @staticmethod
+    def get_all(available=True):
+        rows = app.db.execute('''
+SELECT id, email, firstname, lastname
+FROM Users
+''',
+                           )
+        return [User(*row) for row in rows]

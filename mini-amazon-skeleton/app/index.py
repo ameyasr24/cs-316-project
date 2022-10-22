@@ -4,7 +4,9 @@ import datetime
 
 from .models.product import Product
 from .models.purchase import Purchase
+
 from .models.states import State
+
 
 from flask import Blueprint
 bp = Blueprint('index', __name__)
@@ -27,7 +29,9 @@ def index():
     else:
         purchases = None
     # render the page by adding information to the index.html file
+    users = User.get_all(True)
     return render_template('index.html',
                            avail_products=products,
+
                            purchase_history=purchases)
 
