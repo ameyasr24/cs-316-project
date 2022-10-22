@@ -16,6 +16,53 @@ We could also do the same donation analysis/data visualization for Senate subcom
 
 {% block content %}
 <br><br>
+<h1>Search for donations to/from different stakeholders!</h1>
+<form class="form-inline" action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.to_ent.label }} 
+    {{ form.to_ent(size=15) }}
+    {% for error in form.to_ent.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.from_ent.label }} 
+    {{ form.from_ent(size=25) }}
+    {% for error in form.from_ent.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.from_year.label }}
+    {{ form.from_year(size=4) }}
+    {% for error in form.from_year.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.to_year.label }} 
+    {{ form.to_year(size=4) }}
+    {% for error in form.to_year.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+    {{ form.search() }}</p>
+</form>
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    <br>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
+<br>
 <h2>All committees:</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
@@ -39,5 +86,8 @@ We could also do the same donation analysis/data visualization for Senate subcom
     {% endfor %}
   </tbody>
 </table>
+
+
+
 
 {% endblock %}
