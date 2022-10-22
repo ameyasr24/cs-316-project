@@ -29,7 +29,6 @@ def index():
     else:
         purchases = None
     # render the page by adding information to the index.html file
-    users = User.get_all(True)
     return render_template('index.html',
                            avail_products=products,
 
