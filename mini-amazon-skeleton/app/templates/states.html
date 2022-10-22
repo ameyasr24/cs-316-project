@@ -6,12 +6,12 @@
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Tuple ID</th>
-      <th scope="col">State</th>
+      <!-- <th scope="col">Tuple ID</th>
+      <th scope="col">State</th> -->
       <th scope="col">Year</th>
-      <th scope="col">State</th>
+      <th scope="col">Candidate</th>
       <th scope="col">Party</th>
-      <th scope="col">Incumbency Status</th>
+      <th scope="col">Incumbent Status</th>
       <th scope="col">Total Receipts</th>
       <th scope="col">Percent Vote</th>
     </tr>
@@ -19,9 +19,9 @@
   <tbody>
     {% for candidate in all_states%}
       <tr>
-        <th scope="row">{{candidate.id}}</th>
-        <td>{{candidate.state_id}}</td>
-        <td>{{candidate.year}}</td>
+        <!-- <th scope="row">{{candidate.id}}</th>
+        <td>{{candidate.state_id}}</td> -->
+        <th scope = "row">{{candidate.year}}</th>
         <td>{{candidate.candidate_name}}</td>
         <td>{{candidate.party}}</td>
         <td>{{candidate.incumbent_status}}</td>

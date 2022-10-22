@@ -9,9 +9,9 @@ from .models.states import State
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
-@bp.route('/state', methods=['GET', 'POST'])
-def state():
-    state = State.get_all(True)
+@bp.route('/state/<state_abb>', methods=['GET', 'POST'])
+def state(state_abb):
+    state = State.get_all(state_abb)
     return render_template('/states.html',
                             all_states = state)
 
@@ -30,3 +30,4 @@ def index():
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases)
+
