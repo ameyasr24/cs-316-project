@@ -55,5 +55,75 @@ CREATE TABLE Correlation (
     passed VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE Candidate_Vote (
+    id INT NOT NULL,
+    state_id VARCHAR(255) NOT NULL,
+    candidate_name VARCHAR(255) NOT NULL,
+    candidate_vote VARCHAR(255) NOT NULL,
+    vote_id INTEGER NOT NULL,
+    vote_date DATE NOT NULL,
+    vote_result VARCHAR(255) NOT NULL,
+    vote_description VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id, vote_id)
+);
+
+/* CREATE TABLE Candidate_Member_Votes (
+    congress INT NOT NULL,
+    chamber VARCHAR(255) NOT NULL,
+    rollnumber INT NOT NULL,
+    icpsr INT NOT NULL,
+    cast_code INT NOT NULL,
+    prob VARCHAR(255),
+    PRIMARY KEY(rollnumber, icpsr)
+);
+
+CREATE TABLE Candidate_Members (
+    congress INT NOT NULL,
+    chamber VARCHAR(255) NOT NULL,
+    icpsr INT NOT NULL UNIQUE,
+    state_icpsr INT NOT NULL,
+    district_code INT NOT NULL,
+    state_abbrev VARCHAR(255) NOT NULL,
+    party_code INT NOT NULL,
+    occupancy INT,
+    last_means INT,
+    bioname VARCHAR(255) NOT NULL,
+    bioguide_id VARCHAR(255),
+    born DECIMAL (20,2),
+    died DECIMAL (20,2),
+    nominate_dim1 DECIMAL (20,2),
+    nominate_dim2 DECIMAL (20,2),
+    nominate_log_likelihood DECIMAL (20,2),
+    nominate_geo_mean_probability DECIMAL (20,2),
+    nominate_number_of_votes DECIMAL (20,2),
+    nominate_number_of_errors DECIMAL (20,2),
+    conditional DECIMAL (20,2),
+    nokken_poole_dim1 DECIMAL (20,2),
+    nokken_poole_dim2 DECIMAL (20,2),
+    PRIMARY KEY(icpsr)
+);
+
+CREATE TABLE Candidate_Vote_Data (
+    congress INT NOT NULL,
+    chamber VARCHAR(255) NOT NULL,
+    rollnumber INT NOT NULL,
+    vote_date DATE NOT NULL,
+    vote_session INT,
+    clerk_rollnumber INT,
+    yea_count INT,
+    nay_count INT,
+    nominate_mid_1 DECIMAL (20,2),
+    nominate_mid_2 DECIMAL (20,2),
+    nominate_spread_1 DECIMAL (20,2),
+    nominate_spread_2 DECIMAL (20,2),
+    nominate_log_likelihood DECIMAL (20,2),
+    bill_number VARCHAR(255),
+    vote_result VARCHAR(500),
+    vote_desc VARCHAR(*),
+    vote_question VARCHAR(500),
+    dtl_desc VARCHAR(*),
+    PRIMARY KEY(rollnumber, congress)
+);*/ 
+
 --implement search bar by category
 --search by from and to whichever entity
