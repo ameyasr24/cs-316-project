@@ -2,7 +2,7 @@
 
 {% block content %}
 <br><br>
-<h3>Here are all the candidates, search for and click a candidate for further data.</h3>
+<h3>Here are all the candidates, search for and click a candidate name for further data.</h3>
 <p>
   {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -13,22 +13,9 @@
     {% endfor %}
   </ul>
   {% else %}
-  <table class='table table-hover table-bordered container'>
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Candidate</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for name in all_names%}
-        <tr>
-          <th scope = "row">{{name.id}}</td>
-          <td>{{name.candidate_name}}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    {% for name in all_names%}
+    <a href="\candidate\{{name.id}}">{{name.candidate_name}}</a>
+    {% endfor %}
   {% endif %}
   {% endwith %}
 </p>
