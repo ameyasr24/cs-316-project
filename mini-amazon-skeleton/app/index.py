@@ -20,9 +20,9 @@ def state(state_abb):
 
 @bp.route('/candidate/<cid>', methods=['GET', 'POST'])
 def candidate(cid):
-    candidate = Candidate_Vote.get_all_votes(cid)
+    votes = Candidate_Vote.get_all_votes(cid)
     return render_template('/candidate.html',
-                            all_candidates = candidate)
+                            all_votes = votes)
 
 @bp.route('/')
 def index():

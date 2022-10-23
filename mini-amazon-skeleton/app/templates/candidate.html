@@ -5,8 +5,6 @@
 <table class='table table-hover table-bordered container'>
     <thead class="thead-dark">
       <tr>
-        <!-- <th scope="col">Tuple ID</th>
-        <th scope="col">State</th> -->
         <th scope="col">Candidate</th>
         <th scope="col">Vote</th>
         <th scope="col">Vote Date</th>
@@ -14,6 +12,17 @@
         <th scope="col">Vote Description</th>
       </tr>
     </thead>
+    <tbody>
+      {% for vote in all_votes%}
+        <tr>
+          <th scope = "row">{{vote.candidate_name}}</td>
+          <td>{{vote.candidate_vote}}</td>
+          <td>{{vote.vote_date}}</td>
+          <td>{{vote.vote_result}}</td>
+          <td>{{vote.vote_description}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
   </table>
 
 {% endblock %}

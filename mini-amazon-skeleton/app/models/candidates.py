@@ -19,6 +19,4 @@ class Candidate_Vote:
         WHERE id = :cid
         ''',
                               cid=cid)
-        return Candidate_Vote(*(rows[0])) if rows is not None else None
-
-    
+        return rows
