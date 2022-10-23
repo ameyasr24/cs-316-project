@@ -45,5 +45,15 @@ CREATE TABLE States (
     percent_vote DECIMAL (20,2) NOT NULL
 ); 
 
+CREATE TABLE Correlation (
+    state_id VARCHAR(255) NOT NULL,
+    donator_id VARCHAR(255) NOT NULL,
+    issue VARCHAR(255) NOT NULL,
+    candidate_id VARCHAR(255) NOT NULL,
+    committee_id INTEGER NOT NULL,
+    amount DECIMAL(20,2) NOT NULL,
+    passed VARCHAR(255) NOT NULL
+);
+
 --implement search bar by category
 --search by from and to whichever entity
