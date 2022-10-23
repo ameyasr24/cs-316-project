@@ -24,4 +24,7 @@ def create_app():
     from .committees import bp as committee_bp
     app.register_blueprint(committee_bp)
 
+    from .issues import bp as issues_bp
+    app.register_blueprint(issues_bp)
+
     return app

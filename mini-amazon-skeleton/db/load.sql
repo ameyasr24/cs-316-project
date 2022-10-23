@@ -16,3 +16,5 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
                          false);
 
 \COPY Committees FROM 'Committees.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Issues FROM 'Issues.csv' WITH DELIMITER ',' NULL '' CSV;

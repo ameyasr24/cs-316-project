@@ -30,10 +30,11 @@ def candidate():
 def correlation():
     
     return render_template('correlation.html')
+    
 @bp.route('/issue', methods=['GET', 'POST'])
 def issue():
     
-    return render_template('issue.html')
+    return render_template('issues.html')
 
 
 @bp.route('/login', methods=['GET', 'POST'])
