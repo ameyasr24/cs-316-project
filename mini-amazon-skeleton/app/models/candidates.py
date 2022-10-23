@@ -19,4 +19,14 @@ class Candidate_Vote:
         WHERE id = :cid
         ''',
                               cid=cid)
-        return rows
+        if len(rows) > 0:
+            return rows
+        return "oops"
+
+    def get_all_candidates():
+        rows = app.db.execute('''
+        SELECT DISTINCT c.id, c.candidate_name
+        FROM Candidate_Vote c''')
+        if len(rows) > 0:
+            return rows
+        return "oops"
