@@ -2,7 +2,8 @@
 
 {% block content %}
 <br><br>
-<h3>If candidate has history in the Senate, their voting records are below</h3>
+<h2> {{ all_votes[0].candidate_name }} </h2>
+<h5>If candidate has history in the Senate, their voting records are below</h5>
 <p>
   {% with messages = get_flashed_messages() %}
   {% if messages %}
