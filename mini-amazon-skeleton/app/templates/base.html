@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Mini Amazon</title>
+  <title>MAKES Change</title>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -42,13 +42,29 @@
         background-color: #000 !important;
         color: #fff;
     }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    li {
+      float: left;
+    }
+    a {
+      display: block;
+      padding: 8px;
+    }
+    li a:hover {
+      background-color: lightblue;
+    }
   </style>
 </head>
 
 <body>
   <div class="sidenav">
     {% block msg %}
-      <h1 style="color:aliceblue">Welcome to CompSci 316 Mini Amazon!</h1>
+
+      <h1 style="color:aliceblue">Welcome to CompSci 316 MAKES Change!</h1>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
@@ -57,6 +73,14 @@
         {% endif %}
       </div>
     {% endblock %}
+  </div>
+  <div class="menu">
+      <ul>  
+      <li><a href="{{ url_for('users.candidate') }}">Explore by Candidate</a></li>  
+      <li><a href="{{ url_for('committees.committees') }}">Explore by Committee</a></li>  
+      <li><a href="{{ url_for('users.issue') }}">Explore by Issue</a></li>  
+      <li><a href="{{ url_for('users.correlation') }}">Policy Implications</a> </li>  
+      </ul>  
   </div>
   <div class="main">
     {% block content %}{% endblock %}

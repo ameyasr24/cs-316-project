@@ -5,9 +5,24 @@ import datetime
 from .models.product import Product
 from .models.purchase import Purchase
 
+from .models.states import State
+from .models.candidates import Candidate_Vote
+
+
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
+@bp.route('/state/<state_abb>', methods=['GET', 'POST'])
+def state(state_abb):
+    state = State.get_all(state_abb)
+    return render_template('/states.html',
+                            all_states = state)
+
+@bp.route('/candidate/<cid>', methods=['GET', 'POST'])
+def candidate(cid):
+    candidate = Candidate_Vote.get_all_votes(cid)
+    return render_template('/candidate.html',
+                            all_candidates = candidate)
 
 @bp.route('/')
 def index():
@@ -22,4 +37,6 @@ def index():
     # render the page by adding information to the index.html file
     return render_template('index.html',
                            avail_products=products,
+
                            purchase_history=purchases)
+

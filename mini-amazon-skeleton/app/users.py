@@ -6,7 +6,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
-
+from .models.committees import Committees
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -17,6 +17,26 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
+
+#move these to respective python files later
+
+
+    
+@bp.route('/candidate', methods=['GET', 'POST'])
+def candidate():
+    
+    return render_template('candidate.html')
+@bp.route('/correlation', methods=['GET', 'POST'])
+def correlation():
+    
+    return render_template('correlation.html')
+@bp.route('/issue', methods=['GET', 'POST'])
+def issue():
+    
+    return render_template('issue.html')
+@bp.route('/', methods=['GET', 'POST'])
+def home():
+    return render_template('index.html')
 
 
 @bp.route('/login', methods=['GET', 'POST'])

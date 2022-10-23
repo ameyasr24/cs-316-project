@@ -15,14 +15,11 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
                          (SELECT MAX(id)+1 FROM Purchases),
                          false);
 
-\COPY Committees FROM 'Committees.csv' WITH DELIMITER ',' NULL '' CSV
-SELECT pg_catalog.setval('public.committees_id_seq',
-                         (SELECT MAX(id)+1 FROM Committees),
-                         false);
+\COPY Committees FROM 'Committees.csv' WITH DELIMITER ',' NULL '' CSV;
 
 \COPY States FROM 'States.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.states_id_seq',
                          (SELECT MAX(id)+1 FROM States),
                          false);
 
-\COPY Candidate_Voting FROM 'Voting.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY Candidate_Vote FROM 'Voting.csv' WITH DELIMITER ',' NULL '' CSV
