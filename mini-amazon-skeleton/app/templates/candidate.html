@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br>
+<h2> {{ all_votes[0].candidate_name }} </h2>
+<h5>If candidate has history in the Senate, their voting records are below</h5>
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    <br>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Candidate</th>
+        <th scope="col">Vote</th>
+        <th scope="col">Vote Date</th>
+        <th scope="col">Vote Result</th>
+        <th scope="col">Vote Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for vote in all_votes%}
+        <tr>
+          <th scope = "row">{{vote.candidate_name}}</td>
+          <td>{{vote.candidate_vote}}</td>
+          <td>{{vote.vote_date}}</td>
+          <td>{{vote.vote_result}}</td>
+          <td>{{vote.vote_description}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+  {% endwith %}
+</p>
+{% endblock %}
