@@ -24,6 +24,8 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 SELECT pg_catalog.setval('public.states_id_seq',
                          (SELECT MAX(id)+1 FROM States),
                          false);
+                         
+\COPY Correlation from 'Correlation.csv' WITH DELIMITER ',' NULL '' CSV
 
 \COPY Candidate_Vote FROM 'Voting.csv' WITH DELIMITER ',' NULL '' CSV;
 

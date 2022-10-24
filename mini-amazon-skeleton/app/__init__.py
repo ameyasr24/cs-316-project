@@ -26,5 +26,7 @@ def create_app():
 
     from .issues import bp as issues_bp
     app.register_blueprint(issues_bp)
+    from .correlation import bp as correlation_bp
+    app.register_blueprint(correlation_bp)
 
     return app

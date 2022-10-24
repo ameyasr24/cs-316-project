@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br>
+<p style="font-family:verdana">
+  Choose Filter Parameter:<SELECT name="state_chosen">
+    <OPTION value="State">State</OPTION>
+    <OPTION value="Candidate">Candidate</OPTION>
+    <option value="Issue">Issue</option>
+  </SELECT>
+  </p>
+<form class="form-inline" action="" method=post>
+  {{form.hidden_tag()}}
+<p>
+  {{form.state.label}}
+  {{ form.state(size = size_choices_states) }}
+</p>
+<br><br>
+<p>
+  {{form.issue.label}}
+  {{ form.issue(size = size_choices_issues) }}
+</p>
+<p>
+  {{form.submit()}}
+</p>
+</form>
+<br><br>
+<h2>Donations and Related Info:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">State</th>
+      <th scope="col">Donator</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Committee</th>
+      <th scope="col">Passed</th>
+      <th scope="col">Issue</th>
+      <th scope="col">Candidate</th>
+      
+      
+      
+    </tr>
+  </thead>
+  <tbody>
+    {% for entry in data %}
+      <tr>
+        <th scope="row">{{entry.state_id}}</th>
+        <td>{{entry.donator_id}}</td>
+        <td>{{entry.committee_id}}</td>
+        <td>{{entry.candidate_id}}</td>
+        <td>{{entry.amount}}</td>
+        <td>{{entry.passed}}</td>
+        <td>{{entry.issue}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endblock %}
