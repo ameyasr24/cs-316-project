@@ -6,7 +6,6 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.committees import Committees
 
-
 from flask import Blueprint
 bp = Blueprint('committees', __name__)
 
