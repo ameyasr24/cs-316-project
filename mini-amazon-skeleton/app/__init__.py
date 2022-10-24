@@ -24,4 +24,7 @@ def create_app():
     from .committees import bp as committee_bp
     app.register_blueprint(committee_bp)
 
+    from .correlation import bp as correlation_bp
+    app.register_blueprint(correlation_bp)
+
     return app

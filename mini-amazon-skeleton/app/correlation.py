@@ -11,11 +11,13 @@ from flask import Blueprint
 bp = Blueprint('correlation',__name__)
 
 
-@bp.route('/correlation')
+@bp.route('/correlation',methods=['GET', 'POST'])
 def correlation():
-    # get all available products for sale:
+    # get all correlations
     data = Correlation.get_all()
-    # find the products current user has bought:
-    # render the page by adding information to the index.html file
+    apples = "apple"
+    print(data)
+    print("hello")
     return render_template('correlation.html',
-                           data=data)
+                           data=data,
+                           apple = apples)
