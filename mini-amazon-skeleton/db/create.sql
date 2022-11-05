@@ -79,17 +79,45 @@ CREATE TABLE Candidate_Vote (
     PRIMARY KEY(id, vote_id)
 );
 
-/* CREATE TABLE Candidate_Member_Votes (
+CREATE TABLE Candidate_Member_Votes (
     congress INT NOT NULL,
     chamber VARCHAR(255) NOT NULL,
     rollnumber INT NOT NULL,
-    icpsr INT NOT NULL,
-    cast_code INT NOT NULL,
+    icpsr DECIMAL (20,2) NOT NULL,
+    cast_code DECIMAL (20,2) NOT NULL,
     prob VARCHAR(255),
-    PRIMARY KEY(rollnumber, icpsr)
+    PRIMARY KEY(congress, rollnumber, icpsr)
 );
 
-CREATE TABLE Candidate_Members (
+CREATE TABLE Vote_Cast_Code (
+    cast_code DECIMAL (20,2) NOT NULL,
+    descr VARCHAR(255) NOT NULL,
+    PRIMARY KEY(cast_code)
+);
+
+/* CREATE TABLE Candidate_Vote_Data (
+    congress INT NOT NULL,
+    chamber VARCHAR(255) NOT NULL,
+    rollnumber INT NOT NULL,
+    vote_date DATE NOT NULL,
+    vote_session INT,
+    clerk_rollnumber INT,
+    yea_count INT,
+    nay_count INT,
+    nominate_mid_1 DECIMAL (20,2),
+    nominate_mid_2 DECIMAL (20,2),
+    nominate_spread_1 DECIMAL (20,2),
+    nominate_spread_2 DECIMAL (20,2),
+    nominate_log_likelihood DECIMAL (20,2),
+    bill_number VARCHAR(255),
+    vote_result VARCHAR(500),
+    vote_desc VARCHAR(*),
+    vote_question VARCHAR(500),
+    dtl_desc VARCHAR(*),
+    PRIMARY KEY(rollnumber, congress)
+); */
+
+/* CREATE TABLE Candidate_Members (
     congress INT NOT NULL,
     chamber VARCHAR(255) NOT NULL,
     icpsr INT NOT NULL UNIQUE,
@@ -113,29 +141,7 @@ CREATE TABLE Candidate_Members (
     nokken_poole_dim1 DECIMAL (20,2),
     nokken_poole_dim2 DECIMAL (20,2),
     PRIMARY KEY(icpsr)
-);
-
-CREATE TABLE Candidate_Vote_Data (
-    congress INT NOT NULL,
-    chamber VARCHAR(255) NOT NULL,
-    rollnumber INT NOT NULL,
-    vote_date DATE NOT NULL,
-    vote_session INT,
-    clerk_rollnumber INT,
-    yea_count INT,
-    nay_count INT,
-    nominate_mid_1 DECIMAL (20,2),
-    nominate_mid_2 DECIMAL (20,2),
-    nominate_spread_1 DECIMAL (20,2),
-    nominate_spread_2 DECIMAL (20,2),
-    nominate_log_likelihood DECIMAL (20,2),
-    bill_number VARCHAR(255),
-    vote_result VARCHAR(500),
-    vote_desc VARCHAR(*),
-    vote_question VARCHAR(500),
-    dtl_desc VARCHAR(*),
-    PRIMARY KEY(rollnumber, congress)
-);*/ 
+); */
 
 --implement search bar by category
 --search by from and to whichever entity
