@@ -19,19 +19,23 @@
       <tr>
         <th scope="col">Candidate</th>
         <th scope="col">Vote</th>
+        <th scope="col">Congress Session</th>
         <th scope="col">Vote Date</th>
-        <th scope="col">Vote Result</th>
         <th scope="col">Vote Description</th>
+        <th scope="col">Detailed Description</th>
+        <th scope="col">Vote Result</th>
       </tr>
     </thead>
     <tbody>
       {% for vote in all_votes%}
         <tr>
-          <th scope = "row">{{vote.candidate_name}}</td>
-          <td>{{vote.candidate_vote}}</td>
+          <th scope = "row">{{vote.bioname}}</td>
+          <td>{{vote.descr}}</td>
+          <td>{{vote.congress}}</td>
           <td>{{vote.vote_date}}</td>
-          <td>{{vote.vote_result}}</td>
-          <td>{{vote.vote_description}}</td>
+          <td>{{vote.vote_desc}}</td>
+          <td>{{vote.dtl_desc}}</td>
+          <td>{{vote.vote_result}</td>
         </tr>
       {% endfor %}
     </tbody>

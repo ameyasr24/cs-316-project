@@ -14,10 +14,11 @@ class Candidate_Vote:
     @staticmethod 
     def get_all_votes(cid): # gets all votes by a specific candidate
         rows = app.db.execute('''
-        SELECT candidate_name, candidate_vote, vote_date, vote_description, vote_result
-        FROM Candidate_Vote
-        WHERE id = :cid
-        ORDER BY vote_date
+        SELECT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result
+        FROM Candidate_Member_Votes cmv, Vote_Cast_Codes vcc, Candidate_Vote_Data cvd, Candidate_Members cm
+        WHERE cm.icpsr = :cid AND cm.icpsr = cmv.icpsr AND cvd.congress = cmv.congress AND cvd.rollnumber = cmv.rollnumber
+        AND cmv.cast_code = vcc.cast_code
+        ORDER BY cvd.vote_date;
         ''',
                               cid=cid)
         if len(rows) > 0:
@@ -26,8 +27,8 @@ class Candidate_Vote:
 
     def get_all_candidates():
         rows = app.db.execute('''
-        SELECT DISTINCT c.id, c.candidate_name
-        FROM Candidate_Vote c
+        SELECT DISTINCT c.candidate_name
+        FROM Candidate_Members c
         ORDER BY c.candidate_name''')
         if len(rows) > 0:
             return rows

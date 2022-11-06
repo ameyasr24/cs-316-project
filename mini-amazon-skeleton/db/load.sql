@@ -33,6 +33,6 @@ SELECT pg_catalog.setval('public.states_id_seq',
 
 \COPY Vote_Cast_Code FROM 'Vote_Cast_Codes.csv' WITH DELIMITER ',' NULL '' CSV;
 
-/* \COPY Candidate_Vote_Data FROM 'Candidate_Vote_Data.csv' WITH DELIMITER ',' NULL '' CSV; */
+\COPY Candidate_Vote_Data FROM 'Candidate_Vote_Data.csv' WITH DELIMITER ',' NULL '' CSV;
 
-/* \COPY Candidate_Members FROM 'Candidate_Members.csv' WITH DELIMITER ',' NULL '' CSV; */
+\COPY Candidate_Members FROM 'Candidate_Members.csv' WITH DELIMITER ',' NULL '' CSV;

@@ -95,13 +95,13 @@ CREATE TABLE Vote_Cast_Code (
     PRIMARY KEY(cast_code)
 );
 
-/* CREATE TABLE Candidate_Vote_Data (
+CREATE TABLE Candidate_Vote_Data (
     congress INT NOT NULL,
     chamber VARCHAR(255) NOT NULL,
     rollnumber INT NOT NULL,
     vote_date DATE NOT NULL,
-    vote_session INT,
-    clerk_rollnumber INT,
+    vote_session DECIMAL (20,2),
+    clerk_rollnumber DECIMAL (20,2),
     yea_count INT,
     nay_count INT,
     nominate_mid_1 DECIMAL (20,2),
@@ -109,20 +109,20 @@ CREATE TABLE Vote_Cast_Code (
     nominate_spread_1 DECIMAL (20,2),
     nominate_spread_2 DECIMAL (20,2),
     nominate_log_likelihood DECIMAL (20,2),
-    bill_number VARCHAR(255),
-    vote_result VARCHAR(500),
-    vote_desc VARCHAR(*),
-    vote_question VARCHAR(500),
-    dtl_desc VARCHAR(*),
+    bill_number VARCHAR(225),
+    vote_result VARCHAR(225),
+    vote_desc VARCHAR(3750),
+    vote_question VARCHAR(225),
+    dtl_desc VARCHAR(2800),
     PRIMARY KEY(rollnumber, congress)
-); */
+);
 
-/* CREATE TABLE Candidate_Members (
+CREATE TABLE Candidate_Members (
     congress INT NOT NULL,
     chamber VARCHAR(255) NOT NULL,
-    icpsr INT NOT NULL UNIQUE,
+    icpsr DECIMAL (20,2) NOT NULL,
     state_icpsr INT NOT NULL,
-    district_code INT NOT NULL,
+    district_code DECIMAL (20,2) NOT NULL,
     state_abbrev VARCHAR(255) NOT NULL,
     party_code INT NOT NULL,
     occupancy INT,
@@ -140,8 +140,9 @@ CREATE TABLE Vote_Cast_Code (
     conditional DECIMAL (20,2),
     nokken_poole_dim1 DECIMAL (20,2),
     nokken_poole_dim2 DECIMAL (20,2),
-    PRIMARY KEY(icpsr)
-); */
+    PRIMARY KEY(congress, icpsr)
+);
+
 
 --implement search bar by category
 --search by from and to whichever entity
