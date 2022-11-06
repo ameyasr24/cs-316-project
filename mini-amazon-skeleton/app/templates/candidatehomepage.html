@@ -14,7 +14,7 @@
   </ul>
   {% else %}
     {% for name in all_names%}
-    <a href="\candidate\{{name.id}}">{{name.candidate_name}}</a>
+    <a href="\candidate\{{name.icpsr}}">{{name.bioname}}</a>
     {% endfor %}
   {% endif %}
   {% endwith %}
