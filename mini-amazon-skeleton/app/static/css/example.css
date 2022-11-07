@@ -74,7 +74,7 @@ text-decoration: none;
 #candidate-voting-table-wrapper th {
     position:sticky;   
     top: 0;
-    background:lightblue;
+    background:aliceblue;
     color:black;
 }
 
@@ -85,6 +85,39 @@ text-decoration: none;
 }
 
 #candidate-homepage-list ul li{
-    background: lightblue;
+    background: aliceblue;
     margin: 3px;
+}
+
+#main-menu ul{
+    list-style-type: none;
+    overflow: hidden;
+    background-color: black;
+    left: 50%;
+    margin-right: -50%;
+    position: sticky;
+    top: 0;
+    padding-top: 20px;
+}
+
+#main-menu li a{
+    display: block;
+    color: aliceblue;
+    text-align: center;
+    padding: 10px 12px;
+    font-size: 17px;
+    font-family: sans-serif;  
+}
+
+#main-menu ul li{
+    float: center; 
+}
+
+#main-menu li a:hover{
+    background-color: purple;
+}
+
+#main-title h1{
+    color:aliceblue;
+    text-align: center;
 }

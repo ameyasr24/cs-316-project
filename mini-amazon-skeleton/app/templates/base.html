@@ -61,17 +61,10 @@
 </head>
 
 <body>
-  <div class="sidenav">
+  <div class="sidenav" id="main-title">
     {% block msg %}
 
-      <h1 style="color:aliceblue">Welcome to CompSci 316 MAKES Change!</h1>
-      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
-        {% if current_user.is_authenticated %}
-          Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
-        {% else %}
-          <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
-        {% endif %}
-      </div>
+      <h1>Welcome to CompSci 316 MAKES Change!</h1>
     {% endblock %}
   </div>
   <div class="menu" id="main-menu">
