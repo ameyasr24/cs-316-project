@@ -13,9 +13,13 @@
     {% endfor %}
   </ul>
   {% else %}
+  <div id="candidate-homepage-list">
+    <ul>
     {% for name in all_names%}
-    <a href="\candidate\{{name.icpsr}}">{{name.bioname}}</a>
+    <li><a href="\candidate\{{name.icpsr}}">{{name.bioname}}</a></li>
     {% endfor %}
+    </ul>
+  </div>
   {% endif %}
   {% endwith %}
 </p>
