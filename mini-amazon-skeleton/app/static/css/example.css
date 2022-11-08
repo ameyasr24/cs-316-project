@@ -170,9 +170,17 @@ path:hover {
     display: block;
 }
 
-.dropdown-content a:hover {background-color: aliceblue;}
-.dropdown:hover .dropdown-content {display: block;}
-.dropdown:hover .dropbtn {background-color: purple;}
+.dropdown-content a:hover {
+    background-color: aliceblue;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+    max-height: 200px;
+    overflow: scroll; 
+}
+.dropdown:hover .dropbtn {
+    background-color: purple;
+}
 
 .back-to-candidate-button{
     background-color: purple;
