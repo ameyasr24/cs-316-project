@@ -14,6 +14,30 @@
     {% endfor %}
   </ul>
   {% else %}
+  <div class="dropdown">
+    <button class="dropbtn">Which Congress?</button>
+    <div class="dropdown-content">
+      {% for congress in all_congresses %}
+      <a href="/congress/{{congress.congress}}">{{ congress.congress }}</a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="dropdown">
+    <button class="dropbtn">How did they vote?</button>
+    <div class="dropdown-content">
+      {% for vote in all_vote_types %}
+      <a href="/votetype/{{vote.descr}}">{{ vote.descr }}</a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="dropdown">
+    <button class="dropbtn">What year?</button>
+    <div class="dropdown-content">
+      {% for year in all_vote_years %}
+      <a href="/voteyear/{{year.vote_year}}">{{ year.vote_year }}</a>
+      {% endfor %}
+    </div>
+  </div>
   <div id="candidate-voting-table-wrapper">
     <div id="candidate-voting-table-scroll">
       <table>

@@ -34,3 +34,36 @@ class Candidate_Vote:
         if len(rows) > 0:
             return rows
         return "oops"
+
+    def get_all_congresses(cid):
+        rows = app.db.execute('''
+        SELECT DISTINCT cvd.congress AS congress
+        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm
+        WHERE cm.icpsr = :cid AND cm.icpsr = cmv.icpsr AND cvd.congress = cmv.congress AND cvd.rollnumber = cmv.rollnumber AND cm.chamber = 'Senate'
+        AND cmv.cast_code = vcc.cast_code
+        ORDER BY cvd.congress;
+        ''',
+                              cid=cid)
+        return rows
+
+    def get_all_vote_types(cid):
+        rows = app.db.execute('''
+        SELECT DISTINCT vcc.descr AS descr
+        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm
+        WHERE cm.icpsr = :cid AND cm.icpsr = cmv.icpsr AND cvd.congress = cmv.congress AND cvd.rollnumber = cmv.rollnumber AND cm.chamber = 'Senate'
+        AND cmv.cast_code = vcc.cast_code
+        ORDER BY vcc.descr;
+        ''',
+                              cid=cid)
+        return rows
+
+    def get_all_vote_years(cid): # gets all votes by a specific candidate
+        rows = app.db.execute('''
+        SELECT DISTINCT CAST(EXTRACT(YEAR FROM cvd.vote_date) AS INTEGER) AS vote_year
+        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm
+        WHERE cm.icpsr = :cid AND cm.icpsr = cmv.icpsr AND cvd.congress = cmv.congress AND cvd.rollnumber = cmv.rollnumber AND cm.chamber = 'Senate'
+        AND cmv.cast_code = vcc.cast_code
+        ORDER BY vote_year;
+        ''',
+                              cid=cid)
+        return rows

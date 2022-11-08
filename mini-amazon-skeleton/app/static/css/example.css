@@ -74,8 +74,8 @@ text-decoration: none;
 #candidate-voting-table-wrapper th {
     position:sticky;   
     top: 0;
-    background:aliceblue;
-    color:black;
+    background:purple;
+    color:aliceblue;
 }
 
 #candidate-homepage-list ul {
@@ -123,21 +123,53 @@ text-decoration: none;
 #main-menu li a:hover{
     background-color: purple;
 }
-
+ 
 #main-title h1{
     color:aliceblue;
     text-align: center;
 }
 
-#state-click-title h3{
+#state-click-title h5{
     text-align: center;
 }
 
 path {
-    fill:grey;
+    fill:lightsteelblue;
     pointer-events:all;
 }
 
 path:hover {
     fill:purple;
 }
+
+.dropbtn {
+    background-color: purple;
+    color: aliceblue;
+    padding: 16px;
+    font-size: 15px;
+    border: none;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: aliceblue;
+    min-width: 150px;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 10px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: aliceblue;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: purple;}

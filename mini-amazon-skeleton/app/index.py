@@ -27,10 +27,16 @@ def state(state_abb):
 @bp.route('/candidate/<cid>', methods=['GET', 'POST'])
 def candidate(cid):
     votes = Candidate_Vote.get_all_votes(cid)
+    congresses = Candidate_Vote.get_all_congresses(cid)
+    votetype = Candidate_Vote.get_all_vote_types(cid)
+    voteyear = Candidate_Vote.get_all_vote_years(cid)
     if votes == "oops":
         flash('There are no voting records for Senator with id ' + cid)
     return render_template('/candidate.html',
-                            all_votes = votes)
+                            all_votes = votes,
+                            all_congresses = congresses,
+                            all_vote_types = votetype,
+                            all_vote_years = voteyear)
 
 @bp.route('/candidate/', methods=['GET', 'POST'])
 def candidatehomepage():
