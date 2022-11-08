@@ -27,10 +27,52 @@ def state(state_abb):
 @bp.route('/candidate/<cid>', methods=['GET', 'POST'])
 def candidate(cid):
     votes = Candidate_Vote.get_all_votes(cid)
+    congresses = Candidate_Vote.get_all_congresses(cid)
+    votetypes = Candidate_Vote.get_all_vote_types(cid)
+    voteyears = Candidate_Vote.get_all_vote_years(cid)
     if votes == "oops":
         flash('There are no voting records for Senator with id ' + cid)
     return render_template('/candidate.html',
-                            all_votes = votes)
+                            all_votes = votes,
+                            all_congresses = congresses,
+                            all_vote_types = votetypes,
+                            all_vote_years = voteyears,
+                            cid = cid)
+@bp.route('/candidate/<cid>/congress/<congress>', methods=['GET', 'POST'])
+def candidatecongressfilt(cid, congress):
+    votes = Candidate_Vote.get_all_votes_for_congress(cid, congress)
+    congresses = Candidate_Vote.get_all_congresses(cid)
+    if votes == "oops":
+        flash('There are no voting records for Senator with id ' + cid + ' and congress ' + congress)
+    return render_template('/candidatecongressfilt.html',
+                            all_votes = votes,
+                            cid = cid,
+                            all_congresses = congresses,
+                            congress = congress)
+
+@bp.route('/candidate/<cid>/votetype/<votetype>', methods=['GET', 'POST'])
+def candidatevotetypefilt(cid, votetype):
+    votes = Candidate_Vote.get_all_votes_for_votetype(cid, votetype)
+    votetypes = Candidate_Vote.get_all_vote_types(cid)
+    if votes == "oops":
+        flash('There are no voting records for Senator with id ' + cid + ' and vote ' + votetype)
+    return render_template('/candidatevotetypefilt.html',
+                            all_votes = votes,
+                            cid = cid,
+                            all_vote_types = votetypes,
+                            votetype = votetype)
+
+@bp.route('/candidate/<cid>/voteyear/<voteyear>', methods=['GET', 'POST'])
+def candidatevoteyearfilt(cid, voteyear):
+    votes = Candidate_Vote.get_all_votes_for_voteyear(cid, voteyear)
+    voteyears = Candidate_Vote.get_all_vote_years(cid)
+    if votes == "oops":
+        flash('There are no voting records for Senator with id ' + cid + ' and year ' + year)
+    return render_template('/candidatevoteyearfilt.html',
+                            all_votes = votes,
+                            cid = cid,
+                            all_vote_years = voteyears,
+                            voteyear = voteyear)
 
 @bp.route('/candidate/', methods=['GET', 'POST'])
 def candidatehomepage():
@@ -69,21 +111,4 @@ def correlation():
                            size_choices_states = len(form.state.choices),
                            size_choices_issues = len(form.state.choices)
             )
-
-
-@bp.route('/')
-def index():
-    # get all available products for sale:
-    products = Product.get_all(True)
-    # find the products current user has bought:
-    if current_user.is_authenticated:
-        purchases = Purchase.get_all_by_uid_since(
-            current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-    else:
-        purchases = None
-    # render the page by adding information to the index.html file
-    return render_template('index.html',
-                           avail_products=products,
-
-                           purchase_history=purchases)
 
