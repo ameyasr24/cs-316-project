@@ -67,7 +67,7 @@ text-decoration: none;
     text-align: center;
 }
 #candidate-voting-table-wrapper table * {
-    background:lightgray;
+    background:aliceblue;
     color:black;
     border: 0.5px solid black;
 }
@@ -173,3 +173,19 @@ path:hover {
 .dropdown-content a:hover {background-color: aliceblue;}
 .dropdown:hover .dropdown-content {display: block;}
 .dropdown:hover .dropbtn {background-color: purple;}
+
+.back-to-candidate-button{
+    background-color: purple;
+    color: aliceblue;
+    padding: 16px;
+    font-size: 15px;
+    border: none;
+}
+
+.candidate-header h2 {
+    text-align:center;
+    overflow: hidden;
+    background-color: aliceblue;
+    padding: 20px 10px;
+    color: purple
+}
