@@ -178,6 +178,9 @@ path:hover {
     max-height: 200px;
     overflow: scroll; 
 }
+.dropdown:hover .dropdown-content:hover {
+    background-color: white;
+}
 .dropdown:hover .dropbtn {
     background-color: purple;
 }
@@ -190,10 +193,15 @@ path:hover {
     border: none;
 }
 
-.candidate-header h2 {
+.candidate-header h2{
     text-align:center;
-    overflow: hidden;
     background-color: aliceblue;
-    padding: 20px 10px;
+    padding: 10px 10px;
     color: purple
+}
+
+.candidate-party h5{
+    text-align:center;
+    color: black;
+    font-size:medium;
 }

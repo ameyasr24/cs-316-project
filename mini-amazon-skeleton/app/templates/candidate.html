@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class = "candidate-header"><a href="/candidate/{{cid}}"><h2> {{ all_votes[0].bioname }} </h2></a></div>
+<div class = "candidate-party"><h5>{{all_votes[0].party}}</h5></div>
 <br><br>
 <h5>If candidate has history in the Senate, their voting records are below</h5>
 <p>
@@ -23,7 +24,7 @@
     </div>
   </div>
   <div class="dropdown">
-    <button class="dropbtn">How did they vote?</button>
+    <button class="dropbtn">Which way did they vote?</button>
     <div class="dropdown-content">
       {% for vote in all_vote_types %}
       <a href="./{{cid}}/votetype/{{vote.descr}}">{{ vote.descr }}</a>

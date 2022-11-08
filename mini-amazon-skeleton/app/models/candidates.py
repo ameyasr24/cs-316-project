@@ -14,10 +14,10 @@ class Candidate_Vote:
     @staticmethod 
     def get_all_votes(cid): # gets all votes by a specific candidate
         rows = app.db.execute('''
-        SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result
-        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm
+        SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result, cpc.party AS party
+        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm, Candidate_Party_Codes cpc
         WHERE CAST(cm.icpsr as INTEGER) = :cid AND cm.icpsr = cmv.icpsr AND cvd.congress = cmv.congress AND cvd.rollnumber = cmv.rollnumber AND cm.chamber = 'Senate'
-        AND cmv.cast_code = vcc.cast_code
+        AND cmv.cast_code = vcc.cast_code AND cpc.party_code = cm.party_code
         ORDER BY cvd.vote_date;
         ''',
                               cid=cid)
@@ -27,9 +27,9 @@ class Candidate_Vote:
 
     def get_all_candidates():
         rows = app.db.execute('''
-        SELECT DISTINCT c.bioname, CAST(c.icpsr as INTEGER)
-        FROM Candidate_Members c
-        WHERE c.chamber = 'Senate'
+        SELECT DISTINCT c.bioname, CAST(c.icpsr as INTEGER), cpc.party
+        FROM Candidate_Members c, Candidate_Party_Codes cpc
+        WHERE c.chamber = 'Senate' AND cpc.party_code = c.party_code
         ORDER BY c.bioname''')
         if len(rows) > 0:
             return rows
@@ -70,10 +70,10 @@ class Candidate_Vote:
 
     def get_all_votes_for_congress(cid, congress): # gets all votes by a specific candidate
         rows = app.db.execute('''
-        SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result
-        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm
+        SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result, cpc.party AS party
+        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm, Candidate_Party_Codes cpc
         WHERE CAST(cm.icpsr as INTEGER) = :cid AND cm.icpsr = cmv.icpsr AND cvd.congress = cmv.congress AND cvd.rollnumber = cmv.rollnumber AND cm.chamber = 'Senate'
-        AND cmv.cast_code = vcc.cast_code AND cvd.congress = :congress
+        AND cmv.cast_code = vcc.cast_code AND cvd.congress = :congress AND cpc.party_code = cm.party_code
         ORDER BY cvd.vote_date;
         ''',
                               cid=cid, congress=congress)
@@ -83,10 +83,10 @@ class Candidate_Vote:
 
     def get_all_votes_for_votetype(cid, votetype): # gets all votes by a specific candidate
         rows = app.db.execute('''
-        SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result
-        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm
+        SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result, cpc.party AS party
+        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm, Candidate_Party_Codes cpc
         WHERE CAST(cm.icpsr as INTEGER) = :cid AND cm.icpsr = cmv.icpsr AND cvd.congress = cmv.congress AND cvd.rollnumber = cmv.rollnumber AND cm.chamber = 'Senate'
-        AND cmv.cast_code = vcc.cast_code AND vcc.descr = :votetype
+        AND cmv.cast_code = vcc.cast_code AND vcc.descr = :votetype AND cpc.party_code = cm.party_code
         ORDER BY cvd.vote_date;
         ''',
                               cid=cid, votetype=votetype)
@@ -96,10 +96,10 @@ class Candidate_Vote:
 
     def get_all_votes_for_voteyear(cid, voteyear): # gets all votes by a specific candidate
         rows = app.db.execute('''
-        SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result
-        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm
+        SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result, cpc.party AS party
+        FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm, Candidate_Party_Codes cpc
         WHERE CAST(cm.icpsr as INTEGER) = :cid AND cm.icpsr = cmv.icpsr AND cvd.congress = cmv.congress AND cvd.rollnumber = cmv.rollnumber AND cm.chamber = 'Senate'
-        AND cmv.cast_code = vcc.cast_code AND CAST(EXTRACT(YEAR FROM cvd.vote_date) AS INTEGER) = :voteyear
+        AND cmv.cast_code = vcc.cast_code AND CAST(EXTRACT(YEAR FROM cvd.vote_date) AS INTEGER) = :voteyear AND cpc.party_code = cm.party_code
         ORDER BY cvd.vote_date;
         ''',
                               cid=cid, voteyear=voteyear)
