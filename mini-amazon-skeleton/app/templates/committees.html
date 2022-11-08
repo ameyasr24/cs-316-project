@@ -19,6 +19,24 @@ We could also do the same donation analysis/data visualization for Senate subcom
 <h1>Search for donations to/from different stakeholders!</h1>
 <form class="form-inline" action="" method="post">
   {{ form.hidden_tag() }}
+
+  <p>
+    {{ form.query.label }} 
+    {{ form.query(size=15) }}
+    {% for error in form.query.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  {% if involving %}
+  <p>
+    {{ form.any_ent.label }} 
+    {{ form.any_ent(size=15) }}
+    {% for error in form.any_ent.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  {% endif %}
+  {% if toFrom %}
   <p>
     {{ form.to_ent.label }} 
     {{ form.to_ent(size=15) }}
@@ -28,14 +46,16 @@ We could also do the same donation analysis/data visualization for Senate subcom
   </p>
   <p>
     {{ form.from_ent.label }} 
-    {{ form.from_ent(size=25) }}
+    {{ form.from_ent(size=15) }}
     {% for error in form.from_ent.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
+  {% endif %}
+  
   <p>
     {{ form.from_year.label }}
-    {{ form.from_year(size=4) }}
+    {{ form.from_year(size=15) }}
     {% for error in form.from_year.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
@@ -67,7 +87,7 @@ We could also do the same donation analysis/data visualization for Senate subcom
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Committee ID</th>
+      <th scope="col">ID</th>
       <th scope="col">From</th>
       <th scope="col">To</th>
       <th scope="col">Donation Amount</th>

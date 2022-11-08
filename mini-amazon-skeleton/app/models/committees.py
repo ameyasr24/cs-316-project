@@ -113,3 +113,14 @@ FROM Committees
             ''',
                               )
         return [Committees(*row) for row in rows]
+    @staticmethod
+    def get_all_involving(entity):
+        rows = app.db.execute('''
+            SELECT cid, from_entity, to_entity, donation_amount,  from_category, to_category, yr
+            FROM Committees
+            WHERE from_entity = :entity 
+            OR to_entity=:entity
+            ''',
+                              entity=entity
+                              )
+        return [Committees(*row) for row in rows]

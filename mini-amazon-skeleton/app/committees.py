@@ -11,9 +11,10 @@ bp = Blueprint('committees', __name__)
 
 
 class SearchCommittee(FlaskForm):
+    query = SelectField('query',choices=['all donations involving','donations to/from'],default='all donations involving')
+    any_ent = StringField('Entity')
     to_ent = StringField('To entity')
     from_ent = StringField('From entity')
-    #eventually change to_ent to make everything lowercase
     from_year = IntegerField('From Year',default=0)
     to_year=IntegerField('To Year',default=2022)
    # order_by=SelectField('Order by:',choices=['cid', 'date ascending','date descending'],default='cid')
@@ -34,6 +35,10 @@ def committees():
     #if both, then get all entities from given times/default
     
     form = SearchCommittee()
+    if form.query =='all donations involving':
+        return render_template('committees.html', form=form,involving=True)
+    elif form.query=='donations to/from':
+        return render_template('committees.html',form=form,toFrom=True)
     searchedcomms=Committees.get_all()
     if form.validate_on_submit():
         if form.to_ent.data or form.from_ent.data:
