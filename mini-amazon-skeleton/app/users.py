@@ -6,7 +6,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
-
+from .models.committees import Committees
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -20,10 +20,7 @@ class LoginForm(FlaskForm):
 
 #move these to respective python files later
 
-@bp.route('/committee', methods=['GET', 'POST'])
-def committee():
-    
-    return render_template('committees.html')
+
     
 @bp.route('/candidate', methods=['GET', 'POST'])
 def candidate():
@@ -33,9 +30,9 @@ def candidate():
 def correlation():
     
     return render_template('correlation.html')
+    
 @bp.route('/issue', methods=['GET', 'POST'])
 def issue():
-    
     return render_template('issue.html')
 @bp.route('/', methods=['GET', 'POST'])
 def home():

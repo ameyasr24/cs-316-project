@@ -21,4 +21,12 @@ def create_app():
     from .users import bp as user_bp
     app.register_blueprint(user_bp)
 
+    from .committees import bp as committee_bp
+    app.register_blueprint(committee_bp)
+
+    from .issues import bp as issues_bp
+    app.register_blueprint(issues_bp)
+    from .correlation import bp as correlation_bp
+    app.register_blueprint(correlation_bp)
+
     return app

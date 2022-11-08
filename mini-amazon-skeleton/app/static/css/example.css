@@ -53,3 +53,38 @@ color: blue;
 text-decoration: none;  
 }  
 }
+
+#candidate-voting-table-wrapper {
+    position:relative;
+}
+#candidate-voting-table-scroll {
+    height:500px;
+    overflow:auto;  
+    margin-top:20px;
+}
+#candidate-voting-table-wrapper table {
+    width:100%;
+    text-align: center;
+}
+#candidate-voting-table-wrapper table * {
+    background:lightgray;
+    color:black;
+    border: 0.5px solid black;
+}
+#candidate-voting-table-wrapper th {
+    position:sticky;   
+    top: 0;
+    background:lightblue;
+    color:black;
+}
+
+#candidate-homepage-list ul {
+    column-count: 6;
+    background: lightgrey;
+    padding: 20px;
+}
+
+#candidate-homepage-list ul li{
+    background: lightblue;
+    margin: 3px;
+}

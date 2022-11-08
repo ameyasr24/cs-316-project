@@ -15,12 +15,24 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
                          (SELECT MAX(id)+1 FROM Purchases),
                          false);
 
-\COPY Committees FROM 'Committees.csv' WITH DELIMITER ',' NULL '' CSV
-SELECT pg_catalog.setval('public.committees_id_seq',
-                         (SELECT MAX(id)+1 FROM Committees),
-                         false);
+\COPY Committees FROM 'Committees.csv' WITH DELIMITER ',' NULL '' CSV;
+
+
+\COPY Issues FROM 'Issues.csv' WITH DELIMITER ',' NULL '' CSV;
 
 \COPY States FROM 'States.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.states_id_seq',
                          (SELECT MAX(id)+1 FROM States),
                          false);
+                         
+\COPY Correlation from 'Correlation.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Candidate_Vote FROM 'Voting.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Candidate_Member_Votes FROM 'Candidate_Member_Votes.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Vote_Cast_Code FROM 'Vote_Cast_Codes.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Candidate_Vote_Data FROM 'Candidate_Vote_Data.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Candidate_Members FROM 'Candidate_Members.csv' WITH DELIMITER ',' NULL '' CSV;

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br>
+<h3>Here are all the candidates, search for and click a candidate name for further data.</h3>
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    <br>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div id="candidate-homepage-list">
+    <ul>
+    {% for name in all_names%}
+    <li><a href="\candidate\{{name.icpsr}}">{{name.bioname}}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  {% endwith %}
+</p>
+{% endblock %}
