@@ -74,11 +74,6 @@ def candidatevoteyearfilt(cid, voteyear):
                             all_vote_years = voteyears,
                             voteyear = voteyear)
 
-def filter():
-    asdf = request.form.get('name_candidate_search')
-    print(asdf)
-    return asdf
-
 @bp.route('/candidate/', methods=['GET', 'POST'])
 def candidatehomepage():
     names = Candidate_Vote.get_all_candidates()
@@ -89,6 +84,7 @@ def candidatehomepage():
     for name in names:
         if name[0] == candidate_name:
             candidate_icpsr = name[1]
+            break
     if candidate_icpsr != 0:
         candidate_page = "/candidate/" + str(candidate_icpsr)
         return redirect(candidate_page, code=302)

@@ -222,3 +222,15 @@ path:hover {
     outline: none;
     border-radius: 5px;
 }
+
+#candidate_search_bar_go:hover {
+    background: purple;
+    color: white;
+}
+
+.candidate-homepage-header h3 {
+    text-align:center;
+    color: black;
+    font-weight: bold;
+    font-size: xx-large;
+}

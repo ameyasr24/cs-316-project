@@ -2,7 +2,7 @@
 
 {% block content %}
 <br><br>
-<h3>Here are all the candidates, search for and click a candidate name for further data.</h3>
+<div class="candidate-homepage-header"><h3>Here are all the candidates, search for and click a candidate name for further data.</h3></div>
 <div class="candidate_search_bar">
   <form action="/candidate/" method="GET">
     <input type="text" list="candidates_search"  name = "name_candidate_search" id="all_candidates_search" placeholder="Search candidates..." />
@@ -11,7 +11,7 @@
         <option>{{name.bioname}}</option>
         {% endfor %}
       </datalist>
-    <input type="submit" value="Go!" >
+    <input id = "candidate_search_bar_go" type="submit" value="Go!" >
   </form>
 </div>
 
