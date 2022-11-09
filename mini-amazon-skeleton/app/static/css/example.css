@@ -205,6 +205,14 @@ path:hover {
     color: black;
     font-size:medium;
 }
+.candidate-state h5{
+    text-align:center;
+    color: black;
+    font-size:medium;
+}
+.candidate-state a{
+    color: black;
+}
 
 .candidate_search_bar {
     height: 20vh;
