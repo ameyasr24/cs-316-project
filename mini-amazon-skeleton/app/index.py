@@ -7,9 +7,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, IntegerField, BooleanField, SubmitField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
-from .models.product import Product
-from .models.purchase import Purchase
-
 from .models.states import State
 from .models.candidates import Candidate_Vote
 from .models.correlation import Correlation
