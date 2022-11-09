@@ -215,13 +215,15 @@ path:hover {
 }
 
 .candidate_search_bar {
-    height: 20vh;
+    height: 15vh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     background: aliceblue;
+    position:sticky;   
+    top: 0;
 }
 .candidate_search_bar input {
     padding: 10px 20px;
