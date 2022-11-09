@@ -1,4 +1,4 @@
-from flask import render_template, flash
+from flask import render_template, flash, redirect
 from flask_login import current_user
 import datetime
 from flask import render_template,flash, request
@@ -74,13 +74,25 @@ def candidatevoteyearfilt(cid, voteyear):
                             all_vote_years = voteyears,
                             voteyear = voteyear)
 
+def filter():
+    asdf = request.form.get('name_candidate_search')
+    print(asdf)
+    return asdf
+
 @bp.route('/candidate/', methods=['GET', 'POST'])
 def candidatehomepage():
     names = Candidate_Vote.get_all_candidates()
     if names == "oops":
         flash('There are no candidates in the data')
-    return render_template('/candidatehomepage.html',
-                            all_names = names)
+    candidate_name = request.args.get('name_candidate_search')
+    candidate_icpsr = 0
+    for name in names:
+        if name[0] == candidate_name:
+            candidate_icpsr = name[1]
+    if candidate_icpsr != 0:
+        candidate_page = "/candidate/" + str(candidate_icpsr)
+        return redirect(candidate_page, code=302)
+    return render_template('/candidatehomepage.html', all_names=names)
 
 class SelectStates(FlaskForm):
     state = SelectField("Select a state")
