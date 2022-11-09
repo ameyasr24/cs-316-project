@@ -143,6 +143,11 @@ CREATE TABLE Candidate_Members (
     PRIMARY KEY(congress, icpsr)
 );
 
+CREATE TABLE Candidate_Party_Codes (
+    party_code INT NOT NULL,
+    party VARCHAR(255) NOT NULL,
+    PRIMARY KEY(party_code)
+);
 
 --implement search bar by category
 --search by from and to whichever entity

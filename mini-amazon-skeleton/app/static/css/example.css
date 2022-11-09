@@ -67,24 +67,141 @@ text-decoration: none;
     text-align: center;
 }
 #candidate-voting-table-wrapper table * {
-    background:lightgray;
+    background:aliceblue;
     color:black;
     border: 0.5px solid black;
 }
 #candidate-voting-table-wrapper th {
     position:sticky;   
     top: 0;
-    background:lightblue;
-    color:black;
+    background:purple;
+    color:aliceblue;
 }
 
 #candidate-homepage-list ul {
     column-count: 6;
-    background: lightgrey;
+    background: aliceblue;
     padding: 20px;
 }
 
 #candidate-homepage-list ul li{
-    background: lightblue;
+    background: white;
     margin: 3px;
+}
+
+#candidate-homepage-list li a{
+    color: purple;
+}
+
+#main-menu ul{
+    list-style-type: none;
+    overflow: hidden;
+    background-color: black;
+    position: sticky;
+    top: 0;
+    padding-top: 20px;
+}
+
+#main-menu li a{
+    display: block;
+    color: aliceblue;
+    text-align: center;
+    padding: 10px 12px;
+    font-size: 17px;
+    font-family: sans-serif;  
+}
+
+#main-menu ul li{
+    float: center; 
+}
+
+#main-menu.menu{
+    display: flex;
+    justify-content: space-around;
+}
+
+#main-menu li a:hover{
+    background-color: purple;
+}
+ 
+#main-title h1{
+    color:aliceblue;
+    text-align: center;
+}
+
+#state-click-title h5{
+    text-align: center;
+}
+
+path {
+    fill:lightsteelblue;
+    pointer-events:all;
+}
+
+path:hover {
+    fill:purple;
+}
+
+.dropbtn {
+    background-color: purple;
+    color: aliceblue;
+    padding: 16px;
+    font-size: 15px;
+    border: none;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: aliceblue;
+    min-width: 150px;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 10px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: aliceblue;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+    max-height: 200px;
+    overflow: scroll; 
+}
+.dropdown:hover .dropdown-content:hover {
+    background-color: white;
+}
+.dropdown:hover .dropbtn {
+    background-color: purple;
+}
+
+.back-to-candidate-button{
+    background-color: purple;
+    color: aliceblue;
+    padding: 16px;
+    font-size: 15px;
+    border: none;
+}
+
+.candidate-header h2{
+    text-align:center;
+    background-color: aliceblue;
+    padding: 10px 10px;
+    color: purple
+}
+
+.candidate-party h5{
+    text-align:center;
+    color: black;
+    font-size:medium;
 }
