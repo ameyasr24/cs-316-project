@@ -205,3 +205,40 @@ path:hover {
     color: black;
     font-size:medium;
 }
+.candidate-state h5{
+    text-align:center;
+    color: black;
+    font-size:medium;
+}
+.candidate-state a{
+    color: black;
+}
+
+.candidate_search_bar {
+    height: 20vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: aliceblue;
+}
+.candidate_search_bar input {
+    padding: 10px 20px;
+    background: white;
+    border: 0.5px solid black;
+    outline: none;
+    border-radius: 5px;
+}
+
+#candidate_search_bar_go:hover {
+    background: purple;
+    color: white;
+}
+
+.candidate-homepage-header h3 {
+    text-align:center;
+    color: black;
+    font-weight: bold;
+    font-size: xx-large;
+}
