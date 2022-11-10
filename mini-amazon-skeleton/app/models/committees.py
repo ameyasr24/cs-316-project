@@ -149,4 +149,73 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN cid END ASC,
                               AD=aord,
                               )
         return [Committees(*row) for row in rows]
-       
+
+    @staticmethod
+    def get_sum_all (from_date,to_date):
+        rows = app.db.execute('''
+            SELECT SUM(donation_amount)
+            FROM Committees
+            WHERE yr>=:y1 AND yr<=:y2
+            ''',
+                              
+                              y1=from_date,
+                              y2=to_date,
+                              
+                              )
+        return rows[0]
+    @staticmethod
+    def get_sum_involving (any_ent, from_date,to_date):
+        rows = app.db.execute('''
+            SELECT SUM(donation_amount)
+            FROM Committees
+            WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :entity 
+            OR to_entity=:entity
+            ''',
+                              
+                              y1=from_date,
+                              y2=to_date,
+                              entity=any_ent
+                              
+                              )
+        return rows[0]
+    @staticmethod
+    def get_sum_from_to (from_ent,to_ent,from_date,to_date):
+        rows = app.db.execute('''
+            SELECT SUM(donation_amount)
+            FROM Committees
+            WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :from_ent 
+            AND to_entity=:to_ent
+            ''',
+                              
+                              y1=from_date,
+                              y2=to_date,
+                              from_ent=from_ent,
+                              to_ent=to_ent
+                              )
+        return rows[0]
+    @staticmethod
+    def get_sum_from (from_ent, from_date,to_date):
+        rows = app.db.execute('''
+            SELECT SUM(donation_amount)
+            FROM Committees
+            WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :from_ent
+            ''',
+                              
+                              y1=from_date,
+                              y2=to_date,
+                              from_ent=from_ent
+                              )
+        return rows[0]
+    @staticmethod
+    def get_sum_to (to_ent,from_date,to_date):
+        rows = app.db.execute('''
+            SELECT SUM(donation_amount)
+            FROM Committees
+            WHERE yr>=:y1 AND yr<=:y2 AND to_entity=:to_ent
+            ''',
+                              
+                              y1=from_date,
+                              y2=to_date,
+                              to_ent=to_ent
+                              )
+        return rows[0]
