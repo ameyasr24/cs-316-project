@@ -20,7 +20,8 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 
 \COPY Issues FROM 'Issues.csv' WITH DELIMITER ',' NULL '' CSV;
 
-\COPY States FROM 'States.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY States FROM 'States.csv' WITH DELIMITER ',' NULL '' CSV;
+
 SELECT pg_catalog.setval('public.states_id_seq',
                          (SELECT MAX(id)+1 FROM States),
                          false);
@@ -36,3 +37,7 @@ SELECT pg_catalog.setval('public.states_id_seq',
 \COPY Candidate_Members FROM 'Candidate_Members.csv' WITH DELIMITER ',' NULL '' CSV;
 
 \COPY Candidate_Party_Codes FROM 'Candidate_Party_Codes.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Senate_Results FROM '1976-2020-senate.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Receipts FROM 'Receipts.csv' WITH DELIMITER '|' NULL '' CSV;

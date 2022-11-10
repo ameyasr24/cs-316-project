@@ -2,12 +2,35 @@
 
 {% block content %}
 
+<br><br>
+
+<div class = "state-header"><h1> Senate Campaign Donations in {{ all_states[0].state_id }} </h1></a></div>
+<div class = "race-instructions"><h5>Select a year to explore a specific race.</h5></div>
+
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    <br>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div id="year-list">
+    <ul>
+    {% for year in all_years%}
+    <li><a href="/state/{{year.state_id}}/{{year.year}}">{{year.year}}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  {% endwith %}
+</p>
 
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <!-- <th scope="col">Tuple ID</th>
-      <th scope="col">State</th> -->
       <th scope="col">Year</th>
       <th scope="col">Candidate</th>
       <th scope="col">Party</th>
@@ -19,8 +42,6 @@
   <tbody>
     {% for candidate in all_states%}
       <tr>
-        <!-- <th scope="row">{{candidate.id}}</th>
-        <td>{{candidate.state_id}}</td> -->
         <th scope = "row">{{candidate.year}}</th>
         <td>{{candidate.candidate_name}}</td>
         <td>{{candidate.party}}</td>
