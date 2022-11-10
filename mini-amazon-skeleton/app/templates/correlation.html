@@ -2,31 +2,54 @@
 
 {% block content %}
 <br><br>
-<p style="font-family:verdana">
-  Choose Filter Parameter:<SELECT name="state_chosen">
-    <OPTION value="State">State</OPTION>
-    <OPTION value="Candidate">Candidate</OPTION>
-    <option value="Issue">Issue</option>
-  </SELECT>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<form class="form-inline" action="" method=post>
+  {{optionsForm.hidden_tag()}}
+  <p>
+    {{optionsForm.label}}
+    {{optionsForm.options}}
   </p>
+  <p>
+    {{optionsForm.submit}}
+  </p>
+
+</form>
+
 <form class="form-inline" action="" method=post>
   {{form.hidden_tag()}}
+{% if stateTruthy %}
 <p>
   {{form.state.label}}
-  {{ form.state(size = size_choices_states) }}
+  {{form.state}}
 </p>
-<br><br>
+{% endif %}
+{% if issueTruthy %}
 <p>
   {{form.issue.label}}
-  {{ form.issue(size = size_choices_issues) }}
+  {{form.issue }}
 </p>
+{% endif %}  
+{% if candidateTruthy %}
+<p>
+  {{form.candidate.label}}
+  {{form.candidate }}
+</p>
+{% endif %}  
+{% if passedTruthy %}
+<p>
+  {{form.passed.label}}
+  {{form.passed }}
+</p>
+{% endif %}  
 <p>
   {{form.submit()}}
 </p>
 </form>
 <br><br>
-<h2>Donations and Related Info:</h2>
-<table class='table table-hover table-bordered container'>
+<h3>Donations and Related Info:</h3>
+<div id="candidate-voting-table-wrapper">
+<div id="candidate-voting-table-scroll">
+<table>
   <thead class="thead-dark">
     <tr>
       <th scope="col">State</th>
@@ -55,4 +78,13 @@
     {% endfor %}
     </tbody>
   </table>
-  {% endblock %}
+</div>
+</div>
+
+<body>
+  <h1Visualization>
+    <img src= "{{ url_for('index.visualize') }}">
+  </h1Visualization>
+</body>
+{% endblock %}
+
