@@ -52,11 +52,15 @@ def committees():
     if form1.validate_on_submit():
         q = form1.query.data.upper()
         searchedcomms=Committee.get_comm(q)
-        return render_template('committees.html', form=form1,all_committees=searchedcomms)
+        if searchedcomms:
+            return render_template('committees.html', form=form1,all_committees=searchedcomms,err=False)
+        else:
+            return render_template('committees.html',form=form1, allcommittees=searchedcomms, err=True)
     return render_template('committees.html', form=form1,all_committees=searchedcomms)
 
 @bp.route('/committee/<cid>', methods=['GET', 'POST'])
 def committee_donations(cid):
+    comm = Committee.get_name(cid)
     output=[]
     form1 = SearchSecond()
     form2 = SearchSecond()
@@ -68,16 +72,16 @@ def committee_donations(cid):
         if form1.query.data=='donations involving':
             type_form=form1.query.data
             form2 = SearchCommitteeInvolving()
-            helper(type_form,form1)            
+            helper(type_form,form1,comm)            
         elif form1.query.data=='donations to/from':
             type_form=form1.query.data
             form2=SearchCommitteeToFrom()
-            helper(type_form,form1)
+            helper(type_form,form1,comm)
         elif form1.query.data=='all donations':
             type_form=form1.query.data
             form2=AllCommittees()
-            helper(type_form,form1)  
-
+            helper(type_form,form1,comm)  
+    
     #searchedcomms=Committees.get_all_range(form.from_year.data,form.to_year.data,form.order_by.data,form.sort.data)
     if form2.validate_on_submit():
         start = -5
@@ -107,15 +111,20 @@ def committee_donations(cid):
             searchedcomms=Committee_Donations.get_all_range(form2.from_year.data,form2.to_year.data,form2.order_by.data,form2.sort.data,cid)
         if form2.total.data:
             total = helperSum(form2, type_form,subtype,cid)
-            output.append('Total Donations: $' +str(total[0]))
+            if total:
+                total = total[0]
+                if not total:
+                    total = 0
+            else: total = 0
+            output.append('Total Donations: $' +str(total))
         output.append('Date range: '+str(form2.from_year.data)+' to ' + str(form2.to_year.data))
         output.append('Sorted by: ' + form2.order_by.data + ' ' + form2.sort.data)
         
-    return render_template('committeepage.html', form=form2,type_form=type_form,all_committees=searchedcomms,start=start,messages=output)
+    return render_template('committeepage.html', form=form2,type_form=type_form,all_committees=searchedcomms,start=start,messages=output,comm=comm)
 
-def helper(query,form): 
+def helper(query,form,comm): 
     start = 10
-    return render_template('committeepage.html',form=form,type_form=query,start=start)
+    return render_template('committeepage.html',form=form,type_form=query,start=start,comm=comm)
 
 def helperSum(form,type_form,subtype,cid):
     if type_form=='donations involving':

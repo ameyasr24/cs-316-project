@@ -40,3 +40,13 @@ ORDER BY cid
                               
                               name=name)
         return [Committee(*row) for row in rows]
+    @staticmethod
+    def get_name(cid):
+        rows = app.db.execute('''
+SELECT cname
+FROM Committee  WHERE cid=:cid
+        
+''',
+                              
+                              cid=cid)
+        return rows[0]

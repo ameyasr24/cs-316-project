@@ -81,7 +81,7 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
             SELECT did, from_entity, to_entity, donation_amount, from_category, to_category, yr,cid
             FROM Committee_Donations
             WHERE to_entity = :to_entity AND from_entity=:from_entity 
-            AND yr>=:y1 AND yr<=:y2 and cid = :cid
+            AND yr>=:y1 AND yr<=:y2 AND cid = :cid
            ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
         CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
         CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
@@ -128,7 +128,7 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
             SELECT did, from_entity, to_entity, donation_amount,  from_category, to_category, yr,cid
             FROM Committee_Donations
             WHERE from_entity = :from_entity
-            AND yr>=:y1 AND yr<=:y2 and cid = :cid
+            AND yr>=:y1 AND yr<=:y2 AND cid = :cid
             ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
         CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
         CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
@@ -150,8 +150,7 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
         rows = app.db.execute('''
             SELECT did, from_entity, to_entity, donation_amount,  from_category, to_category, yr,cid
             FROM Committee_Donations
-            WHERE from_entity = :entity  and cid = :cid
-            OR to_entity=:entity AND yr>=:y1 AND yr<=:y2
+            WHERE cid = :cid AND (from_entity = :entity OR to_entity=:entity) AND yr>=:y1 AND yr<=:y2
            ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
         CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
         CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
@@ -173,7 +172,7 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
         rows = app.db.execute('''
             SELECT SUM(donation_amount)
             FROM Committee_Donations
-            WHERE yr>=:y1 AND yr<=:y2 and cid = :cid
+            WHERE yr>=:y1 AND yr<=:y2 AND cid = :cid
             ''',
                               
                               y1=from_date,
@@ -186,7 +185,7 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
         rows = app.db.execute('''
             SELECT SUM(donation_amount)
             FROM Committee_Donations
-            WHERE yr>=:y1 AND yr<=:y2 and cid = :cid AND (from_entity = :entity  
+            WHERE yr>=:y1 AND yr<=:y2 AND cid = :cid AND (from_entity = :entity  
             OR to_entity=:entity) 
             ''',
                               
@@ -202,7 +201,7 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
             SELECT SUM(donation_amount)
             FROM Committee_Donations
             WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :from_ent  
-            AND to_entity=:to_ent and cid = :cid
+            AND to_entity=:to_ent AND cid = :cid
             ''',
                               
                               y1=from_date,
@@ -217,7 +216,7 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
         rows = app.db.execute('''
             SELECT SUM(donation_amount)
             FROM Committee_Donations
-            WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :from_ent and cid = :cid
+            WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :from_ent AND cid = :cid
             ''',
                               
                               y1=from_date,
@@ -231,7 +230,7 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
         rows = app.db.execute('''
             SELECT SUM(donation_amount)
             FROM Committee_Donations
-            WHERE yr>=:y1 AND yr<=:y2 AND to_entity=:to_ent and cid = :cid
+            WHERE yr>=:y1 AND yr<=:y2 AND to_entity=:to_ent AND cid = :cid
             ''',
                               
                               y1=from_date,
