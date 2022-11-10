@@ -1,4 +1,4 @@
-from flask import render_template, flash
+from flask import render_template, flash, redirect
 from flask_login import current_user
 import datetime
 from flask import render_template,flash, request
@@ -7,10 +7,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, IntegerField, BooleanField, SubmitField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
-from .models.product import Product
-from .models.purchase import Purchase
-
 from .models.states import State
+# from .models.states import Year
 from .models.candidates import Candidate_Vote
 from .models.correlation import Correlation
 
@@ -21,8 +19,18 @@ bp = Blueprint('index', __name__)
 @bp.route('/state/<state_abb>', methods=['GET', 'POST'])
 def state(state_abb):
     state = State.get_all(state_abb)
+    year = State.get_unique_years(state_abb)
     return render_template('/states.html',
-                            all_states = state)
+                            all_states = state,
+                            all_years = year)
+                            # ,all_years = year)
+
+
+@bp.route('/state/<state_abb>/<year>/', methods=['GET', 'POST'])
+def staterace(state_abb, year):
+    race = State.get_all_year(state_abb, year)
+    return render_template('/staterace.html',
+                            all_race = race)
 
 @bp.route('/candidate/<cid>', methods=['GET', 'POST'])
 def candidate(cid):
@@ -79,8 +87,16 @@ def candidatehomepage():
     names = Candidate_Vote.get_all_candidates()
     if names == "oops":
         flash('There are no candidates in the data')
-    return render_template('/candidatehomepage.html',
-                            all_names = names)
+    candidate_name = request.args.get('name_candidate_search')
+    candidate_icpsr = 0
+    for name in names:
+        if name[0] == candidate_name:
+            candidate_icpsr = name[1]
+            break
+    if candidate_icpsr != 0:
+        candidate_page = "/candidate/" + str(candidate_icpsr)
+        return redirect(candidate_page, code=302)
+    return render_template('/candidatehomepage.html', all_names=names)
 
 class SelectStates(FlaskForm):
     state = SelectField("Select a state")

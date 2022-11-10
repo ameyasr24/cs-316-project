@@ -22,38 +22,6 @@ right: 0px;
 width: 50%;
 }
 
-.menu {
-    body   
-{  
-height: 125vh;  
-margin-top: 80px;  
-padding: 30px;  
-background-size: cover;  
-font-family: sans-serif;  
-}  
-header {  
-background-color: orange;  
-position: fixed;  
-left: 0;  
-right: 0;  
-top: 5px;  
-height: 30px;  
-display: flex;  
-align-items: center;  
-box-shadow: 0 0 25px 0 black;  
-}  
-header * {  
-display: inline;  
-}  
-header li {  
-margin: 20px;  
-}  
-header li a {  
-color: blue;  
-text-decoration: none;  
-}  
-}
-
 #candidate-voting-table-wrapper {
     position:relative;
 }
@@ -108,7 +76,7 @@ text-decoration: none;
     text-align: center;
     padding: 10px 12px;
     font-size: 17px;
-    font-family: sans-serif;  
+    font-family: Helvetica, Verdana, Arial;
 }
 
 #main-menu ul li{
@@ -127,10 +95,13 @@ text-decoration: none;
 #main-title h1{
     color:aliceblue;
     text-align: center;
+    font-family: Helvetica, Verdana, Arial;
 }
 
 #state-click-title h5{
     text-align: center;
+    font-family: Helvetica, Verdana, Arial;
+    color: purple;
 }
 
 path {
@@ -204,4 +175,80 @@ path:hover {
     text-align:center;
     color: black;
     font-size:medium;
+}
+.candidate-state h5{
+    text-align:center;
+    color: black;
+    font-size:medium;
+}
+.candidate-state a{
+    color: black;
+}
+
+.candidate_search_bar {
+    height: 15vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: aliceblue;
+    position:sticky;   
+    top: 0;
+}
+.candidate_search_bar input {
+    padding: 10px 20px;
+    background: white;
+    border: 0.5px solid black;
+    outline: none;
+    border-radius: 5px;
+}
+
+#candidate_search_bar_go:hover {
+    background: purple;
+    color: white;
+}
+
+.candidate-homepage-header h3 {
+    text-align:center;
+    color: black;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.state-header h1{
+    text-align: center;
+    font-family: Helvetica, Verdana, Arial;
+}
+
+.race-instructions h5{
+    text-align: center;
+    font-family: Helvetica, Verdana, Arial;
+}
+
+#year-list ul {
+    padding: 5px;
+}
+
+#year-list ul li{
+    background: white;
+    margin: 3px;
+    float: center;
+}
+
+#year-list li a{
+    color: purple;
+}
+
+#year-list{
+    display: flex;
+    justify-content: space-around;
+}
+
+.race-state h1{
+    text-align:center;
+}
+
+.race-year h3{
+    text-align: center;
 }

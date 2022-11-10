@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<div class = "race-state"><a href="/state/{{all_race[0].state_id}}"><h1> Senate Campaign Donations in {{ all_race[0].state_id }} </h1></a></div>
+<div class = "race-year"><h3>in the {{all_race[0].year}} election</h3></div>
+<br><br>
+
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Candidate</th>
+        <th scope="col">Party</th>
+        <th scope="col">Incumbent Status</th>
+        <th scope="col">Total Receipts</th>
+        <th scope="col">Percent Vote</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for candidate in all_race%}
+        <tr>
+          <th scope = "row">{{candidate.candidate_name}}</td>
+          <td>{{candidate.party}}</td>
+          <td>{{candidate.incumbent_status}}</td>
+          <td>{{candidate.total_receipts}}</td>
+          <td>{{candidate.percent_vote}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}
