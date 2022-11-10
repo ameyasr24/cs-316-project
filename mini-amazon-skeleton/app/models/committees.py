@@ -1,221 +1,42 @@
 from flask import current_app as app
 
 
-class Committees:
-    def __init__(self, cid, from_entity, to_entity, donation_amount, from_category, to_category, yr):
+class Committee:
+    def __init__(self, cid, cname, type):
         self.cid = cid
-        self.from_entity = from_entity
-        self.to_entity = to_entity
-        self.donation_amount = donation_amount
-        self.from_category = from_category
-        self.to_category = to_category
-        self.yr = yr
-
+        self.cname = cname
+        self.type = type
 
     @staticmethod 
     def get(cid): #gets everything by cid value
         rows = app.db.execute('''
-SELECT cid, from_entity, to_entity, donation_amount, from_category, to_category, yr
-FROM Committees
+SELECT cname
+FROM Committee
 WHERE cid = :cid
 ''',
                               cid=cid)
-        return Committees(*(rows[0])) if rows is not None else None
+        return Committee(*(rows[0])) if rows is not None else None
 
     @staticmethod
-    def get_all(sort_by, aord): #just gets everyting in the table
+    def get_all(): #just gets everyting in the table
         rows = app.db.execute('''
-SELECT cid, from_entity, to_entity, donation_amount,  from_category, to_category, yr
-FROM Committees 
-ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN cid END ASC,
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN cid END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
+SELECT cid, cname,type
+FROM Committee 
+ORDER BY cid
         
 ''',
-                              s=sort_by,
-                              AD=aord,
+                              
                               )
-        return [Committees(*row) for row in rows]
+        return [Committee(*row) for row in rows]
 
     @staticmethod
-    def get_all_range(from_date, to_date, sort_by,aord): #gets everything in the table given a range of dates
+    def get_comm(name):
         rows = app.db.execute('''
-            SELECT cid, from_entity, to_entity, donation_amount, from_category, to_category, yr
-            FROM Committees
-            WHERE yr>=:y1 AND yr<=:y2
-            ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN cid END ASC,
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN cid END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
-            ''',
+SELECT cid, cname,type
+FROM Committee  WHERE cname=:name
+ORDER BY cid 
+        
+''',
                               
-                              y1=from_date,
-                              y2=to_date,
-                              s=sort_by,
-                              AD=aord,
-                              )
-        return [Committees(*row) for row in rows]
-
-    @staticmethod
-    def get_all_from_to_range(to_entity, from_entity,from_date, to_date, sort_by,aord): #gets everything in the table going to to_entity and from from_entity
-        rows = app.db.execute('''
-            SELECT cid, from_entity, to_entity, donation_amount, from_category, to_category, yr
-            FROM Committees
-            WHERE to_entity = :to_entity AND from_entity=:from_entity 
-            AND yr>=:y1 AND yr<=:y2
-           ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN cid END ASC,
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN cid END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
-            ''',
-                              to_entity=to_entity,
-                              from_entity=from_entity,
-                              y1=from_date,
-                              y2=to_date,
-                              s=sort_by,
-                              AD=aord,
-                              )
-        return [Committees(*row) for row in rows]
-
-    @staticmethod
-    def get_all_to_entity_range(to_entity, from_date, to_date, sort_by,aord): #gets everything in the table going to to_entity
-        rows = app.db.execute('''
-            SELECT cid, from_entity, to_entity, donation_amount,  from_category, to_category, yr
-            FROM Committees
-            WHERE to_entity = :to_entity
-            AND yr>=:y1 AND yr<=:y2
-            ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN cid END ASC,
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN cid END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
-            ''',
-                              to_entity=to_entity,
-                              from_date=from_date,
-                              y1=from_date,
-                              y2=to_date,
-                              s=sort_by,
-                              AD=aord,
-                              )
-        return [Committees(*row) for row in rows]
-    @staticmethod
-    def get_all_from_entity_range(from_entity, from_date, to_date, sort_by,aord): #gets everything in the table going from from_entity
-        rows = app.db.execute('''
-            SELECT cid, from_entity, to_entity, donation_amount,  from_category, to_category, yr
-            FROM Committees
-            WHERE from_entity = :from_entity
-            AND yr>=:y1 AND yr<=:y2
-            ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN cid END ASC,
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN cid END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
-            ''',
-                              from_entity=from_entity,
-                              y1=from_date,
-                              y2=to_date,
-                              s=sort_by,
-                              AD=aord,
-                              )
-        return [Committees(*row) for row in rows]
-    
-    @staticmethod
-    def get_all_involving(search_entity,from_date,to_date, sort_by,aord):
-        rows = app.db.execute('''
-            SELECT cid, from_entity, to_entity, donation_amount,  from_category, to_category, yr
-            FROM Committees
-            WHERE from_entity = :entity 
-            OR to_entity=:entity AND yr>=:y1 AND yr<=:y2
-           ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN cid END ASC,
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN cid END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
-            ''',
-                              entity=search_entity,
-                              y1=from_date,
-                              y2=to_date,
-                              s=sort_by,
-                              AD=aord,
-                              )
-        return [Committees(*row) for row in rows]
-
-    @staticmethod
-    def get_sum_all (from_date,to_date):
-        rows = app.db.execute('''
-            SELECT SUM(donation_amount)
-            FROM Committees
-            WHERE yr>=:y1 AND yr<=:y2
-            ''',
-                              
-                              y1=from_date,
-                              y2=to_date,
-                              
-                              )
-        return rows[0]
-    @staticmethod
-    def get_sum_involving (any_ent, from_date,to_date):
-        rows = app.db.execute('''
-            SELECT SUM(donation_amount)
-            FROM Committees
-            WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :entity 
-            OR to_entity=:entity
-            ''',
-                              
-                              y1=from_date,
-                              y2=to_date,
-                              entity=any_ent
-                              
-                              )
-        return rows[0]
-    @staticmethod
-    def get_sum_from_to (from_ent,to_ent,from_date,to_date):
-        rows = app.db.execute('''
-            SELECT SUM(donation_amount)
-            FROM Committees
-            WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :from_ent 
-            AND to_entity=:to_ent
-            ''',
-                              
-                              y1=from_date,
-                              y2=to_date,
-                              from_ent=from_ent,
-                              to_ent=to_ent
-                              )
-        return rows[0]
-    @staticmethod
-    def get_sum_from (from_ent, from_date,to_date):
-        rows = app.db.execute('''
-            SELECT SUM(donation_amount)
-            FROM Committees
-            WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :from_ent
-            ''',
-                              
-                              y1=from_date,
-                              y2=to_date,
-                              from_ent=from_ent
-                              )
-        return rows[0]
-    @staticmethod
-    def get_sum_to (to_ent,from_date,to_date):
-        rows = app.db.execute('''
-            SELECT SUM(donation_amount)
-            FROM Committees
-            WHERE yr>=:y1 AND yr<=:y2 AND to_entity=:to_ent
-            ''',
-                              
-                              y1=from_date,
-                              y2=to_date,
-                              to_ent=to_ent
-                              )
-        return rows[0]
+                              name=name)
+        return [Committee(*row) for row in rows]
