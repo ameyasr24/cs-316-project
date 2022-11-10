@@ -212,17 +212,6 @@ def correlation():
     global y
     x = [s.issue for s in data]
     y = [float(s.committee_id) for s in data]
-    img = io.BytesIO()
-    y = [1,2,3,4,5]
-    x = [0,2,1,3,4]
-
-    plt.plot(x,y)
-    plt.savefig(img, format='png')
-    plt.close()
-    img.seek(0)
-
-    plot_url = base64.b64encode(img.getvalue())
-
     return render_template('correlation.html',
                            data=data,
                            form = form,
@@ -233,7 +222,6 @@ def correlation():
                            candidateTruthy = candidateTruthy,
                            passedTruthy = passedTruthy,
                            issueTruthy = issueTruthy,
-                           plot_url = plot_url
             )
 
 
@@ -242,7 +230,7 @@ def correlation():
 def visualize():
     fig,ax=plt.subplots(figsize=(6,6))
     ax=sns.set(style="darkgrid")
-    sns.barplot(x,y)
+    sns.barplot(x=x,y=y,estimator="sum").set(title="Aggregation of Total Donations")
     canvas=FigureCanvas(fig)
     img = io.BytesIO()
     fig.savefig(img)

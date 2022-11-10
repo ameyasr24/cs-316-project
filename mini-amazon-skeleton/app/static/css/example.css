@@ -171,6 +171,14 @@ path:hover {
     color: purple
 }
 
+.correlation-header h2{
+    text-align:center;
+    background-color: purple;
+    padding: 10px 10px;
+    color: white
+}
+
+
 .candidate-party h5{
     text-align:center;
     color: black;

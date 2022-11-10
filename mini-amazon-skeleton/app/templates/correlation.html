@@ -2,26 +2,25 @@
 
 {% block content %}
 <br><br>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<head>
+<div class = "correlation-header"><h2> Select your filters!!</h2></div>
 <form class="form-inline" action="" method=post>
   {{optionsForm.hidden_tag()}}
-  <p>
+  <div class = "dropdown">  
     {{optionsForm.label}}
     {{optionsForm.options}}
-  </p>
-  <p>
+  </div>
+  <div>
     {{optionsForm.submit}}
-  </p>
+  </div>
 
 </form>
-
+<br></br>
 <form class="form-inline" action="" method=post>
   {{form.hidden_tag()}}
 {% if stateTruthy %}
-<p>
   {{form.state.label}}
   {{form.state}}
-</p>
 {% endif %}
 {% if issueTruthy %}
 <p>
@@ -40,13 +39,16 @@
   {{form.passed.label}}
   {{form.passed }}
 </p>
-{% endif %}  
+{% endif %}
+{%if passedTruthy or stateTruthy or candidateTruthy or issueTruthy%}  
 <p>
   {{form.submit()}}
 </p>
+{% endif %}
 </form>
 <br><br>
-<h3>Donations and Related Info:</h3>
+<div class = "correlation-header"><h2>Donations and Related Info:</h2></div>
+</head>
 <div id="candidate-voting-table-wrapper">
 <div id="candidate-voting-table-scroll">
 <table>
@@ -80,8 +82,9 @@
   </table>
 </div>
 </div>
-
+<br></br>
 <body>
+  <div class = "correlation-header"><h2> Aggregation of Data based on filters</h2></div>
   <h1Visualization>
     <img src= "{{ url_for('index.visualize') }}">
   </h1Visualization>
