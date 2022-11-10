@@ -17,17 +17,55 @@ We could also do the same donation analysis/data visualization for Senate subcom
 {% block content %}
 <br><br>
 <h1>Search for donations to/from different stakeholders!</h1>
-<form class="form-inline" action="" method="post">
+<form  action="" method="post">
   {{ form.hidden_tag() }}
-
+<div class="form-inline">
   <p>
     {{ form.query.label }} 
-    {{ form.query(size=15) }}
+    {{ form.query }}
     {% for error in form.query.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
-  {% if involving %}
+<p>
+  {{ form.search() }}</p>
+</div>
+<div class="form-inline">
+  {% if type_form=='all donations' %}
+  
+  <p>
+    {{ form.from_year.label }}
+    {{ form.from_year(size=5) }}
+    {% for error in form.from_year.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.to_year.label }} 
+    {{ form.to_year(size=5) }}
+    {% for error in form.to_year.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.order_by.label }} 
+    {{ form.order_by }}
+    {% for error in form.order_by.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.sort.label }} 
+    {{ form.sort }}
+    {% for error in form.sort.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+   
+  </p>
+    {{ form.search() }}</p>
+  
+  {% endif %}
+  {% if type_form=='donations involving' %}
   <p>
     {{ form.any_ent.label }} 
     {{ form.any_ent(size=15) }}
@@ -35,43 +73,91 @@ We could also do the same donation analysis/data visualization for Senate subcom
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
-  {% endif %}
-  {% if toFrom %}
-  <p>
-    {{ form.to_ent.label }} 
-    {{ form.to_ent(size=15) }}
-    {% for error in form.to_ent.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.from_ent.label }} 
-    {{ form.from_ent(size=15) }}
-    {% for error in form.from_ent.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  {% endif %}
-  
   <p>
     {{ form.from_year.label }}
-    {{ form.from_year(size=15) }}
+    {{ form.from_year(size=5) }}
     {% for error in form.from_year.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
   <p>
     {{ form.to_year.label }} 
-    {{ form.to_year(size=4) }}
+    {{ form.to_year(size=5) }}
     {% for error in form.to_year.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
-
+  <p>
+    {{ form.order_by.label }} 
+    {{ form.order_by }}
+    {% for error in form.order_by.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.sort.label }} 
+    {{ form.sort }}
+    {% for error in form.sort.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+ 
     {{ form.search() }}</p>
+  {% endif %}
+
+  {% if type_form=='donations to/from' %}
+  <p>
+    {{ form.from_ent.label }} 
+    {{ form.from_ent(size=15)}}
+    {% for error in form.from_ent.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+    <p>
+    {{ form.to_ent.label }} 
+    {{ form.to_ent(size=15)}}
+    {% for error in form.to_ent.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  
+  <p>
+    {{ form.from_year.label }}
+    {{ form.from_year(size=5) }}
+    {% for error in form.from_year.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.to_year.label }} 
+    {{ form.to_year(size=5) }}
+    {% for error in form.to_year.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.order_by.label }} 
+    {{ form.order_by }}
+    {% for error in form.order_by.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.sort.label }} 
+    {{ form.sort }}
+    {% for error in form.sort.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+ 
+    {{ form.search() }}</p>
+  
+  {% endif %}
+  </div>
+
 </form>
 <p>
-  {% with messages = get_flashed_messages() %}
+  {% with messages = messages %}
   {% if messages %}
   <ul>
     {% for message in messages %}
@@ -106,7 +192,6 @@ We could also do the same donation analysis/data visualization for Senate subcom
     {% endfor %}
   </tbody>
 </table>
-
 
 
 
