@@ -8,6 +8,7 @@ from wtforms import StringField, PasswordField, IntegerField, BooleanField, Subm
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.states import State
+# from .models.states import Year
 from .models.candidates import Candidate_Vote
 from .models.correlation import Correlation
 
@@ -18,8 +19,18 @@ bp = Blueprint('index', __name__)
 @bp.route('/state/<state_abb>', methods=['GET', 'POST'])
 def state(state_abb):
     state = State.get_all(state_abb)
+    year = State.get_unique_years(state_abb)
     return render_template('/states.html',
-                            all_states = state)
+                            all_states = state,
+                            all_years = year)
+                            # ,all_years = year)
+
+
+@bp.route('/state/<state_abb>/<year>/', methods=['GET', 'POST'])
+def staterace(state_abb, year):
+    race = State.get_all_year(state_abb, year)
+    return render_template('/staterace.html',
+                            all_race = race)
 
 @bp.route('/candidate/<cid>', methods=['GET', 'POST'])
 def candidate(cid):

@@ -108,7 +108,7 @@ text-decoration: none;
     text-align: center;
     padding: 10px 12px;
     font-size: 17px;
-    font-family: sans-serif;  
+    font-family: Helvetica, Verdana, Arial;
 }
 
 #main-menu ul li{
@@ -127,10 +127,13 @@ text-decoration: none;
 #main-title h1{
     color:aliceblue;
     text-align: center;
+    font-family: Helvetica, Verdana, Arial;
 }
 
 #state-click-title h5{
     text-align: center;
+    font-family: Helvetica, Verdana, Arial;
+    color: purple;
 }
 
 path {
@@ -243,4 +246,41 @@ path:hover {
     color: black;
     font-weight: bold;
     font-size: xx-large;
+}
+
+.state-header h1{
+    text-align: center;
+    font-family: Helvetica, Verdana, Arial;
+}
+
+.race-instructions h5{
+    text-align: center;
+    font-family: Helvetica, Verdana, Arial;
+}
+
+#year-list ul {
+    padding: 5px;
+}
+
+#year-list ul li{
+    background: white;
+    margin: 3px;
+    float: center;
+}
+
+#year-list li a{
+    color: purple;
+}
+
+#year-list{
+    display: flex;
+    justify-content: space-around;
+}
+
+.race-state h1{
+    text-align:center;
+}
+
+.race-year h3{
+    text-align: center;
 }
