@@ -20,7 +20,8 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 
 \COPY Issues FROM 'Issues.csv' WITH DELIMITER ',' NULL '' CSV;
 
-\COPY States FROM 'States.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY States FROM 'States.csv' WITH DELIMITER ',' NULL '' CSV;
+
 SELECT pg_catalog.setval('public.states_id_seq',
                          (SELECT MAX(id)+1 FROM States),
                          false);
@@ -36,3 +37,15 @@ SELECT pg_catalog.setval('public.states_id_seq',
 \COPY Candidate_Members FROM 'Candidate_Members.csv' WITH DELIMITER ',' NULL '' CSV;
 
 \COPY Candidate_Party_Codes FROM 'Candidate_Party_Codes.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Senate_Results FROM '1976-2020-senate.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Receipts_2022 FROM 'States_Candidate_Data/weball22.csv' WITH DELIMITER '|' NULL '' CSV;
+
+\COPY Receipts_2020 FROM 'States_Candidate_Data/weball20.csv' WITH DELIMITER '|' NULL '' CSV;
+
+\COPY Receipts_2018 FROM 'States_Candidate_Data/weball18.csv' WITH DELIMITER '|' NULL '' CSV;
+
+\COPY Receipts_2016 FROM 'States_Candidate_Data/weball16.csv' WITH DELIMITER '|' NULL '' CSV;
+
+\COPY Receipts_2014 FROM 'States_Candidate_Data/weball14.csv' WITH DELIMITER '|' NULL '' CSV;
