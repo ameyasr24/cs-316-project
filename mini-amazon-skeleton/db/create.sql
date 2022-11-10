@@ -67,18 +67,6 @@ CREATE TABLE Correlation (
     passed VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Candidate_Vote (
-    id INT NOT NULL,
-    state_id VARCHAR(255) NOT NULL,
-    candidate_name VARCHAR(255) NOT NULL,
-    candidate_vote VARCHAR(255) NOT NULL,
-    vote_id INTEGER NOT NULL,
-    vote_date DATE NOT NULL,
-    vote_result VARCHAR(255) NOT NULL,
-    vote_description VARCHAR(255) NOT NULL,
-    PRIMARY KEY(id, vote_id)
-);
-
 CREATE TABLE Candidate_Member_Votes (
     congress INT NOT NULL,
     chamber VARCHAR(255) NOT NULL,
@@ -143,6 +131,11 @@ CREATE TABLE Candidate_Members (
     PRIMARY KEY(congress, icpsr)
 );
 
+CREATE TABLE Candidate_Party_Codes (
+    party_code INT NOT NULL,
+    party VARCHAR(255) NOT NULL,
+    PRIMARY KEY(party_code)
+);
 
 --implement search bar by category
 --search by from and to whichever entity

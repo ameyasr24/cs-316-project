@@ -5,7 +5,7 @@
 <div class = "candidate-party"><h5>{{all_votes[0].party}}</h5></div>
 <div class = "candidate-state"><h5><a href="/state/{{all_votes[0].state}}">State: {{all_votes[0].state}}</a></h5></div>
 <br><br>
-<h5>If candidate has history in the Senate, their voting records are below</h5>
+<h5>If candidate has history in the Senate, their voting records are below for vote {{votetype}}</h5>
 <p>
   {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -17,26 +17,10 @@
   </ul>
   {% else %}
   <div class="dropdown">
-    <button class="dropbtn">Which Congress?</button>
-    <div class="dropdown-content">
-      {% for congress in all_congresses %}
-      <a href="./{{cid}}/congress/{{congress.congress}}">{{ congress.congress }}</a>
-      {% endfor %}
-    </div>
-  </div>
-  <div class="dropdown">
     <button class="dropbtn">Which way did they vote?</button>
     <div class="dropdown-content">
       {% for vote in all_vote_types %}
-      <a href="./{{cid}}/votetype/{{vote.descr}}">{{ vote.descr }}</a>
-      {% endfor %}
-    </div>
-  </div>
-  <div class="dropdown">
-    <button class="dropbtn">What year?</button>
-    <div class="dropdown-content">
-      {% for year in all_vote_years %}
-      <a href="./{{cid}}/voteyear/{{year.vote_year}}">{{ year.vote_year }}</a>
+      <a href="/candidate/{{cid}}/votetype/{{vote.descr}}">{{ vote.descr }}</a>
       {% endfor %}
     </div>
   </div>
