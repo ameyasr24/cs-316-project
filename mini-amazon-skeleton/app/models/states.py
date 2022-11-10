@@ -76,3 +76,4 @@ ORDER BY s.year DESC
                             state_abb = state_abb)
         # print(state_abb)
         return [State(*row) for row in rows]
+
