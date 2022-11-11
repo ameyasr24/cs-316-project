@@ -38,6 +38,8 @@ SELECT pg_catalog.setval('public.states_id_seq',
 
 \COPY Candidate_Party_Codes FROM 'Candidate_Party_Codes.csv' WITH DELIMITER ',' NULL '' CSV;
 
+\COPY Senate_Legislation_Topics FROM '21-22-senate-voted-bill.csv' WITH DELIMITER ',' NULL '' CSV;
+
 \COPY Senate_Results FROM '1976-2020-senate.csv' WITH DELIMITER ',' NULL '' CSV;
 
 \COPY Receipts FROM 'Receipts.csv' WITH DELIMITER '|' NULL '' CSV;
