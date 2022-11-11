@@ -137,5 +137,23 @@ CREATE TABLE Candidate_Party_Codes (
     PRIMARY KEY(party_code)
 );
 
+CREATE TABLE Senate_Legislation_Topics (
+    legislation_number VARCHAR(255) NOT NULL PRIMARY KEY,
+    legislation_URL VARCHAR(255) NOT NULL,
+    title VARCHAR(1255) NOT NULL,
+    sponsor VARCHAR(255) NOT NULL,
+    cosponsor1 VARCHAR(255),
+    cosponsor2 VARCHAR(255),
+    cosponsor3 VARCHAR(255),
+    cosponsor4 VARCHAR(255),
+    cosponsor5 VARCHAR(255),
+    subject1 VARCHAR(255),
+    subject2 VARCHAR(255),
+    subject3 VARCHAR(255),
+    subject4 VARCHAR(255),
+    subject5 VARCHAR(255)
+);
+
+
 --implement search bar by category
 --search by from and to whichever entity

@@ -5,18 +5,81 @@
 
 <form class="form-inline" action="" method="post">
 
-  <select name="issue_category" class="Input">
+  <select name="issue_category" class="Input" size="1">
     <option value="Health">Health</option>
-    <option value="Gun Control">Gun Control</option>
-    <option value="Environment">Environment</option>
+    <option value="International Affairs">International Affairs</option>
+    <option value="Oil and gas">Oil and gas</option>
     <option value="Education">Education</option>
+    <option value="Crime and Law Enforcement">Crime and Law Enforcement</option>
+    <option value="Armed Forces and National Security">Armed Forces and National Security</option>
   </select>
+
+  <select name="politician" class="Input" size="1">
+    <option value="Grassley, Chuck [Sen.-R-IA]">Grassley, Chuck [Sen.-R-IA]</option> 
+    <!-- grassley: crime and law -->
+    <option value="Cruz, Ted [Sen.-R-TX]">Cruz, Ted [Sen.-R-TX]</option>
+    <!-- cruz: oil and gas -->
+    <option value="Murkowski, Lisa [Sen.-R-AK]">Murkowski, Lisa [Sen.-R-AK]</option>
+    <!-- Murkowski: education -->
+    <option value="Ossoff, Jon [Sen.-D-GA]">Ossoff, Jon [Sen.-D-GA]</option>
+    <option value="Tillis, Thomas [Sen.-R-NC]">Tillis, Thomas [Sen.-R-NC]</option>
+    <option value="Klobuchar, Amy [Sen.-D-MN]">Klobuchar, Amy [Sen.-D-MN]</option>
+  </select>
+
+  <!-- <p>
+    {{ form.issue_category.label }} 
+    {{ form.issue_category(size=15) }}
+  </p> -->
 
   {{ form.hidden_tag() }}
   {{ form.search() }}
 </form>
 
 
+<h2>All issues:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Legislation Number</th>
+      <th scope="col">Legislation URL</th>
+      <th scope="col">Title</th>
+      <th scope="col">Sponsor</th>
+      <th scope="col">Cosponsor 1</th>
+      <th scope="col">Cosponsor 2</th>
+      <th scope="col">Cosponsor 3</th>
+      <th scope="col">Cosponsor 4</th>
+      <th scope="col">Cosponsor 5</th>
+      <th scope="col">Subject 1</th>
+      <th scope="col">Subject 2</th>
+      <th scope="col">Subject 3</th>
+      <th scope="col">Subject 4</th>
+      <th scope="col">Subject 5</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for issue in list_issues %}
+      <tr>
+        <th scope="row">{{issue.legislation_number}}</th>
+        <td>{{issue.legislation_URL}}</td>
+        <td>{{issue.title}}</td>
+        <td>{{issue.sponsor}}</td>
+        <td>{{issue.cosponsor1}}</td>
+        <td>{{issue.cosponsor2}}</td>
+        <td>{{issue.cosponsor3}}</td>
+        <td>{{issue.cosponsor4}}</td>
+        <td>{{issue.cosponsor5}}</td>
+        <td>{{issue.subject1}}</td>
+        <td>{{issue.subject2}}</td>
+        <td>{{issue.subject3}}</td>
+        <td>{{issue.subject4}}</td>
+        <td>{{issue.subject5}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+<!-- 
 <h2>All issues:</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
@@ -42,14 +105,11 @@
         <td>{{issue.donor_industry}}</td>
         <td>{{issue.donation_amount}}</td>
         <td>{{issue.yr}}</td>
-        <!-- {% set link = "" + issue.link %}
-        {% print(link) %}
-        <td><a href="{}">{}</a>.format(issue.link, issue.legislation)</td> -->
         <td>{{issue.legislation}}</td>
         <td>{{issue.vote}}</td>
       </tr>
     {% endfor %}
   </tbody>
-</table>
+</table> -->
 
 {% endblock %}
