@@ -1,0 +1,143 @@
+<!--Basic requirements:
+Because U.S. congressional committees may both donate and be the recipient of donations (see this link for more details on allowed spending), it is vital to note any relevant donations involving Senate committees.
+For each of these committees, we will create a separate page that will display this two-way donation relationship with a relation containing attributes (from, to, amount), indicating from what group/individual the donation came from, to what group/individual the donation intended to donate to, and the amount of money. The committee itself may be part of either the from or to attributes.
+For better organization and visualization purposes, we will have the ability to filter through these donations. These filters will include whether the donation was from or to the committee, and the type of the other party involved (whether it is an individual, a candidate committee, a PAC, a local/state party committee, or another national party committee).
+We will also have a search function if users are interested in directly searching for individuals/groups that the committee has been involved in donations with.
+We will classify each committee into a distinct category based on its subject matter, similar to how we are classifying each piece of legislation that is being passed (see Issues section). This will further allow users to analyze donation data relating to subjects that they personally care about.
+Each committee that a candidate is on (provided that they are already elected officials) will be listed on the candidate’s page and the committee page will be accessible from there.
+This data on committee donations will come from https://www.senate.gov/legislative/Public_Disclosure/contributions_download.htm. 
+Our committee classification will separate all of the senate committees (https://www.senate.gov/committees/) into several distinct categories (e.g. economy, foreign relations, environment/public resources, public health, etc).
+Possible additional features:
+An additional feature is allowing the user to select a specific time period that they are interested in seeing committee donations for.
+ We could also highlight individual donations involving the chair of the committee in a certain time period (from Candidates) and compare that to the committee’s overall donations.
+We could also do the same donation analysis/data visualization for Senate subcommittees.
+-->
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<h2>You selected: {{comm[0]}}</h2>
+<p><a href="\committee">Return to all committees</a></p>
+<form  action="" method="post">
+  {{ form.hidden_tag() }}
+<div class="form-inline">
+  <p>
+    Search for
+    {{ form.query }}
+    {% for error in form.query.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+<p>
+  {% if start>0 %}
+  {{ form.select() }}</p>
+  {% endif %}
+  {% if start==-5 %}
+  {{ form.search() }}</p>
+  {% endif %}
+</div>
+{% if start==-5 %}
+<div class="form-inline">
+  {% if type_form=='donations involving' %}
+  <p>
+    {{ form.any_ent.label }} 
+    {{ form.any_ent(size=15) }}
+    {% for error in form.any_ent.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  {% endif %}
+  {% if type_form=='donations to/from' %}
+  <p>
+    {{ form.from_ent.label }} 
+    {{ form.from_ent(size=15)}}
+    {% for error in form.from_ent.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+    <p>
+    {{ form.to_ent.label }} 
+    {{ form.to_ent(size=15)}}
+    {% for error in form.to_ent.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  {% endif %}
+  <p>
+    {{ form.from_year.label }} 
+    {{ form.from_year(size=5) }}
+    {% for error in form.from_year.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.to_year.label }} 
+    {{ form.to_year(size=5) }}
+    {% for error in form.to_year.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.order_by.label }} 
+    {{ form.order_by }}
+    {% for error in form.order_by.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.sort.label }} 
+    {{ form.sort }}
+    {% for error in form.sort.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </div>
+<div class="form-inline">
+  <p class = "inline">
+    Calculate total sum? {{ form.total }}
+    {% for error in form.total.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  {{ form.search() }}</p>
+</div>
+{% endif %}
+
+</form>
+<p>
+  {% with messages = messages %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    <br>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
+<h3>Committee Data:</h3>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">From</th>
+      <th scope="col">To</th>
+      <th scope="col">Donation Amount</th>
+      <th scope="col">Year</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in all_committees %}
+      <tr>
+        <th scope="row">{{c.did}}</th>
+        <td>{{c.from_entity}}</td>
+        <td>{{c.to_entity}}</td>
+        <td>{{c.donation_amount}}</td>
+        <td>{{c.yr}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+{% endblock %}

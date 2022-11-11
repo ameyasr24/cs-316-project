@@ -15,79 +15,47 @@ We could also do the same donation analysis/data visualization for Senate subcom
 {% extends "base.html" %}
 
 {% block content %}
-<br><br>
-<h1>Search for donations to/from different stakeholders!</h1>
-<form class="form-inline" action="" method="post">
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.to_ent.label }} 
-    {{ form.to_ent(size=15) }}
-    {% for error in form.to_ent.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.from_ent.label }} 
-    {{ form.from_ent(size=25) }}
-    {% for error in form.from_ent.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.from_year.label }}
-    {{ form.from_year(size=4) }}
-    {% for error in form.from_year.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.to_year.label }} 
-    {{ form.to_year(size=4) }}
-    {% for error in form.to_year.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-
-    {{ form.search() }}</p>
-</form>
-<p>
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    <br>
-    {% endfor %}
-  </ul>
-  {% endif %}
-  {% endwith %}
-</p>
 <br>
-<h2>All committees:</h2>
+<h1>Search for donations involving different PACs!</h1>
+<form  action="" method="post">
+  {{ form.hidden_tag() }}
+<div class="form-inline">
+  <p>
+    Search for
+    {{ form.query }}
+    {% for error in form.query.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+ 
+  {{ form.submit() }}
+</p>
+
+</div>
+{% if not err %}
+<h3>Committees:</h3>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Committee ID</th>
-      <th scope="col">From</th>
-      <th scope="col">To</th>
-      <th scope="col">Donation Amount</th>
-      <th scope="col">Year</th>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
     </tr>
   </thead>
   <tbody>
     {% for c in all_committees %}
       <tr>
         <th scope="row">{{c.cid}}</th>
-        <td>{{c.from_entity}}</td>
-        <td>{{c.to_entity}}</td>
-        <td>{{c.donation_amount}}</td>
-        <td>{{c.yr}}</td>
-      </tr>
+        <td><a href="\committee\{{c.cid}}">{{c.cname}}</a></td>
+        <td>{{c.type}}</td>
+      </tr></a>
     {% endfor %}
+
   </tbody>
 </table>
+{% endif %}
 
-
-
-
+  
+{% if err %} 
+<p>No committees found :( </p>
+{% endif %}
 {% endblock %}

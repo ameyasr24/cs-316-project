@@ -15,12 +15,13 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
                          (SELECT MAX(id)+1 FROM Purchases),
                          false);
 
-\COPY Committees FROM 'Committees.csv' WITH DELIMITER ',' NULL '' CSV;
-
+\COPY Committee_Donations FROM 'Committee_Donations.csv' WITH DELIMITER ',' NULL '' CSV;
+\COPY Committee FROM 'Committee.csv' WITH DELIMITER ',' NULL '' CSV;
 
 \COPY Issues FROM 'Issues.csv' WITH DELIMITER ',' NULL '' CSV;
 
-\COPY States FROM 'States.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY States FROM 'States.csv' WITH DELIMITER ',' NULL '' CSV;
+
 SELECT pg_catalog.setval('public.states_id_seq',
                          (SELECT MAX(id)+1 FROM States),
                          false);
@@ -38,3 +39,7 @@ SELECT pg_catalog.setval('public.states_id_seq',
 \COPY Candidate_Party_Codes FROM 'Candidate_Party_Codes.csv' WITH DELIMITER ',' NULL '' CSV;
 
 \COPY Senate_Legislation_Topics FROM '21-22-senate-voted-bill.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Senate_Results FROM '1976-2020-senate.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Receipts FROM 'Receipts.csv' WITH DELIMITER '|' NULL '' CSV;
