@@ -261,10 +261,10 @@ FROM Correlation
             SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
             FROM Correlation
             WHERE passed = :passed1
-            AND state = :state1
+            AND state_id = :state1
             ''',
                               
                               passed1 = passed1,
-                              issue1 = state1,                        
+                              state1 = state1,                        
                               )
         return [Correlation(*row) for row in rows]
