@@ -2,31 +2,56 @@
 
 {% block content %}
 <br><br>
-<p style="font-family:verdana">
-  Choose Filter Parameter:<SELECT name="state_chosen">
-    <OPTION value="State">State</OPTION>
-    <OPTION value="Candidate">Candidate</OPTION>
-    <option value="Issue">Issue</option>
-  </SELECT>
-  </p>
+<head>
+<div class = "correlation-header"><h2> Select your filters!!</h2></div>
+<form class="form-inline" action="" method=post>
+  {{optionsForm.hidden_tag()}}
+  <div class = "dropdown">  
+    {{optionsForm.label}}
+    {{optionsForm.options}}
+  </div>
+  <div>
+    {{optionsForm.submit}}
+  </div>
+
+</form>
+<br></br>
 <form class="form-inline" action="" method=post>
   {{form.hidden_tag()}}
-<p>
+{% if stateTruthy %}
   {{form.state.label}}
-  {{ form.state(size = size_choices_states) }}
-</p>
-<br><br>
+  {{form.state}}
+{% endif %}
+{% if issueTruthy %}
 <p>
   {{form.issue.label}}
-  {{ form.issue(size = size_choices_issues) }}
+  {{form.issue }}
 </p>
+{% endif %}  
+{% if candidateTruthy %}
+<p>
+  {{form.candidate.label}}
+  {{form.candidate }}
+</p>
+{% endif %}  
+{% if passedTruthy %}
+<p>
+  {{form.passed.label}}
+  {{form.passed }}
+</p>
+{% endif %}
+{%if passedTruthy or stateTruthy or candidateTruthy or issueTruthy%}  
 <p>
   {{form.submit()}}
 </p>
+{% endif %}
 </form>
 <br><br>
-<h2>Donations and Related Info:</h2>
-<table class='table table-hover table-bordered container'>
+<div class = "correlation-header"><h2>Donations and Related Info:</h2></div>
+</head>
+<div id="candidate-voting-table-wrapper">
+<div id="candidate-voting-table-scroll">
+<table>
   <thead class="thead-dark">
     <tr>
       <th scope="col">State</th>
@@ -55,4 +80,14 @@
     {% endfor %}
     </tbody>
   </table>
-  {% endblock %}
+</div>
+</div>
+<br></br>
+<body>
+  <div class = "correlation-header"><h2> Aggregation of Data based on filters</h2></div>
+  <h1Visualization>
+    <img src= "{{ url_for('index.visualize') }}">
+  </h1Visualization>
+</body>
+{% endblock %}
+

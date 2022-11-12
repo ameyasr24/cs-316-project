@@ -1,11 +1,18 @@
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, send_file
 from flask_login import current_user
 import datetime
 from flask import render_template,flash, request
 import datetime
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, IntegerField, BooleanField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, IntegerField, BooleanField, SubmitField, SelectField, SelectMultipleField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+import seaborn as sns
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import io
+import base64
+import matplotlib.pyplot as plt
+
+
 
 from .models.states import State
 # from .models.states import Year
@@ -98,33 +105,134 @@ def candidatehomepage():
         return redirect(candidate_page, code=302)
     return render_template('/candidatehomepage.html', all_names=names)
 
-class SelectStates(FlaskForm):
-    state = SelectField("Select a state")
-    issue = SelectField("Select an donator")
-    submit = SubmitField('Submit')
 
+
+
+
+
+### CODE RELATING TO CORRELATION
+class SelectFilters(FlaskForm):
+    state = SelectField("Select a state")
+    issue = SelectField("Select an issue")
+    candidate = SelectField("Select a candidate")
+    passed = SelectField("Select passed options",choices=[("pass","pass"),("fail","fail")])
+    submit = SubmitField('Filter')
+
+class ChooseParameters(FlaskForm):
+    options = SelectMultipleField("Select Selection Parameters (must select one to filter)", 
+    choices=[("State","State"),("Candidate","Candidate"),("Issues","Issues"),
+    ("Passed","Passed")],default = "State")
+    submit = SubmitField('Select')
 
 @bp.route('/correlation',methods=['GET', 'POST'])
 def correlation():
+    optionsForm = ChooseParameters()
+    selectedOptions = optionsForm.options.data
+    stateTruthy = False
+    candidateTruthy = False
+    passedTruthy = False
+    issueTruthy = False
+
+    if "State" in selectedOptions:
+        stateTruthy = True
+    if "Candidate" in selectedOptions:
+        candidateTruthy = True
+    if "Issues" in selectedOptions:
+        issueTruthy = True
+    if "Passed" in selectedOptions:
+        passedTruthy = True    
     states = Correlation.get_unique_state()
     issues = Correlation.get_unique_issue()
+    candidates = Correlation.get_unique_candidate()
+    #Candidate = Correlation.get_candidate()
     choice_states = []
     choice_issues = []
+    choice_candidates = []
     for s in issues:
-        choice_issues.append(s.issue)
+        choice_issues.append(s.passed)
     for s in states:
         choice_states.append(s.state_id)
+    for s in candidates:        
+        choice_candidates.append(s.candidate_id)
     # get all correlations
-    form = SelectStates()
+    form = SelectFilters()
     form.state.choices = choice_states
     form.issue.choices = choice_issues
+    form.candidate.choices = choice_candidates
     data = Correlation.get_all()
-    if form.validate_on_submit():
-        data = Correlation.get_states(form.state.data)
+    #candidate, issue, passed, state
+    if form.state.data and form.issue.data and form.passed.data and form.candidate.data:
+        data = Correlation.get_passed_issue_candidate_state(form.passed.data,form.issue.data,form.candidate.data,form.state.data)
+    #issue, passed, state
+    elif form.state.data and form.issue.data and form.passed.data:  
+        data = Correlation.get_passed_issue_state(form.passed.data,form.issue.data,form.state.data)
+    #issue, state, candidate
+    elif form.state.data and form.issue.data and form.candidate.data:  
+        data = Correlation.get_issue_candidate_state(form.issue.data,form.candidate.data,form.state.data)
+    #state, passed, candidate
+    elif form.state.data and form.passed.data and form.candidate.data:  
+        data = Correlation.get_passed_candidate_state(form.passed.data,form.candidate.data,form.state.data)
+    #issue, passed, candidate    
+    elif form.issue.data and form.passed.data and form.candidate.data:  
+        data = Correlation.get_passed_issue_candidate(form.passed.data,form.issue.data,form.candidate.data)
+    #issue, passed    
+    elif form.issue.data and form.passed.data:
+        data = Correlation.get_passed_issue(form.passed.data,form.issue.data)
+    #state, passed    
+    elif form.state.data and form.passed.data:
+        data = Correlation.get_passed_state(form.passed.data,form.state.data)
+    #candidate, passed    
+    elif form.candidate.data and form.passed.data:
+        data = Correlation.get_passed_candidate(form.passed.data,form.candidate.data)
+    #issue, candidate    
+    elif form.issue.data and form.candidate.data:
+        data = Correlation.get_issue_candidate(form.issue.data,form.candidate.data)
+    #issue, state    
+    elif form.issue.data and form.state.data:
+        data = Correlation.get_issue_state(form.issue.data,form.state.data)
+    #state, candidate    
+    elif form.candidate.data and form.state.data:
+        data = Correlation.get_candidate_state(form.candidate.data,form.state.data)
+    #state
+    elif form.state.data:
+            data = Correlation.get_states(form.state.data)
+    #candidate        
+    elif form.candidate.data:
+            data = Correlation.get_candidate(form.candidate.data)
+    #passed
+    elif form.passed.data:
+            data = Correlation.get_passed(form.passed.data)
+    #issue
+    elif form.issue.data:
+            data = Correlation.get_issue(form.issue.data)
+
+
+    #visualization component
+    global x
+    global y
+    x = [s.issue for s in data]
+    y = [float(s.committee_id) for s in data]
     return render_template('correlation.html',
                            data=data,
                            form = form,
                            size_choices_states = len(form.state.choices),
-                           size_choices_issues = len(form.state.choices)
+                           size_choices_issues = len(form.state.choices),
+                           optionsForm = optionsForm,
+                           stateTruthy = stateTruthy,
+                           candidateTruthy = candidateTruthy,
+                           passedTruthy = passedTruthy,
+                           issueTruthy = issueTruthy,
             )
 
+
+            
+@bp.route('/visualize')
+def visualize():
+    fig,ax=plt.subplots(figsize=(6,6))
+    ax=sns.set(style="darkgrid")
+    sns.barplot(x=x,y=y,estimator="sum").set(title="Aggregation of Total Donations")
+    canvas=FigureCanvas(fig)
+    img = io.BytesIO()
+    fig.savefig(img)
+    img.seek(0)
+    return send_file(img,mimetype='img/png')

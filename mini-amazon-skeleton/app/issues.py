@@ -12,7 +12,9 @@ bp = Blueprint('issues', __name__)
 
 class SearchIssue(FlaskForm):
     issue_category = StringField('Issue')
+    politician = StringField('politician')
     search = SubmitField('Search')
+    
 
 @bp.route('/issues', methods=['GET', 'POST'])
 def issues():
@@ -22,5 +24,6 @@ def issues():
 
     if form.validate_on_submit():
         all_issues = Issues.get_all_issue(form.issue_category.data)
+        all_issues = Issues.get_all_issue_politician(form.issue_category.data, form.politician.data)
     return render_template('issues.html', form=form,
                            list_issues=all_issues)
