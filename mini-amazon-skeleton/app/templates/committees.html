@@ -16,7 +16,7 @@ We could also do the same donation analysis/data visualization for Senate subcom
 
 {% block content %}
 <br>
-<h1>Search for donations involving different PACs!</h1>
+<h4 class="page-header">Search for donations involving different PACs!</h4>
 <form  action="" method="post">
   {{ form.hidden_tag() }}
 <div class="form-inline">
@@ -27,7 +27,7 @@ We could also do the same donation analysis/data visualization for Senate subcom
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
  
-  {{ form.submit() }}
+  <button class="main-button" style="color: red;">{{ form.submit() }}</button>
 </p>
 
 </div>

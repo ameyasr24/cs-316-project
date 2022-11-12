@@ -28,12 +28,11 @@ We could also do the same donation analysis/data visualization for Senate subcom
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
-<p>
   {% if start>0 %}
-  {{ form.select() }}</p>
+  <button>{{ form.select() }}</button>
   {% endif %}
   {% if start==-5 %}
-  {{ form.search() }}</p>
+  <button>{{ form.search() }}</button>
   {% endif %}
 </div>
 {% if start==-5 %}

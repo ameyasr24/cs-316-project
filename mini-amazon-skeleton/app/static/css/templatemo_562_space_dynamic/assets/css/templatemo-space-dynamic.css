@@ -386,9 +386,13 @@ header
   opacity: 1;
 }
 
-.header-area .main-nav .nav li a:hover ,
-.background-header .main-nav .nav li a:hover {
+.header-area .main-nav .nav li#odd a:hover ,
+.background-header .main-nav .nav  li#odd a:hover {
   background-color: #03a4ed;
+}
+.header-area .main-nav .nav li#even a:hover ,
+.background-header .main-nav .nav li#even a:hover {
+  background-color: #fe3f40;
 }
 
 .header-area .main-nav .nav li.submenu {

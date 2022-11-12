@@ -43,6 +43,8 @@
 /*stuff from example.css*/
 #candidate-voting-table-wrapper {
   position:relative;
+  
+  font-family: 'Poppins', sans-serif;
 }
 #candidate-voting-table-scroll {
   height:500px;
@@ -77,7 +79,7 @@
 }
 
 #candidate-homepage-list li a{
-  color: purple;
+  color: #a83ffe;
 }
 
 #main-menu ul{
@@ -107,7 +109,7 @@
 }
 
 #main-menu li a:hover{
-  background-color: purple;
+  background-color: #a83ffe;
 }
 
 #main-title h1{
@@ -117,7 +119,7 @@
 
 #state-click-title h5{
   text-align: center;
-  color: #bb6ecc;
+  color: #a83ffe;
 }
 #interactive-main-map {
   align-items: center;
@@ -269,9 +271,10 @@ path.mixed:hover {
   color: black;
   font-weight: bold;
   font-size: xx-large;
+  
 }
 
-.state-header h1{
+.page-header h1{
   text-align: center;
   
 }
@@ -280,20 +283,23 @@ path.mixed:hover {
   text-align: center;
 }
 
-#year-list ul {
+#year-list ul  {
   padding: 5px;
 }
 
 #year-list ul li{
   background: white;
   margin: 3px;
-  float: center;
+  display:inline-block;
+
 }
 
 #year-list li a{
-  color: purple;
+  color: black;
 }
-
+#year-list li a:hover{
+  color: #a83ffe;
+}
 #year-list{
   display: flex;
   justify-content: space-around;

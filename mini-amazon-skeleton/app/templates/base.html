@@ -43,11 +43,12 @@
       <h1 class="header-title">Welcome to CompSci 316 MAKES Change!</h1>
     {% endblock %}
             <ul class="nav">
-              <li class="scroll-to-section"><a href="/">Home Page</a></li>
-              <li class="scroll-to-section"><a href="{{ url_for('users.candidate') }}">Explore by Candidate</a></li>  
-              <li class="scroll-to-section"><a href="{{ url_for('committees.committees') }}">Explore by Committee</a></li>  
-              <li class="scroll-to-section"><a href="{{ url_for('issues.issues') }}">Explore by Issue</a></li>  
-              <li class="scroll-to-section"><a href="{{ url_for('users.correlation') }}">Policy Implications</a></li>  
+              <li id="odd"><a href="/">Home Page</a></li>
+
+              <li id="even"><a href="{{ url_for('users.candidate') }}">Explore by Candidate</a></li>  
+              <li id="odd"><a href="{{ url_for('committees.committees') }}">Explore by Committee</a></li>  
+              <li id="even"><a href="{{ url_for('issues.issues') }}">Explore by Issue</a></li>  
+              <li id="odd"><a href="{{ url_for('users.correlation') }}">Policy Implications</a></li>  
             </ul>                   
             <!-- ***** Menu End ***** -->
           </nav>
@@ -56,12 +57,11 @@
     </div>
   </header>
   <!-- ***** Header Area End ***** -->
-  <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+  <div class="main-banner wow fadeIn" id="top" data-wow-duration="2s" data-wow-delay=".5s">
     <div class="container">
       <div class="row">
-                      {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
 
-        <p><strong>Note: the above map represents the political parties of U.S. senators in the 117th Congress.</strong></p>
 
       </div>
 
