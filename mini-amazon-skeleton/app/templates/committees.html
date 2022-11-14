@@ -1,17 +1,3 @@
-<!--Basic requirements:
-Because U.S. congressional committees may both donate and be the recipient of donations (see this link for more details on allowed spending), it is vital to note any relevant donations involving Senate committees.
-For each of these committees, we will create a separate page that will display this two-way donation relationship with a relation containing attributes (from, to, amount), indicating from what group/individual the donation came from, to what group/individual the donation intended to donate to, and the amount of money. The committee itself may be part of either the from or to attributes.
-For better organization and visualization purposes, we will have the ability to filter through these donations. These filters will include whether the donation was from or to the committee, and the type of the other party involved (whether it is an individual, a candidate committee, a PAC, a local/state party committee, or another national party committee).
-We will also have a search function if users are interested in directly searching for individuals/groups that the committee has been involved in donations with.
-We will classify each committee into a distinct category based on its subject matter, similar to how we are classifying each piece of legislation that is being passed (see Issues section). This will further allow users to analyze donation data relating to subjects that they personally care about.
-Each committee that a candidate is on (provided that they are already elected officials) will be listed on the candidate’s page and the committee page will be accessible from there.
-This data on committee donations will come from https://www.senate.gov/legislative/Public_Disclosure/contributions_download.htm. 
-Our committee classification will separate all of the senate committees (https://www.senate.gov/committees/) into several distinct categories (e.g. economy, foreign relations, environment/public resources, public health, etc).
-Possible additional features:
-An additional feature is allowing the user to select a specific time period that they are interested in seeing committee donations for.
- We could also highlight individual donations involving the chair of the committee in a certain time period (from Candidates) and compare that to the committee’s overall donations.
-We could also do the same donation analysis/data visualization for Senate subcommittees.
--->
 {% extends "base.html" %}
 
 {% block content %}
@@ -27,12 +13,13 @@ We could also do the same donation analysis/data visualization for Senate subcom
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
  
-  <button class="main-button" style="color: red;">{{ form.submit() }}</button>
+  {{ form.submit() }}
 </p>
 
 </div>
 {% if not err %}
 <h3>Committees:</h3>
+<div id="universal-table-wrapper">
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
@@ -52,6 +39,8 @@ We could also do the same donation analysis/data visualization for Senate subcom
 
   </tbody>
 </table>
+</div>
+
 {% endif %}
 
   
