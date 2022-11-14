@@ -119,9 +119,9 @@ class SelectFilters(FlaskForm):
     submit = SubmitField('Filter')
 
 class ChooseParameters(FlaskForm):
-    options = SelectMultipleField("Select Selection Parameters (must select one to filter)", 
-    choices=[("State","State"),("Candidate","Candidate"),("Issues","Issues"),
-    ("Passed","Passed")],default = "State")
+    options = SelectMultipleField("Select Selection Parameters (must select one to filter)",choices=[("State","State"),("Candidate","Candidate"),("Issues","Issues"),("Passed","Passed")])
+    #options = SelectMultipleField("Select Selection Parameters (must select one to filter)",choices=["State","Candidate","Issues","Passed"],default = "State")
+
     submit = SubmitField('Select')
 
 @bp.route('/correlation',methods=['GET', 'POST'])

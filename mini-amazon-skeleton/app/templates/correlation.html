@@ -4,16 +4,16 @@
 <br><br>
 <head>
 <div class = "page-header"><h2> Select your filters!!</h2></div>
+{{optionsForm.hidden_tag()}}
+{{form.hidden_tag()}}
+
 <form class="form-inline" action="" method=post>
-  {{optionsForm.hidden_tag()}}
     {{optionsForm.label}}
     {{optionsForm.options}}
     {{optionsForm.submit}}
 
 </form>
-<br></br>
 <form class="form-inline" action="" method=post>
-  {{form.hidden_tag()}}
 {% if stateTruthy %}
   {{form.state.label}}
   {{form.state}}
