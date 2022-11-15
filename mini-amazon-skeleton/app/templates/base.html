@@ -9,11 +9,11 @@
     <meta name="author" content="">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="../static/css/templatemo_562_space_dynamic/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/templatemo_562_space_dynamic/assets/css/fontawesome.css">
-    <link rel="stylesheet" href="../static/css/templatemo_562_space_dynamic/assets/css/templatemo-space-dynamic.css">
-    <link rel="stylesheet" href="../static/css/templatemo_562_space_dynamic/assets/css/animated.css">
-    <link rel="stylesheet" href="../static/css/templatemo_562_space_dynamic/assets/css/owl.css">
+    <link href="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/assets/css/fontawesome.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/assets/css/templatemo-space-dynamic.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/assets/css/animated.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/assets/css/owl.css') }}" rel="stylesheet">
     <title>MAKES Change</title>
 
 <body>
@@ -63,18 +63,18 @@
       <div class="row">
         {% block content %}{% endblock %}
 
-
       </div>
 
     </div>
   </div>
- 
-  <script src="../static/css/templatemo_562_space_dynamic/vendor/jquery/jquery.min.js"></script>
-  <script src="../static/css/templatemo_562_space_dynamic/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../static/css/templatemo_562_space_dynamic/assets/js/owl-carousel.js"></script>
-  <script src="../static/css/templatemo_562_space_dynamic/assets/js/animation.js"></script>
-  <script src="../static/css/templatemo_562_space_dynamic/assets/js/imagesloaded.js"></script>
-  <script src="../static/css/templatemo_562_space_dynamic/assets/js/templatemo-custom.js"></script>
+  <script src="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/assets/js/owl-carousel.js') }}" ></script>
+  <script src="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/assets/js/animation.js') }}" ></script>
+  <script src="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/assets/js/imagesloaded.js') }}" ></script>
+  <script src="{{ url_for('static', filename='/css/templatemo_562_space_dynamic/assets/js/templatemo-custom.js') }}" ></script>
+
+
 </body>
 
 </html>
