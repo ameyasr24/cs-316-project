@@ -103,6 +103,7 @@ CREATE TABLE Committee (
     pty_coord_exp DECIMAL(14,2),
     cvg_end_dt VARCHAR(10),
     election_cycle INT
+
 );
 
 CREATE TABLE Issues (

@@ -15,21 +15,20 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
                          (SELECT MAX(id)+1 FROM Purchases),
                          false);
 <--ALREADY LOADED COMMITTEE DATA:
-<--\COPY Committee_Committee FROM 'Comm to Comm/itoth2022.txt' WITH DELIMITER '|' NULL '' CSV;
-<--\COPY Committee_Committee FROM 'Comm to Comm/itoth2020.txt' WITH DELIMITER '|' NULL '' CSV;
-\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2022.txt' WITH DELIMITER '|' NULL '' CSV;
-\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2020.txt' WITH DELIMITER '|' NULL '' CSV;
-<--\COPY Committee FROM 'total comm donations/webk22.txt' WITH DELIMITER '|' NULL '' CSV ;
-<--\COPY Committee FROM 'total comm donations/webk20.txt' WITH DELIMITER '|' NULL '' CSV ;
-
-<--NOT YET LOADED COMMITTEE DATA:
-<--\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2018.txt' WITH DELIMITER '|' NULL '' CSV;
-<--\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2016.txt' WITH DELIMITER '|' NULL '' CSV;
-<--\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2014.txt' WITH DELIMITER '|' NULL '' CSV;
-<--\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2012.txt' WITH DELIMITER '|' NULL '' CSV;
-<--\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2010.txt' WITH DELIMITER '|' NULL '' CSV;
-<--\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2008.txt' WITH DELIMITER '|' NULL '' CSV;
-<--\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2006.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Committee FROM 'Comm to Comm SPLIT2/itoth2022.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Committee FROM 'Comm to Comm SPLIT2/itoth2020.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Committee FROM 'Comm to Comm SPLIT2/itoth2018.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Committee FROM 'Comm to Comm SPLIT2/itoth2016.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Candidate FROM 'Committees to Candidates SPLIT2/itpas2022.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Candidate FROM 'Committees to Candidates SPLIT2/itpas2020.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Candidate FROM 'Committees to Candidates SPLIT2/itpas2018.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Candidate FROM 'Committees to Candidates SPLIT2/itpas2016.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Candidate FROM 'Committees to Candidates SPLIT2/itpas2014.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Candidate FROM 'Committees to Candidates SPLIT2/itpas2012.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee FROM 'total comm donations/webk22.txt' WITH DELIMITER '|' NULL '' CSV ;
+\COPY Committee FROM 'total comm donations/webk20.txt' WITH DELIMITER '|' NULL '' CSV ;
+\COPY Committee FROM 'total comm donations/webk18.txt' WITH DELIMITER '|' NULL '' CSV ;
+\COPY Committee FROM 'total comm donations/webk16.txt' WITH DELIMITER '|' NULL '' CSV ;
 
 \COPY Issues FROM 'Issues.csv' WITH DELIMITER ',' NULL '' CSV;
 
