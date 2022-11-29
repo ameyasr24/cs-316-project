@@ -4,20 +4,17 @@
 <br><br>
 <head>
 <div class = "page-header"><h2> Select your filters!!</h2></div>
+{{optionsForm.hidden_tag()}}
+{{form.hidden_tag()}}
+
 <form class="form-inline" action="" method=post>
-  {{optionsForm.hidden_tag()}}
-  <div class = "dropdown">  
     {{optionsForm.label}}
     {{optionsForm.options}}
-  </div>
-  <div>
     {{optionsForm.submit}}
-  </div>
 
 </form>
 <br></br>
 <form class="form-inline" action="" method=post>
-  {{form.hidden_tag()}}
 {% if stateTruthy %}
   {{form.state.label}}
   {{form.state}}
@@ -47,6 +44,8 @@
 {% endif %}
 </form>
 <br><br>
+<div id="universal-table-wrapper">
+
 <div class = "correlation-header"><h2>Donations and Related Info:</h2></div>
 </head>
 <div id="candidate-voting-table-wrapper">
@@ -69,7 +68,7 @@
   <tbody>
     {% for entry in data %}
       <tr>
-        <th scope="row">{{entry.state_id}}</th>
+        <td scope="row">{{entry.state_id}}</td>
         <td>{{entry.donator_id}}</td>
         <td>{{entry.committee_id}}</td>
         <td>{{entry.candidate_id}}</td>
@@ -80,6 +79,7 @@
     {% endfor %}
     </tbody>
   </table>
+</div>
 </div>
 </div>
 <br></br>

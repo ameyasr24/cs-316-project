@@ -37,7 +37,10 @@
 
 
 <h4 class="page-header">All issues:</h4>
-<table class='table table-hover table-bordered container'>
+<div id="universal-table-wrapper">
+  <div id="candidate-voting-table-scroll">
+
+<table >
   <thead class="thead-dark">
     <tr>
       <th scope="col">Legislation Number</th>
@@ -59,7 +62,7 @@
   <tbody>
     {% for issue in list_issues %}
       <tr>
-        <th scope="row">{{issue.legislation_number}}</th>
+        <td scope="row">{{issue.legislation_number}}</td>
         <td>{{issue.legislation_URL}}</td>
         <td>{{issue.title}}</td>
         <td>{{issue.sponsor}}</td>
@@ -77,8 +80,9 @@
     {% endfor %}
   </tbody>
 </table>
+</div>
 
-
+</div>
 <!-- 
 <h2>All issues:</h2>
 <table class='table table-hover table-bordered container'>
