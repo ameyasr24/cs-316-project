@@ -17,8 +17,8 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 <--ALREADY LOADED COMMITTEE DATA:
 <--\COPY Committee_Committee FROM 'Comm to Comm/itoth2022.txt' WITH DELIMITER '|' NULL '' CSV;
 <--\COPY Committee_Committee FROM 'Comm to Comm/itoth2020.txt' WITH DELIMITER '|' NULL '' CSV;
-<--\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2022.txt' WITH DELIMITER '|' NULL '' CSV;
-<--\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2020.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2022.txt' WITH DELIMITER '|' NULL '' CSV;
+\COPY Committee_Candidate FROM 'Committees to Candidates/itpas2020.txt' WITH DELIMITER '|' NULL '' CSV;
 <--\COPY Committee FROM 'total comm donations/webk22.txt' WITH DELIMITER '|' NULL '' CSV ;
 <--\COPY Committee FROM 'total comm donations/webk20.txt' WITH DELIMITER '|' NULL '' CSV ;
 
