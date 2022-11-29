@@ -76,7 +76,6 @@ width: 50%;
     text-align: center;
     padding: 10px 12px;
     font-size: 17px;
-    font-family: Helvetica, Verdana, Arial;
 }
 
 #main-menu ul li{
@@ -95,13 +94,12 @@ width: 50%;
 #main-title h1{
     color:aliceblue;
     text-align: center;
-    font-family: Helvetica, Verdana, Arial;
 }
 
 #state-click-title h5{
     text-align: center;
-    font-family: Helvetica, Verdana, Arial;
-    color: purple;
+    color: plum;
+    font-family: 'Poppins', sans-serif;
 }
 
 path {
@@ -120,6 +118,7 @@ path:hover {
     font-size: 15px;
     border: none;
 }
+
 
 .dropdown {
     position: relative;
@@ -155,7 +154,10 @@ path:hover {
 .dropdown:hover .dropbtn {
     background-color: purple;
 }
-
+ h1.header-title {
+    align-items: center;
+    text-align: center;
+}
 .back-to-candidate-button{
     background-color: purple;
     color: aliceblue;
@@ -226,12 +228,10 @@ path:hover {
 
 .state-header h1{
     text-align: center;
-    font-family: Helvetica, Verdana, Arial;
 }
 
 .race-instructions h5{
     text-align: center;
-    font-family: Helvetica, Verdana, Arial;
 }
 
 #year-list ul {
