@@ -2,15 +2,51 @@ from flask import current_app as app
 
 
 class Committee_Donations:
-    def __init__(self, did, from_entity, to_entity, donation_amount, from_category, to_category, yr,cid):
-        self.did = did
-        self.from_entity = from_entity
-        self.to_entity = to_entity
-        self.donation_amount = donation_amount
-        self.from_category = from_category
-        self.to_category = to_category
-        self.yr = yr
-        self.cid = cid
+    def __init__(self,cid ,
+    amndt ,
+    rpt ,
+    transaction_pgi,
+    image_num ,
+    transaction_tp,
+    entity_tp   ,
+    name_contributor ,
+    city ,
+    state_ ,
+    zip ,
+    employer ,
+    occupation ,
+    transaction_date,
+    transaction_amount ,
+    other_id ,
+    did  ,
+    file_num,
+    memo_cd ,
+    memo_text ,
+    sub_id  ,
+    year)
+
+        self.cid =cid
+        self.amndt = amndt
+        self.rpt = rpt 
+        self.transaction_pgi=transaction_pgi
+        self.image_num =image_num
+        self.transaction_tp=transaction_tp
+        self.entity_tp   =entity_tp
+        self.name_contributor=name_contributor
+        self.city =city
+        self.state_=state_
+        self.zip =zip
+        self.employer=employer
+        self.occupation =occupation
+        self.transaction_date=transaction_date
+        self.transaction_amount =transaction_amount
+        self.other_id =other_id
+        self.did  =did
+        self.file_num=file_num
+        self.memo_cd =memo_cd
+        self.memo_text =memo_text
+        self.sub_id  =sub_id
+        self.year=year
 
 
     @staticmethod 
