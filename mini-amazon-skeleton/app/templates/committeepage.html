@@ -29,10 +29,10 @@ We could also do the same donation analysis/data visualization for Senate subcom
     {% endfor %}
   </p>
   {% if start>0 %}
-  <button>{{ form.select() }}</button>
+  {{ form.select() }}
   {% endif %}
   {% if start==-5 %}
-  <button>{{ form.search() }}</button>
+  {{ form.search() }}
   {% endif %}
 </div>
 {% if start==-5 %}
@@ -114,6 +114,7 @@ We could also do the same donation analysis/data visualization for Senate subcom
   {% endwith %}
 </p>
 <h3>Committee Data:</h3>
+<div id="universal-table-wrapper">
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
@@ -136,6 +137,7 @@ We could also do the same donation analysis/data visualization for Senate subcom
     {% endfor %}
   </tbody>
 </table>
+</div>
 
 
 

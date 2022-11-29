@@ -6,30 +6,12 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 :root {
-  --bs-blue: #0d6efd;
-  --bs-light-blue: #0d6dfd88;
-  --bs-indigo: #6610f2;
-  --bs-purple: #6f42c1;
-  --bs-light-purple: #6e42c166;
-  --bs-pink: #d63384;
-  --bs-red: #dc3545;
-  --bs-light-red: #dc3546be;
-  --bs-orange: #fd7e14;
-  --bs-yellow: #ffc107;
-  --bs-green: #198754;
-  --bs-teal: #20c997;
-  --bs-cyan: #0dcaf0;
-  --bs-white: #fff;
-  --bs-gray: #6c757d;
-  --bs-gray-dark: #343a40;
-  --bs-primary: #0d6efd;
-  --bs-secondary: #6c757d;
-  --bs-success: #198754;
-  --bs-info: #0dcaf0;
-  --bs-warning: #ffc107;
-  --bs-danger: #dc3545;
-  --bs-light: #f8f9fa;
-  --bs-dark: #212529;
+  --universal-blue:#03a4ed;
+  --universal-red: #fe3f40;
+  --universal-purple: #8124ce;
+  --universal-light-blue: #03a3eda1;
+  --universal-light-red: #fe3f3fb6;
+  --universal-light-purple: #a83ffeb9;
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
@@ -40,33 +22,21 @@
 *::after {
   box-sizing: border-box;
 }
-/*stuff from example.css*/
-#candidate-voting-table-wrapper {
-  position:relative;
-  
-  font-family: 'Poppins', sans-serif;
-}
-#candidate-voting-table-scroll {
-  height:500px;
-  overflow:auto;  
-  margin-top:20px;
-}
-#candidate-voting-table-wrapper table {
-  width:100%;
-  text-align: center;
-}
-#candidate-voting-table-wrapper table * {
-  background:aliceblue;
-  color:black;
-  border: 0.5px solid black;
-}
+/****************stuff from original example.css******************/
+/*
+
 #candidate-voting-table-wrapper th {
   position:sticky;   
   top: 0;
   background:purple;
   color:aliceblue;
-}
+}*/
 
+#candidate-voting-table-scroll {
+  height:500px;
+  overflow:auto;  
+  margin-top:20px;
+}
 #candidate-homepage-list ul {
   column-count: 6;
   background: aliceblue;
@@ -74,12 +44,41 @@
 }
 
 #candidate-homepage-list ul li{
-  background: white;
+  background:  white;
   margin: 3px;
 }
 
 #candidate-homepage-list li a{
-  color: #a83ffe;
+  color:var(--universal-purple);
+}
+#universal-table-wrapper table * {
+  background:white;
+  color:black;
+  border: 0.5px solid black;
+}
+
+#universal-table-wrapper th{
+  position:sticky;   
+  top: 0;
+  background:var(--universal-purple);
+  color:white;
+  font-family: Poppins;
+  font-weight:550;
+
+}
+#universal-table-wrapper td{
+  color:black;
+  font-family: Poppins;
+  font-weight:450;
+
+}
+#universal-table-wrapper {
+  position:relative;
+}
+
+#universal-table-wrapper table {
+  width:100%;
+  text-align: center;
 }
 
 #main-menu ul{
@@ -109,7 +108,7 @@
 }
 
 #main-menu li a:hover{
-  background-color: #a83ffe;
+  background-color: var(--universal-purple);
 }
 
 #main-title h1{
@@ -119,7 +118,7 @@
 
 #state-click-title h5{
   text-align: center;
-  color: #a83ffe;
+  color: var(--universal-purple);
 }
 #interactive-main-map {
   align-items: center;
@@ -129,20 +128,14 @@ h1.header-title {
   align-items: center;
   text-align: center;
 }
- 
-path {
-  fill:lightsteelblue;
-  pointer-events:all;
-}
-
 
 path.D{
-  fill: #03a4ed;
+  fill: var(--universal-blue);
   pointer-events:all;
 
 }
 path.R {
-  fill: #fe3f40;
+  fill: var(--universal-red);
   pointer-events:all;
 
 }
@@ -163,11 +156,16 @@ path.mixed:hover {
 }
 
 .dropbtn {
-  background-color: purple;
+  background-color: var(--universal-purple);
   color: aliceblue;
-  padding: 16px;
+  padding: 12px;
   font-size: 15px;
   border: none;
+  font-family:'Poppins';
+  font-weight:500;
+}
+.dropbtn:hover{
+  background-color: var(--universal-light-purple);
 }
 
 .dropdown {
@@ -202,12 +200,12 @@ path.mixed:hover {
   background-color: white;
 }
 .dropdown:hover .dropbtn {
-  background-color: purple;
+  background-color: var(--universal-purple);
 }
 
 .back-to-candidate-button{
-  background-color: purple;
-  color: aliceblue;
+  background-color: var(--universal-purple);
+  color: white;
   padding: 16px;
   font-size: 15px;
   border: none;
@@ -215,14 +213,14 @@ path.mixed:hover {
 
 .candidate-header h2{
   text-align:center;
-  background-color: aliceblue;
+  background-color: white;
   padding: 10px 10px;
-  color: purple
+  color: var(--universal-purple)
 }
 
 .correlation-header h2{
   text-align:center;
-  background-color: purple;
+  background-color: var(--universal-purple);
   padding: 10px 10px;
   color: white
 }
@@ -262,7 +260,7 @@ path.mixed:hover {
 }
 
 #candidate_search_bar_go:hover {
-  background: purple;
+  background: var(--universal-purple);
   color: white;
 }
 
