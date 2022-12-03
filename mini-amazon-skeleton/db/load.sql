@@ -29,7 +29,8 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 \COPY Committee FROM 'total comm donations/webk20.txt' WITH DELIMITER '|' NULL '' CSV ;
 \COPY Committee FROM 'total comm donations/webk18.txt' WITH DELIMITER '|' NULL '' CSV ;
 \COPY Committee FROM 'total comm donations/webk16.txt' WITH DELIMITER '|' NULL '' CSV ;
-<--ALTER TABLE Committee_Committee ADD cname VARCHAR(200);
+ALTER TABLE Committee_Committee ADD cname VARCHAR(200);
+<--ALTER TABLE Committee_Committeee *figure out how to instantiate the cname as part of committee candidate and comm comm
 
 \COPY Issues FROM 'Issues.csv' WITH DELIMITER ',' NULL '' CSV;
 

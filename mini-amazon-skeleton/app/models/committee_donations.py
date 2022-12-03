@@ -23,8 +23,7 @@ class Committee_Donations:
     memo_cd ,
     memo_text ,
     sub_id  ,
-    year)
-
+    year):
         self.cid =cid
         self.amndt = amndt
         self.rpt = rpt 
@@ -52,14 +51,13 @@ class Committee_Donations:
     @staticmethod 
     def get(cid,sort_by,aord): #gets everything by did value
         rows = app.db.execute('''
-SELECT did, from_entity, to_entity, donation_amount, from_category, to_category, yr,cid
-FROM Committee_Donations
+SELECT cid, transaction_tp, entity_tp, name_contributor, transaction_date, transaction_amount
+FROM committee_candidate
 WHERE cid = :cid
-ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
+ORDER BY  
         CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
         CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
         CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN did END DESC,
         CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
         
 ''',
@@ -73,13 +71,12 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
     @staticmethod
     def get_all(sort_by, aord): #just gets everyting in the table*******not used
         rows = app.db.execute('''
-SELECT did, from_entity, to_entity, donation_amount,  from_category, to_category, yr,cid
-FROM Committee_Donations WHERE cid = :cid
-ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
+SELECT cid, transaction_tp, entity_tp, name_contributor, transaction_date, transaction_amount
+FROM committee_candidate
+ORDER BY 
         CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
         CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
         CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN did END DESC,
         CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
         
 ''',
@@ -95,11 +92,10 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
             SELECT did, from_entity, to_entity, donation_amount, from_category, to_category, yr,cid
             FROM Committee_Donations
             WHERE yr>=:y1 AND yr<=:y2 AND cid = :cid
-            ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
+            ORDER BY 
         CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
         CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
         CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN did END DESC,
         CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
             ''',
                               
@@ -118,11 +114,10 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
             FROM Committee_Donations
             WHERE to_entity = :to_entity AND from_entity=:from_entity 
             AND yr>=:y1 AND yr<=:y2 AND cid = :cid
-           ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
+           ORDER BY 
         CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
         CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
         CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN did END DESC,
         CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
             ''',
                               to_entity=to_entity,
@@ -142,11 +137,10 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
             FROM Committee_Donations
             WHERE to_entity = :to_entity
             AND yr>=:y1 AND yr<=:y2 and cid = :cid
-            ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
+            ORDER BY 
         CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
         CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
         CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN did END DESC,
         CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
             ''',
                               to_entity=to_entity,
@@ -165,11 +159,10 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
             FROM Committee_Donations
             WHERE from_entity = :from_entity
             AND yr>=:y1 AND yr<=:y2 AND cid = :cid
-            ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
+            ORDER BY
         CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
         CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
         CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN did END DESC,
         CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
             ''',
                               from_entity=from_entity,
@@ -187,11 +180,10 @@ ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
             SELECT did, from_entity, to_entity, donation_amount,  from_category, to_category, yr,cid
             FROM Committee_Donations
             WHERE cid = :cid AND (from_entity = :entity OR to_entity=:entity) AND yr>=:y1 AND yr<=:y2
-           ORDER BY CASE WHEN :AD='ascending' AND :s='ID' THEN did END ASC,
+           ORDER BY 
         CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
         CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
         CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='ID' THEN did END DESC,
         CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
             ''',
                               entity=search_entity,

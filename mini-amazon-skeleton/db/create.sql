@@ -47,8 +47,8 @@ CREATE TABLE Committee_Candidate (
     memo_text VARCHAR(100),
     sub_id VARCHAR(19),
     year INT,
-    tid INT,
-    PRIMARY KEY (cid, tid)
+    cycle INT,
+    PRIMARY KEY (cid, tid, cycle)
  
 );
 CREATE TABLE Committee_Committee (
@@ -75,7 +75,8 @@ CREATE TABLE Committee_Committee (
     sub_id VARCHAR(19) ,
     year INT,
     tid INT,
-    PRIMARY KEY (cid, tid)
+    cycle INT,
+    PRIMARY KEY (cid, tid, cycle)
 
 );
 CREATE TABLE Committee (
@@ -106,9 +107,9 @@ CREATE TABLE Committee (
     ind_exp DECIMAL(14,2),
     pty_coord_exp DECIMAL(14,2),
     cvg_end_dt VARCHAR(10),
-    election_cycle INT,
     tid INT,
-    PRIMARY KEY (cid, tid)
+    cycle INT,
+    PRIMARY KEY (cid, tid,cycle)
 );
 
 CREATE TABLE Issues (

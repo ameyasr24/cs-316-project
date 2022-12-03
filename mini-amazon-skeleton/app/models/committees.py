@@ -88,7 +88,7 @@ SELECT cid, cname, ctype, cdesignation,cfilingfreq, total_receipts,
     contrib_to_other_comm,
     ind_exp,
     pty_coord_exp,
-    cvg_end_dt,election_cycle
+    cvg_end_dt,cycle
 FROM Committee 
 ORDER BY cname
         
