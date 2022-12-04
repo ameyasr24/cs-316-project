@@ -76,8 +76,12 @@ CREATE TABLE Committee_Committee (
     sub_id VARCHAR(19) ,
     year INT,
     tid INT,
+<<<<<<< HEAD
     cycle INT,
     PRIMARY KEY (tid)
+=======
+    PRIMARY KEY (cid, tid)
+>>>>>>> 45a762b2a4775b26f002d8da27794667a5190579
 
 );
 CREATE TABLE Committee (
