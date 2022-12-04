@@ -7,7 +7,6 @@ from flask_paginate import Pagination, get_page_parameter
 from flask import request
 
 from wtforms import BooleanField as WTBool
-from .models.committee_donations import Committee_Donations
 from .models.committees import Committee
 from flask import Blueprint
 bp = Blueprint('committees', __name__)
@@ -104,7 +103,7 @@ def committee_donations(cid):
     form1 = SearchSecond()
     form2 = SearchSecond()
     type_form=''
-    searchedcomms=Committee_Donations.get(cid,'ID','ascending')
+    searchedcomms=Committee.get(cid,'ID','ascending')
     start = 10
     subtype=0
     if form1.validate_on_submit():
