@@ -23,7 +23,9 @@ class Committee_Donations:
     memo_cd ,
     memo_text ,
     sub_id  ,
-    year):
+    year,
+    tid,
+    cycle):
         self.cid =cid
         self.amndt = amndt
         self.rpt = rpt 
@@ -45,20 +47,55 @@ class Committee_Donations:
         self.memo_cd =memo_cd
         self.memo_text =memo_text
         self.sub_id  =sub_id
-        self.year=year
+        self.year=year,
+        self.tid=tid,
+        self.cycle=cycle
 
 
     @staticmethod 
     def get(cid,sort_by,aord): #gets everything by did value
         rows = app.db.execute('''
-SELECT cid, transaction_tp, entity_tp, name_contributor, transaction_date, transaction_amount
-FROM committee_candidate
+(SELECT cid ,
+    amndt ,
+    rpt ,
+    transaction_pgi,
+    image_num ,
+    transaction_tp,
+    entity_tp   ,
+    name_contributor ,
+    city ,
+    state_ ,
+    zip ,
+    employer ,
+    occupation ,
+    transaction_date,
+    transaction_amount ,
+    other_id ,
+    did  ,
+    file_num,
+    memo_cd ,
+    memo_text ,
+    sub_id  ,
+    year,
+    tid,
+    cycle
+FROM committee_candidate 
 WHERE cid = :cid
 ORDER BY  
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
+        CASE WHEN :AD='ascending' AND :s='year' THEN year END ASC,
+        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount  END ASC,
+        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount  END DESC,
+        CASE WHEN :AD='descending' AND :s='year' THEN year END DESC)
+        UNION
+     (SELECT *
+FROM committee_committee 
+WHERE cid = :cid
+ORDER BY  
+        CASE WHEN :AD='ascending' AND :s='year' THEN year END ASC,
+        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount  END ASC,
+        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount  END DESC,
+        CASE WHEN :AD='descending' AND :s='year' THEN year END DESC)   
+    
         
 ''',
                               s=sort_by,
@@ -74,10 +111,10 @@ ORDER BY
 SELECT cid, transaction_tp, entity_tp, name_contributor, transaction_date, transaction_amount
 FROM committee_candidate
 ORDER BY 
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
+        CASE WHEN :AD='ascending' AND :s='year' THEN year END ASC,
+        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount  END ASC,
+        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount  END DESC,
+        CASE WHEN :AD='descending' AND :s='year' THEN year END DESC
         
 ''',
                               s=sort_by,
@@ -89,14 +126,14 @@ ORDER BY
     @staticmethod
     def get_all_range(from_date, to_date, sort_by,aord,cid): #gets everything in the table given a range of dates
         rows = app.db.execute('''
-            SELECT did, from_entity, to_entity, donation_amount, from_category, to_category, yr,cid
+            SELECT did, from_entity, to_entity, transaction_amount , from_category, to_category, year,cid
             FROM Committee_Donations
-            WHERE yr>=:y1 AND yr<=:y2 AND cid = :cid
+            WHERE year>=:y1 AND year<=:y2 AND cid = :cid
             ORDER BY 
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
+        CASE WHEN :AD='ascending' AND :s='year' THEN year END ASC,
+        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount  END ASC,
+        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount  END DESC,
+        CASE WHEN :AD='descending' AND :s='year' THEN year END DESC
             ''',
                               
                               y1=from_date,
@@ -110,15 +147,15 @@ ORDER BY
     @staticmethod
     def get_all_from_to_range(to_entity, from_entity,from_date, to_date, sort_by,aord,cid): #gets everything in the table going to to_entity and from from_entity
         rows = app.db.execute('''
-            SELECT did, from_entity, to_entity, donation_amount, from_category, to_category, yr,cid
+            SELECT did, from_entity, to_entity, transaction_amount , from_category, to_category, year,cid
             FROM Committee_Donations
             WHERE to_entity = :to_entity AND from_entity=:from_entity 
-            AND yr>=:y1 AND yr<=:y2 AND cid = :cid
+            AND year>=:y1 AND year<=:y2 AND cid = :cid
            ORDER BY 
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
+        CASE WHEN :AD='ascending' AND :s='year' THEN year END ASC,
+        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount  END ASC,
+        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount  END DESC,
+        CASE WHEN :AD='descending' AND :s='year' THEN year END DESC
             ''',
                               to_entity=to_entity,
                               from_entity=from_entity,
@@ -133,15 +170,15 @@ ORDER BY
     @staticmethod
     def get_all_to_entity_range(to_entity, from_date, to_date, sort_by,aord,cid): #gets everything in the table going to to_entity
         rows = app.db.execute('''
-            SELECT did, from_entity, to_entity, donation_amount,  from_category, to_category, yr,cid
+            SELECT did, from_entity, to_entity, transaction_amount ,  from_category, to_category, year,cid
             FROM Committee_Donations
             WHERE to_entity = :to_entity
-            AND yr>=:y1 AND yr<=:y2 and cid = :cid
+            AND year>=:y1 AND year<=:y2 and cid = :cid
             ORDER BY 
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
+        CASE WHEN :AD='ascending' AND :s='year' THEN year END ASC,
+        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount  END ASC,
+        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount  END DESC,
+        CASE WHEN :AD='descending' AND :s='year' THEN year END DESC
             ''',
                               to_entity=to_entity,
                               from_date=from_date,
@@ -155,15 +192,15 @@ ORDER BY
     @staticmethod
     def get_all_from_entity_range(from_entity, from_date, to_date, sort_by,aord,cid): #gets everything in the table going from from_entity
         rows = app.db.execute('''
-            SELECT did, from_entity, to_entity, donation_amount,  from_category, to_category, yr,cid
+            SELECT did, from_entity, to_entity, transaction_amount ,  from_category, to_category, year,cid
             FROM Committee_Donations
             WHERE from_entity = :from_entity
-            AND yr>=:y1 AND yr<=:y2 AND cid = :cid
+            AND year>=:y1 AND year<=:y2 AND cid = :cid
             ORDER BY
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
+        CASE WHEN :AD='ascending' AND :s='year' THEN year END ASC,
+        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount  END ASC,
+        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount  END DESC,
+        CASE WHEN :AD='descending' AND :s='year' THEN year END DESC
             ''',
                               from_entity=from_entity,
                               y1=from_date,
@@ -177,14 +214,14 @@ ORDER BY
     @staticmethod
     def get_all_involving(search_entity,from_date,to_date, sort_by,aord,cid):
         rows = app.db.execute('''
-            SELECT did, from_entity, to_entity, donation_amount,  from_category, to_category, yr,cid
+            SELECT did, from_entity, to_entity, transaction_amount ,  from_category, to_category, year,cid
             FROM Committee_Donations
-            WHERE cid = :cid AND (from_entity = :entity OR to_entity=:entity) AND yr>=:y1 AND yr<=:y2
+            WHERE cid = :cid AND (from_entity = :entity OR to_entity=:entity) AND year>=:y1 AND year<=:y2
            ORDER BY 
-        CASE WHEN :AD='ascending' AND :s='year' THEN yr END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN donation_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN donation_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='year' THEN yr END DESC
+        CASE WHEN :AD='ascending' AND :s='year' THEN year END ASC,
+        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount  END ASC,
+        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount  END DESC,
+        CASE WHEN :AD='descending' AND :s='year' THEN year END DESC
             ''',
                               entity=search_entity,
                               y1=from_date,
@@ -198,9 +235,9 @@ ORDER BY
     @staticmethod
     def get_sum_all (from_date,to_date,cid):
         rows = app.db.execute('''
-            SELECT SUM(donation_amount)
+            SELECT SUM(transaction_amount )
             FROM Committee_Donations
-            WHERE yr>=:y1 AND yr<=:y2 AND cid = :cid
+            WHERE year>=:y1 AND year<=:y2 AND cid = :cid
             ''',
                               
                               y1=from_date,
@@ -211,9 +248,9 @@ ORDER BY
     @staticmethod
     def get_sum_involving (any_ent, from_date,to_date,cid):
         rows = app.db.execute('''
-            SELECT SUM(donation_amount)
+            SELECT SUM(transaction_amount )
             FROM Committee_Donations
-            WHERE yr>=:y1 AND yr<=:y2 AND cid = :cid AND (from_entity = :entity  
+            WHERE year>=:y1 AND year<=:y2 AND cid = :cid AND (from_entity = :entity  
             OR to_entity=:entity) 
             ''',
                               
@@ -226,9 +263,9 @@ ORDER BY
     @staticmethod
     def get_sum_from_to (from_ent,to_ent,from_date,to_date,cid):
         rows = app.db.execute('''
-            SELECT SUM(donation_amount)
+            SELECT SUM(transaction_amount )
             FROM Committee_Donations
-            WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :from_ent  
+            WHERE year>=:y1 AND year<=:y2 AND from_entity = :from_ent  
             AND to_entity=:to_ent AND cid = :cid
             ''',
                               
@@ -242,9 +279,9 @@ ORDER BY
     @staticmethod
     def get_sum_from (from_ent, from_date,to_date,cid):
         rows = app.db.execute('''
-            SELECT SUM(donation_amount)
+            SELECT SUM(transaction_amount )
             FROM Committee_Donations
-            WHERE yr>=:y1 AND yr<=:y2 AND from_entity = :from_ent AND cid = :cid
+            WHERE year>=:y1 AND year<=:y2 AND from_entity = :from_ent AND cid = :cid
             ''',
                               
                               y1=from_date,
@@ -256,9 +293,9 @@ ORDER BY
     @staticmethod
     def get_sum_to (to_ent,from_date,to_date,cid):
         rows = app.db.execute('''
-            SELECT SUM(donation_amount)
+            SELECT SUM(transaction_amount )
             FROM Committee_Donations
-            WHERE yr>=:y1 AND yr<=:y2 AND to_entity=:to_ent AND cid = :cid
+            WHERE year>=:y1 AND year<=:y2 AND to_entity=:to_ent AND cid = :cid
             ''',
                               
                               y1=from_date,

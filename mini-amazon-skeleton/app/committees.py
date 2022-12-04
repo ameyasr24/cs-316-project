@@ -1,8 +1,10 @@
 from flask import render_template,flash
 import datetime
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, IntegerField, BooleanField, SubmitField, SelectField,SelectMultipleField
+from wtforms import StringField, PasswordField, IntegerField,BooleanField, SubmitField, SelectField,SelectMultipleField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from flask_paginate import Pagination, get_page_parameter
+from flask import request
 
 from wtforms import BooleanField as WTBool
 from .models.committee_donations import Committee_Donations
@@ -12,6 +14,9 @@ bp = Blueprint('committees', __name__)
 
 class SearchFirst (FlaskForm):
     query = StringField('Committee')
+    order_by =SelectField('Order by',choices=['name','election cycle','total receipts'],default='name')
+    sort= SelectField(choices=['ascending','descending'],default='ascending')
+    rows=SelectField(choices=['25','50','100','200'],default='25')
     submit = SubmitField('Submit')
 class SearchSecond (FlaskForm):
     query = SelectField('query',choices=['all donations','donations involving','donations to/from'],default='all donations')
@@ -47,16 +52,50 @@ class SearchCommitteeToFrom(FlaskForm):
 
 @bp.route('/committee', methods=['GET', 'POST'])
 def committees():
+    rows=25
     form1 = SearchFirst()
-    searchedcomms=Committee.get_all()
+    searchedcomms=Committee.get_all('name','ascending')
+    page =request.args.get('page',type=int,default=1)
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+    try:
+        page=int(request.args.get('page',1))
+    
+    except ValueError:
+        page = 1
+    i=(page-1)*rows
+    temp = searchedcomms[i:i+rows]
+    pagination =Pagination(page=page,total=len(searchedcomms),per_page=rows)
+
     if form1.validate_on_submit():
-        q = form1.query.data.upper()
-        searchedcomms=Committee.get_comm(q)
-        if searchedcomms:
-            return render_template('committees.html', form=form1,all_committees=searchedcomms,err=False)
-        else:
-            return render_template('committees.html',form=form1, allcommittees=searchedcomms, err=True)
-    return render_template('committees.html', form=form1,all_committees=searchedcomms)
+        rows = int(form1.rows.data)
+        order = form1.order_by.data
+        sort = form1.sort.data
+        query = form1.query.data.upper()
+        if query:
+            searchedcomms=Committee.get_comm(query,order,sort)
+            if not searchedcomms:
+                return render_template('committees.html',form=form1, allcommittees=searchedcomms, err=True,pagination=pagination)
+        elif not query:
+            searchedcomms=Committee.get_all(order,sort)
+        page =request.args.get('page',type=int,default=1)
+        search = False
+        q = request.args.get('q')
+        if q:
+            search = True
+        try:
+            page=int(request.args.get('page',1))
+        
+        except ValueError:
+            page = 1
+        i=int((page-1)*rows)
+        temp = searchedcomms[i:i+rows]
+        pagination =Pagination(page=page,total=len(searchedcomms),per_page=rows)
+        return render_template('committees.html', form=form1,all_committees=temp,ival=i,pagination=pagination)
+
+    return render_template('committees.html', form=form1,all_committees=temp,pagination=pagination)
 
 @bp.route('/committee/<cid>', methods=['GET', 'POST'])
 def committee_donations(cid):

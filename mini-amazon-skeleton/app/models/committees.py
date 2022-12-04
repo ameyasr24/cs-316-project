@@ -3,8 +3,8 @@ from flask import current_app as app
 
 class Committee:
     def __init__(self, cid, cname, ctype, cdesignation,cfilingfreq, total_receipts,
-    entity_tp  ,
-    transfers_from_aff  ,
+    entity_tp,
+    transfers_from_aff,
     indiv_contrib,
     other_pac_contrib,
     cand_contrib,
@@ -23,7 +23,9 @@ class Committee:
     contrib_to_other_comm,
     ind_exp,
     pty_coord_exp,
-    cvg_end_dt,election_cycle):
+    cvg_end_dt,
+    tid,
+    cycle ):
         self.cid = cid
         self.cname = cname
         self.ctype = ctype
@@ -51,8 +53,8 @@ class Committee:
         self.ind_exp=ind_exp
         self.pty_coord_exp=pty_coord_exp
         self.cvg_end_dt=cvg_end_dt
-        self.election_cycle=election_cycle
-
+        self.tid=tid,
+        self.cycle=cycle
 
     @staticmethod 
     def get(cid): #gets everything by cid value
@@ -65,49 +67,41 @@ WHERE cid = :cid
         return Committee(*(rows[0])) if rows is not None else None
 
     @staticmethod
-    def get_all(): #just gets everyting in the table
-        rows = app.db.execute('''
-SELECT cid, cname, ctype, cdesignation,cfilingfreq, total_receipts,
-    entity_tp  ,
-    transfers_from_aff  ,
-    indiv_contrib,
-    other_pac_contrib,
-    cand_contrib,
-    cand_loans,
-    ttl_loans,
-    ttl_disburse,
-    transfers_to_aff,
-    indv_refunds ,
-    other_pac_refunds,
-    cand_loan_repay,
-    loan_repay,
-    coh_bop,
-    coh_cop,
-    debts_owed_by,
-    nonfed_transfers_received,
-    contrib_to_other_comm,
-    ind_exp,
-    pty_coord_exp,
-    cvg_end_dt,cycle
+    def get_all(order,sort): #just gets everyting in the table
+        return (app.db.execute('''
+SELECT *
 FROM Committee 
-ORDER BY cname
+ORDER BY  
+        CASE WHEN :sort='ascending' AND :order='name' THEN cname  END ASC,
+        CASE WHEN :sort='descending' AND :order='name' THEN cname  END DESC,
+        CASE WHEN :sort='ascending' AND :order='election cycle' THEN cycle END ASC,
+        CASE WHEN :sort='ascending' AND :order='total receipts' THEN total_receipts  END ASC,
+        CASE WHEN :sort='descending' AND :order='election cycle' THEN cycle  END DESC,
+        CASE WHEN :sort='descending' AND :order='total receipts' THEN total_receipts END DESC  
+    
         
 ''',
-                              
-                              )
-        return [Committee(*row) for row in rows]
+                              sort=sort,
+                              order=order))
 
     @staticmethod
-    def get_comm(name):
-        rows = app.db.execute('''
-SELECT cname, total_receipts
+    def get_comm(name,order,sort):
+        return(app.db.execute('''
+SELECT *
 FROM Committee  WHERE cname=:name
-ORDER BY cname 
+ORDER BY  
+        CASE WHEN :sort='ascending' AND :order='name' THEN cname  END ASC,
+        CASE WHEN :sort='descending' AND :order='name' THEN cname  END DESC,
+        CASE WHEN :sort='ascending' AND :order='election cycle' THEN cycle END ASC,
+        CASE WHEN :sort='ascending' AND :order='total receipts' THEN total_receipts  END ASC,
+        CASE WHEN :sort='descending' AND :order='election cycle' THEN cycle  END DESC,
+        CASE WHEN :sort='descending' AND :order='total receipts' THEN total_receipts END DESC 
+    
         
 ''',
-                              
-                              name=name)
-        return [Committee(*row) for row in rows]
+                              name=name,
+                              sort=sort,
+                              order=order))
     @staticmethod
     def get_name(cid):
         rows = app.db.execute('''

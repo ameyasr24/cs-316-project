@@ -1,28 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <br>
 <h4 class="page-header">Search for donations involving different PACs!</h4>
 <form  action="" method="post">
   {{ form.hidden_tag() }}
+  
 <div class="form-inline">
   <p>
     Search for a committee: 
     {{ form.query }}
+    <br>
+    Sort by: {{form.order_by}} {{form.sort}}
+    <br>
+    {{form.rows}} rows per page
     {% for error in form.query.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
- 
+ <br>
   {{ form.submit() }}
 </p>
 
 </div>
 {% if not err %}
 <h3>Committees:</h3>
+<h3>{{ival}}</h3>
+
+{{pagination.info}}
+{{pagination.links}}
 <div id="universal-table-wrapper">
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
+      <th>#</th>
+      <th scope="col">CID</th>
       <th scope="col">Name</th>
       <th scope="col">Total Receipts</th>
       <th scope="col">Election Cycle</th>
@@ -30,17 +42,20 @@
     </tr>
   </thead>
   <tbody>
+
     {% for c in all_committees %}
       <tr>
+        <td>{{ loop.index + pagination.skip }}</td>
+        <td>{{c.cid}}</td>
         <td><a href="\committee\{{c.cid}}">{{c.cname}}</a></td>
         <td>{{c.total_receipts}}</td>
         <td>{{c.cycle}}</td>
 
       </tr></a>
     {% endfor %}
-
   </tbody>
 </table>
+{{pagination.links}}
 </div>
 
 {% endif %}
