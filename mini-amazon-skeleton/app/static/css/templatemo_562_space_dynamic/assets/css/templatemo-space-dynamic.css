@@ -849,6 +849,7 @@ Banner Style
   content: '';
   background-image: url(../images/baner-dec-left.png);
   background-repeat: no-repeat;
+  z-index:-5;
   position: absolute;
   left: 0;
   top: 100px;
@@ -862,6 +863,7 @@ Banner Style
   background-repeat: no-repeat;
   position: absolute;
   right: 0;
+  z-index:-5;
   top: 100px;
   width: 98px;
   height: 290px;

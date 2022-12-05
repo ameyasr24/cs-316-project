@@ -118,21 +118,21 @@ We could also do the same donation analysis/data visualization for Senate subcom
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">ID</th>
-      <th scope="col">From</th>
-      <th scope="col">To</th>
+      <th scope="col">Recipient Type</th>
+      <th scope="col">Donation Recipient</th>
+      <th scope="col">Transaction Date</th>
       <th scope="col">Donation Amount</th>
-      <th scope="col">Year</th>
+      <th scope="col">Election Cycle</th>
     </tr>
   </thead>
   <tbody>
     {% for c in all_committees %}
       <tr>
-        <th scope="row">{{c.did}}</th>
-        <td>{{c.from_entity}}</td>
-        <td>{{c.to_entity}}</td>
-        <td>{{c.donation_amount}}</td>
-        <td>{{c.yr}}</td>
+        <td>{{c.entity_tp}}</td>
+        <td>{{c.name_contributor}}</td>
+        <td>{{c.transaction_date}}</td>
+        <td>{{c.transaction_amount}}</td>
+        <td>{{c.cycle}}</td>
       </tr>
     {% endfor %}
   </tbody>
