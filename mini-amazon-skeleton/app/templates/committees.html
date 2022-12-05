@@ -12,6 +12,9 @@
     Search for a committee: 
     {{ form.query }}
     <br>
+    View election cycles: {{form.view}}
+<br>
+Select committee of type: {{form.committee_type}}
     Sort by: {{form.order_by}} {{form.sort}}
     <br>
     {{form.rows}} rows per page
@@ -32,10 +35,10 @@
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th>#</th>
-      <th scope="col">CID</th>
+      <th scope="col">Recipient Type</th>
       <th scope="col">Name</th>
       <th scope="col">Transaction Amount</th>
+      <th scope ="col">Transaction Date</th>
       <th scope="col">Election Cycle</th>
 
     </tr>
@@ -44,10 +47,10 @@
 
     {% for c in all_committees %}
       <tr>
-        <td>{{ loop.index + pagination.skip }}</td>
-        <td>{{c.cid}}</td>
+        <td>{{c.entity_tp}}</td>
         <td><a href="\committee\{{c.cid}}">{{c.cname}}</a></td>
         <td>{{c.transaction_amount}}</td>
+        <td>{{c.transaction_date}}</td>
         <td>{{c.cycle}}</td>
 
       </tr></a>

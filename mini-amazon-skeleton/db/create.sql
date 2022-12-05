@@ -28,10 +28,10 @@ CREATE TABLE Committee (
     cid VARCHAR(9) NOT NULL ,
     rpt VARCHAR(3) ,
     transaction_tp VARCHAR (3),
-    entity_tp  VARCHAR (3),
+    entity_tp  VARCHAR (200),
     name_contributor  VARCHAR (200),
     state_ VARCHAR (2),
-    transaction_date VARCHAR(15),
+    transaction_date date,
     transaction_amount  DECIMAL (14,2),
     other_id  VARCHAR (9),
     did  VARCHAR (32),
@@ -39,6 +39,7 @@ CREATE TABLE Committee (
     cycle INT,
     cname VARCHAR(200) ,
     candidate_id  VARCHAR (9),
+    candidate_name VARCHAR(200),
     PRIMARY KEY (tid)
 );
 

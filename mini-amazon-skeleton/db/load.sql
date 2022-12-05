@@ -15,7 +15,7 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
                          (SELECT MAX(id)+1 FROM Purchases),
                          false);
 
-\COPY Committee FROM 'Committee Data.csv' WITH DELIMITER ',' NULL '' CSV ;
+\COPY Committee FROM 'commDataNew.csv' WITH DELIMITER ',' NULL '' CSV ;
 
 \COPY Issues FROM 'Issues.csv' WITH DELIMITER ',' NULL '' CSV;
 
