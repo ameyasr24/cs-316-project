@@ -13,7 +13,7 @@ bp = Blueprint('committees', __name__)
 
 class SearchFirst (FlaskForm):
     query = StringField('Committee')
-    order_by =SelectField('Order by',choices=['name','election cycle','total receipts'],default='name')
+    order_by =SelectField('Order by',choices=['name','election cycle','transaction amount'],default='name')
     sort= SelectField(choices=['ascending','descending'],default='ascending')
     rows=SelectField(choices=['25','50','100','200'],default='25')
     submit = SubmitField('Submit')
@@ -92,7 +92,7 @@ def committees():
         i=int((page-1)*rows)
         temp = searchedcomms[i:i+rows]
         pagination =Pagination(page=page,total=len(searchedcomms),per_page=rows)
-        return render_template('committees.html', form=form1,all_committees=temp,ival=i,pagination=pagination)
+        return render_template('committees.html', form=form1,all_committees=temp,pagination=pagination)
 
     return render_template('committees.html', form=form1,all_committees=temp,pagination=pagination)
 
@@ -103,7 +103,7 @@ def committee_donations(cid):
     form1 = SearchSecond()
     form2 = SearchSecond()
     type_form=''
-    searchedcomms=Committee.get(cid,'ID','ascending')
+    searchedcomms=Committee.get(cid)
     start = 10
     subtype=0
     if form1.validate_on_submit():

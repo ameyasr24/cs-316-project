@@ -28,13 +28,14 @@ class Committee:
 
     @staticmethod 
     def get(cid): #gets everything by cid value
-        rows = app.db.execute('''
-SELECT cname
+        return(app.db.execute('''
+SELECT *
 FROM Committee
 WHERE cid = :cid
+    
 ''',
-                              cid=cid)
-        return Committee(*(rows[0])) if rows is not None else None
+                              cid=cid,
+                             ))
 
     @staticmethod
     def get_all(order,sort): #just gets everyting in the table
@@ -45,9 +46,9 @@ ORDER BY
         CASE WHEN :sort='ascending' AND :order='name' THEN c1.cname  END ASC,
         CASE WHEN :sort='descending' AND :order='name' THEN c1.cname  END DESC,
         CASE WHEN :sort='ascending' AND :order='election cycle' THEN c1.cycle END ASC,
-        CASE WHEN :sort='ascending' AND :order='total receipts' THEN c1.transaction_amount  END ASC,
+        CASE WHEN :sort='ascending' AND :order='transaction amount' THEN c1.transaction_amount  END ASC,
         CASE WHEN :sort='descending' AND :order='election cycle' THEN c1.cycle  END DESC,
-        CASE WHEN :sort='descending' AND :order='total receipts' THEN c1.transaction_amount END DESC  
+        CASE WHEN :sort='descending' AND :order='transaction amount' THEN c1.transaction_amount END DESC  
     
         
 ''',
@@ -64,9 +65,9 @@ ORDER BY
         CASE WHEN :sort='ascending' AND :order='name' THEN cname  END ASC,
         CASE WHEN :sort='descending' AND :order='name' THEN cname  END DESC,
         CASE WHEN :sort='ascending' AND :order='election cycle' THEN cycle END ASC,
-        CASE WHEN :sort='ascending' AND :order='total receipts' THEN total_receipts  END ASC,
+        CASE WHEN :sort='ascending' AND :order='transaction amount' THEN transaction_amount  END ASC,
         CASE WHEN :sort='descending' AND :order='election cycle' THEN cycle  END DESC,
-        CASE WHEN :sort='descending' AND :order='total receipts' THEN total_receipts END DESC 
+        CASE WHEN :sort='descending' AND :order='transaction amount' THEN transaction_amount END DESC 
     
         
 ''',

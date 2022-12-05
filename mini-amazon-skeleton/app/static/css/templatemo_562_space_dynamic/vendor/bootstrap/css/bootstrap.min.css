@@ -135,10 +135,11 @@ h1.header-title {
   margin: .5em;
   margin-left: 0;
   font-size: 12px;
+  color:black;
 }
 .pagination-page-info b {
-  color: black;
-  background: #6aa6ed;
+  color: white;
+  background:var(--universal-blue);
   padding-left: 2px;
   padding: .1em .25em;
   font-size: 150%;
