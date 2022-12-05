@@ -22,6 +22,7 @@ CREATE TABLE Purchases(
     pid INT NOT NULL REFERENCES Products(id),
     time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
 );
+DROP TABLE Committee;
 
 CREATE TABLE Committee (
     tid INT NOT NULL,
