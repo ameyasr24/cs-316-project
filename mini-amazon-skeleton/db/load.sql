@@ -41,3 +41,5 @@ SELECT pg_catalog.setval('public.states_id_seq',
 \COPY Senate_Results FROM '1976-2020-senate.csv' WITH DELIMITER ',' NULL '' CSV;
 
 \COPY Receipts FROM 'Receipts.csv' WITH DELIMITER '|' NULL '' CSV;
+
+\COPY Donations_By_Industry FROM 'donations_industry.csv' WITH DELIMITER ',' NULL '' CSV;
