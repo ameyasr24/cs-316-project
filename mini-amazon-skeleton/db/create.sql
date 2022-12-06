@@ -39,6 +39,7 @@ CREATE TABLE Committee (
     year VARCHAR(4),
     cycle INT,
     cname VARCHAR(200) ,
+    ctype VARCHAR(200),
     candidate_id  VARCHAR (9),
     candidate_name VARCHAR(200),
     PRIMARY KEY (tid)
