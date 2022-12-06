@@ -106,3 +106,36 @@ class Candidate_Vote:
         if len(rows) > 0:
             return rows
         return "oops"
+
+class Candidate_Donations:
+    def __init__(self, id, contributor, donation_amount, donation_date):
+        self.id = id
+        self.contributor = contributor
+        self.donation_amount = donation_amount
+        self.donation_date = donation_date
+
+    @staticmethod 
+    def get_all_donations(cid): # gets all donations to a specific candidate
+        rows = app.db.execute('''
+        SELECT DISTINCT contributor, donation_amount, donation_date
+        FROM Candidate_Donations
+        WHERE icpsr = :cid
+        ORDER BY donation_amount DESC;
+        ''',
+                              cid=cid)
+        if len(rows) > 0:
+            return rows
+        return "oops"
+
+    def grouped_donations(cid):
+        rows = app.db.execute('''
+        SELECT DISTINCT contributor, SUM(donation_amount) AS donation_amoun, COUNT(donation_amount) AS number_donations
+        FROM Candidate_Donations
+        WHERE icpsr = :cid
+        GROUP BY contributor
+        ORDER BY donation_amoun DESC;
+        ''',
+                              cid=cid)
+        if len(rows) > 0:
+            return rows
+        return "oops"
