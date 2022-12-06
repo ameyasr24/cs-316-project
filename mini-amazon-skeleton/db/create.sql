@@ -221,6 +221,12 @@ CREATE TABLE Senate_Legislation_Topics (
     subject5 VARCHAR(255)
 );
 
+CREATE TABLE Candidate_Donations (
+    icpsr INT NOT NULL,
+    contributor VARCHAR(255) NOT NULL,
+    donation_amount INT NOT NULL,
+    donation_date DATE NOT NULL
+)
 
 --implement search bar by category
 --search by from and to whichever entity

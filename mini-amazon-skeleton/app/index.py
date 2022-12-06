@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from .models.states import State
 # from .models.states import Year
 from .models.candidates import Candidate_Vote
+from .models.candidates import Candidate_Donations
 from .models.correlation import Correlation
 
 
