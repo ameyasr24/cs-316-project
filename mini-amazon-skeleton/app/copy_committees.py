@@ -1,11 +1,14 @@
-
-from flask import render_template,flash,redirect,url_for,request,Blueprint
+from flask import render_template,flash
 import datetime
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, IntegerField,BooleanField, SubmitField, SelectField,SelectMultipleField
-from wtforms.validators import ValidationError, DataRequired
-from flask_paginate import Pagination
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from flask_paginate import Pagination, get_page_parameter
+from flask import request
+
+from wtforms import BooleanField as WTBool
 from .models.committees import Committee
+from flask import Blueprint
 bp = Blueprint('committees', __name__)
 
 class SearchFirst (FlaskForm):
@@ -36,96 +39,62 @@ class SearchCommitteeInvolving(FlaskForm):
     any_ent = StringField('Entity')
     search = SubmitField('Search')
     total = BooleanField("Calculate Total Sum", default = False)
+    
 
 @bp.route('/committee', methods=['GET', 'POST'])
 def committees():
-    #get an instance of the form with default data
-    form1 = SearchFirst()
-
-    #the default searchedcomms will just be all of the data with the default sort and order (default is sort='ascending', order_by='name')
-    searchedcomms=Committee.get_all('name','ascending')
-    
-    #get current page we are on
-    page =request.args.get('page',type=int,default=1)
-
-    #the default viewing is 25 rows/page; get the desired start/stop indices to select tuples to display from the total queried searchedcomms
     rows=25
+    form1 = SearchFirst()
+    searchedcomms=Committee.get_all('name','ascending')
+    page =request.args.get('page',type=int,default=1)
+    search = False
+    q = request.args.get('q')
+    sort_by = request.args.get('sort')
+    try:
+        page=int(request.args.get('page',1))
+    except ValueError:
+        page = 1
+    
     i=(page-1)*rows
     temp = searchedcomms[i:i+rows]
-
-    #make new pagination object with current page #, # of all tuples we have queried in searchedcomms, and # rows/page
     pagination =Pagination(page=page,total=len(searchedcomms),per_page=rows)
 
-    #if the user submits the form, make a call to the search function with the inputted filtering.viewing parameters
     if form1.validate_on_submit():
-        r = int(form1.rows.data)
-        o = form1.order_by.data
-        s = form1.sort.data
-        q = form1.query.data.upper()
-        v = form1.view.data
-        c=form1.committee_type.data
-        return redirect(url_for('committees.search',order=o,rows=r,sort=s,query=q,view=v,committee_type=c))
+        rows = int(form1.rows.data)
+        order = form1.order_by.data
+        sort = form1.sort.data
+        query = form1.query.data.upper()
+        view = form1.view.data
+        committee_type=form1.committee_type.data
+        if query:
+            searchedcomms=Committee.get_comm(query,order,sort)
+            if not searchedcomms:
+                return render_template('committees.html',form=form1, allcommittees=searchedcomms, err=True,pagination=pagination)
+        elif not query:
+            if view=="All" and committee_type=="All":
+                searchedcomms=Committee.get_all(order,sort)
+            elif view=="All" and committee_type!="All":
+                searchedcomms = Committee.get_all_type(order,sort,committee_type)
+            elif view!="All" and committee_type=="All":
+                searchedcomms = Committee.get_all_view(order,sort,view)
+            elif view!="All" and committee_type!="All":
+                searchedcomms = Committee.get_all_view_type(order,sort,view,committee_type)
+        page =request.args.get('page',type=int,default=1)
+        search = False
+        q = request.args.get('q')
+        if q:
+            search = True
+        try:
+            page=int(request.args.get('page',1))
+        
+        except ValueError:
+            page = 1
+        i=int((page-1)*rows)
+        temp = searchedcomms[i:i+rows]
+        pagination =Pagination(page=page,total=len(searchedcomms),per_page=rows)
+        return render_template('committees.html', form=form1,all_committees=temp,pagination=pagination)
 
-    #render the template with form1 data, temp (the rows we would like to display for the current page), and the pagination object
     return render_template('committees.html', form=form1,all_committees=temp,pagination=pagination)
-
-@bp.route('/committee/search', methods=['GET', 'POST'])
-def search(): 
-    #here we are getting all of the previous request's filtering/viewing parameters
-    r = request.args.get('rows')
-    s = request.args.get('sort')
-    o = request.args.get('order')
-    q = request.args.get('query')
-    v = request.args.get('view')
-    c= request.args.get('committee_type') 
-
-    #here we are redeclaring form1 with the most recently searched parameters
-    form1=SearchFirst(rows=r,sort=s,order_by=o,query=q,view=v,committee_type=c)
-
-    #the default searchedcomms will just be all of the data, sorted and ordered based on the most recent request's parameters (default is sort='ascending', order_by='name')
-    searchedcomms=Committee.get_all(o,s)
-
-    #the following is for getting the searchedcomms if the user has inputted a specific query
-    if q:
-        searchedcomms=Committee.get_comm(q,o,s)
-        #if searchedcomms is empty, this means that the query the user specified is not in our database, and we return an error message
-        if not searchedcomms:
-            return render_template('committees.html',form=form1, allcommittees=searchedcomms, err=True)
-
-    #the following is for getting the searchedcomms if the user has not inputted a specific query, but the user has inputted non-default parameters for view and committee_type (default is view='All' and committee_type='All')
-    elif not q:
-        #make separate sql calls based on whether the user has specified both or either of view and committee_type
-        if v=="All" and c!="All":
-            searchedcomms = Committee.get_all_type(o,s,c)
-        elif v!="All" and c=="All":
-            searchedcomms = Committee.get_all_view(o,s,v)
-        elif v!="All" and c!="All":
-            searchedcomms = Committee.get_all_view_type(o,s,v,c)
-
-    #if the user resubmits the form, make another call to this same function with updated parameters to make another search.
-    if form1.validate_on_submit():
-        #save each of the following values as parameters to input in the next request
-        r = int(form1.rows.data)
-        o = form1.order_by.data
-        s = form1.sort.data
-        q = form1.query.data.upper()
-        v = form1.view.data
-        c= form1.committee_type.data
-        return redirect(url_for('committees.search',order=o,rows=r,sort=s,query=q,view=v,committee_type=c))
-    
-    #get the current page that we are on in the pagination
-    page=request.args.get('page',type=int,default=1)
-
-    #based on the # of rows the user specified they wanted to view per page (r) and the current page we are on, get the desired start/stop indices to select from the total queried searchedcomms
-    i=int((page-1)*int(r))
-    temp = searchedcomms[i:i+int(r)]
-
-    #make new pagination object with current page #, # of all tuples we have queried in searchedcomms, and # rows/page
-    pagination =Pagination(page=page,total=len(searchedcomms),per_page=r)
-
-    #render the template with form1 data, temp (the rows we would like to display for the current page), and the pagination object
-    return render_template('committees.html', search=True,form=form1,all_committees=temp,pagination=pagination)
-
 
 @bp.route('/committee/<cid>', methods=['GET', 'POST'])
 def committee_donations(cid):
@@ -181,6 +150,3 @@ def helperSum(form,type_form,subtype,cid):
         return Committee.get_sum_involving(form.any_ent.data,form.from_year.data,form.to_year.data,cid)
     if type_form=='all donations':
         return Committee.get_sum_all(form.from_year.data,form.to_year.data,cid)
-        
-        
-        

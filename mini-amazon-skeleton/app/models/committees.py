@@ -9,7 +9,7 @@ class Committee:
     other_id ,
     did,
     year,
-    cycle,cname,candidate_id,candidate_name):
+    cycle,cname,ctype,candidate_id,candidate_name):
         self.tid=tid
         self.cid =cid
         self.rpt = rpt 
@@ -23,7 +23,8 @@ class Committee:
         self.did  =did
         self.year=year
         self.cycle=cycle
-        self.cname=cname
+        self.cname=cname,
+        self.ctype=ctype,
         self.candidate_id=candidate_id
         self.candidate_name=candidate_name
 
@@ -78,7 +79,7 @@ ORDER BY
         return (app.db.execute('''
 SELECT *
 FROM Committee c1
-WHERE c1.entity_tp=:type
+WHERE c1.ctype=:type
 ORDER BY  
         CASE WHEN :sort='ascending' AND :order='name' THEN c1.cname  END ASC,
         CASE WHEN :sort='descending' AND :order='name' THEN c1.cname  END DESC,
@@ -97,7 +98,7 @@ ORDER BY
         return (app.db.execute('''
 SELECT *
 FROM Committee c1
-WHERE c1.cycle=:view AND c1.entity_tp=:type
+WHERE c1.cycle=:view AND c1.ctype=:type
 ORDER BY  
         CASE WHEN :sort='ascending' AND :order='name' THEN c1.cname  END ASC,
         CASE WHEN :sort='descending' AND :order='name' THEN c1.cname  END DESC,
@@ -140,7 +141,7 @@ FROM Committee  WHERE cid=:cid
 ''',
                               
                               cid=cid)
-        return rows[0]
+        return rows
 
 
     
