@@ -1,7 +1,8 @@
 
 from flask import render_template,flash,redirect,url_for,request,Blueprint
-import datetime
+from datetime import datetime
 from flask_wtf import FlaskForm
+from wtforms.fields import DateField
 from wtforms import StringField, PasswordField, IntegerField,BooleanField, SubmitField, SelectField,SelectMultipleField
 from wtforms.validators import ValidationError, DataRequired
 from flask_paginate import Pagination
@@ -15,27 +16,19 @@ class SearchFirst (FlaskForm):
     order_by =SelectField('Order by',choices=['name','date','transaction amount'],default='name')
     sort= SelectField(choices=['ascending','descending'],default='ascending')
     rows=SelectField(choices=['25','50','100','200'],default='25')
+    #total = BooleanField("Calculate Total Sum", default = False)
+    from_date = DateField('From Date', format = '%Y-%m-%d', default=datetime.strptime('2013-11-01','%Y-%m-%d'))
+    to_date = DateField('To Date', format = '%Y-%m-%d', default=datetime.strptime('2022-11-01','%Y-%m-%d'))
     submit = SubmitField('Submit')
-class SearchSecond (FlaskForm):
-    query = SelectField('query',choices=['all donations','donations involving','donations to candidates'],default='all donations')
-    select = SubmitField('Select')
-class AllCommittees(FlaskForm):
-    from_year = IntegerField('From Year',default=0)
-    to_year=IntegerField('To Year',default=2022)
-    order_by=SelectField('Order by',choices=['ID', 'year','donation amount'],default='ID')
+class SearchCommittee(FlaskForm):
+    order_by=SelectField('Order by',choices=['date','donation amount'],default='date')
     sort=SelectField(choices=['ascending','descending'],default='ascending')
-    query = SelectField('query',choices=['all donations', 'donations involving','donations to/from'],default='all donations')
+    to_ent = StringField('Entity')
     search = SubmitField('Search')
     total = BooleanField("Calculate Total Sum", default = False)
-class SearchCommitteeInvolving(FlaskForm):
-    from_year = IntegerField('From Year',default=0)
-    to_year=IntegerField('To Year',default=2022)
-    order_by=SelectField('Order by',choices=['ID', 'year','donation amount'],default='ID')
-    sort=SelectField(choices=['ascending','descending'],default='ascending')
-    query = SelectField('query',choices=['all donations', 'donations involving','donations to/from'],default='all donations')
-    any_ent = StringField('Entity')
-    search = SubmitField('Search')
-    total = BooleanField("Calculate Total Sum", default = False)
+    from_date = DateField('From Date', format = '%Y-%m-%d', default=datetime.strptime('2013-11-01','%Y-%m-%d'))
+    to_date = DateField('To Date', format = '%Y-%m-%d', default=datetime.strptime('2022-11-01','%Y-%m-%d'))
+    recipient=SelectField(choices=['All','Candidate Committee','Organization','Party Organization','Political Action Committee','Committee','Candidate','Individual'],default='All')
 
 @bp.route('/committee', methods=['GET', 'POST'])
 def committees():
@@ -43,7 +36,7 @@ def committees():
     form1 = SearchFirst()
 
     #the default searchedcomms will just be all of the data with the default sort and order (default is sort='ascending', order_by='name')
-    searchedcomms=Committee.get_all('name','ascending')
+    searchedcomms=Committee.get_all(form1.order_by.data,form1.sort.data,form1.from_date.data,form1.to_date.data)
     
     #get current page we are on
     page =request.args.get('page',type=int,default=1)
@@ -63,8 +56,11 @@ def committees():
         s = form1.sort.data
         q = form1.query.data.upper()
         v = form1.view.data
-        c=form1.committee_type.data
-        return redirect(url_for('committees.search',order=o,rows=r,sort=s,query=q,view=v,committee_type=c))
+        c = form1.committee_type.data
+        f = form1.from_date.data
+        t = form1.to_date.data
+        #tot = form1.total.data
+        return redirect(url_for('committees.search',order=o,rows=r,sort=s,query=q,view=v,committee_type=c,from_date=f,to_date=t))
 
     #render the template with form1 data, temp (the rows we would like to display for the current page), and the pagination object
     return render_template('committees.html', form=form1,all_committees=temp,pagination=pagination)
@@ -77,30 +73,37 @@ def search():
     o = request.args.get('order')
     q = request.args.get('query')
     v = request.args.get('view')
-    c= request.args.get('committee_type') 
+    c = request.args.get('committee_type') 
+    f = datetime.strptime(request.args.get('from_date'),'%Y-%m-%d')
+    t = datetime.strptime(request.args.get('to_date'),'%Y-%m-%d')
+   #tot = request.args.get('total')
+    output=[]
 
     #here we are redeclaring form1 with the most recently searched parameters
-    form1=SearchFirst(rows=r,sort=s,order_by=o,query=q,view=v,committee_type=c)
+    form1=SearchFirst(rows=r,sort=s,order_by=o,query=q,view=v,committee_type=c,from_date=f,to_date=t)
 
     #the default searchedcomms will just be all of the data, sorted and ordered based on the most recent request's parameters (default is sort='ascending', order_by='name')
-    searchedcomms=Committee.get_all(o,s)
-
+    searchedcomms=Committee.get_all(o,s,f,t)
+    err=False
     #the following is for getting the searchedcomms if the user has inputted a specific query
     if q:
-        searchedcomms=Committee.get_comm(q,o,s)
-        #if searchedcomms is empty, this means that the query the user specified is not in our database, and we return an error message
+        searchedcomms=Committee.get_comm(q,o,s,f,t)
+        #if searchedcomms is empty, this means that the query the user specified is not in our database, and we set err to True to return error message when we render the template
         if not searchedcomms:
-            return render_template('committees.html',form=form1, allcommittees=searchedcomms, err=True)
+            err=True
+        output.append('You searched for donations involving: '+ q)
+
 
     #the following is for getting the searchedcomms if the user has not inputted a specific query, but the user has inputted non-default parameters for view and committee_type (default is view='All' and committee_type='All')
     elif not q:
         #make separate sql calls based on whether the user has specified both or either of view and committee_type
         if v=="All" and c!="All":
-            searchedcomms = Committee.get_all_type(o,s,c)
+            searchedcomms = Committee.get_all_type(o,s,c,f,t)
         elif v!="All" and c=="All":
-            searchedcomms = Committee.get_all_view(o,s,v)
+            searchedcomms = Committee.get_all_view(o,s,v,f,t)
         elif v!="All" and c!="All":
-            searchedcomms = Committee.get_all_view_type(o,s,v,c)
+            searchedcomms = Committee.get_all_view_type(o,s,v,c,f,t)
+        
 
     #if the user resubmits the form, make another call to this same function with updated parameters to make another search.
     if form1.validate_on_submit():
@@ -111,8 +114,21 @@ def search():
         q = form1.query.data.upper()
         v = form1.view.data
         c= form1.committee_type.data
-        return redirect(url_for('committees.search',order=o,rows=r,sort=s,query=q,view=v,committee_type=c))
+        f = form1.from_date.data
+        t = form1.to_date.data
+        #tot = form1.total.data
+        return redirect(url_for('committees.search',order=o,rows=r,sort=s,query=q,view=v,committee_type=c,from_date=f,to_date=t))
     
+    #if tot:
+     #   total=0
+      #  total = Committee.temp(q)
+            #total=Committee.sumAllQuery(f,t,v,c,q)
+        #elif not q:
+         #   total = Committee.sumAll(f,t,v,c)
+       # if total!=0:
+        #    total = total[0]
+        #output.append('Total Donations: $' +str(total))
+
     #get the current page that we are on in the pagination
     page=request.args.get('page',type=int,default=1)
 
@@ -124,63 +140,66 @@ def search():
     pagination =Pagination(page=page,total=len(searchedcomms),per_page=r)
 
     #render the template with form1 data, temp (the rows we would like to display for the current page), and the pagination object
-    return render_template('committees.html', search=True,form=form1,all_committees=temp,pagination=pagination)
+    return render_template('committees.html', search=True,form=form1,all_committees=temp,pagination=pagination,err=err,messages=output)
 
 
 @bp.route('/committee/<cid>', methods=['GET', 'POST'])
 def committee_donations(cid):
-    comm = Committee.get_name(cid)
-    output=[]
-    form1 = SearchSecond()
-    form2 = SearchSecond()
-    type_form=''
+    #after routing to the individual committee's page, get the committee name, type, and all rows usig that committee's cid
+    cname = Committee.get_name(cid)
+    ctype = Committee.get_ctype(cid)
     searchedcomms=Committee.get(cid)
-    start = 10
-    subtype=0
-    if form1.validate_on_submit():
-        if form1.query.data=='donations involving':
-            type_form=form1.query.data
-            form2 = SearchCommitteeInvolving()
-            helper(type_form,form1,comm)            
-        elif form1.query.data=='all donations':
-            type_form=form1.query.data
-            form2=AllCommittees()
-            helper(type_form,form1,comm)  
-    
-    #searchedcomms=Committees.get_all_range(form.from_year.data,form.to_year.data,form.order_by.data,form.sort.data)
-    if form2.validate_on_submit():
-        start = -5
-        if type_form=='donations involving' :
-            if form2.any_ent.data:
-                output.append('You searched for donations involving ' + form2.any_ent.data)
-                searchedcomms=Committee.get_all_involving(form2.any_ent.data, form2.from_year.data,form2.to_year.data,form2.order_by.data,form2.sort.data,cid)
-            else:
-                searchedcomms=Committee.get_all_range(form2.from_year.data,form2.to_year.data,form2.order_by.data,form2.sort.data,cid)                
 
-        elif type_form=='all donations':
-            searchedcomms=Committee.get_all_range(form2.from_year.data,form2.to_year.data,form2.order_by.data,form2.sort.data,cid)
+    #create an empty array to display messages after searching
+    output=[]
+
+    #instantiate a new SearchCommittee() form
+    form2 = SearchCommittee()
+
+    type_form='all donations'
+    subtype=0
+    f=''
+    if form2.validate_on_submit():
+        if form2.to_ent.data:
+            type_form='donations involving'
+            sentence='You searched for donations involving ' + form2.to_ent.data 
+            if form2.recipient.data=="All":
+                searchedcomms=Committee.get_all_involving(form2.to_ent.data, form2.from_date.data,form2.to_date.data,form2.order_by.data,form2.sort.data,cid)
+            else:
+                sentence+= " and recipients of type "+ form2.recipient.data
+                searchedcomms = Committee.get_all_involvingRecipient(form2.to_ent.data, form2.from_date.data,form2.to_date.data,form2.order_by.data,form2.sort.data,cid,form2.recipient.data)
+            output.append(sentence)
+        elif not form2.to_ent.data:
+
+            if form2.recipient.data=="All":
+                searchedcomms=Committee.get_all_range(form2.from_date.data,form2.to_date.data,form2.order_by.data,form2.sort.data,cid)                
+            else:
+                sentence= "You searched for donations involving recipients of type "+ form2.recipient.data
+                searchedcomms = Committee.get_all_Recipient( form2.from_date.data,form2.to_date.data,form2.order_by.data,form2.sort.data,cid,form2.recipient.data)
+                output.append(sentence)
         if form2.total.data:
-            total = helperSum(form2, type_form,subtype,cid)
+            total = helperSum(form2, type_form,subtype,cid,form2.recipient.data)
             if total:
                 total = total[0]
                 if not total:
                     total = 0
             else: total = 0
             output.append('Total Donations: $' +str(total))
-        output.append('Date range: '+str(form2.from_year.data)+' to ' + str(form2.to_year.data))
+        output.append('Date range: '+str(form2.from_date.data)+' to ' + str(form2.to_date.data))
         output.append('Sorted by: ' + form2.order_by.data + ' ' + form2.sort.data)
         
-    return render_template('committeepage.html', form=form2,type_form=type_form,all_committees=searchedcomms,start=start,messages=output,comm=comm)
+    return render_template('committeepage.html', form=form2,type_form=type_form,all_committees=searchedcomms,messages=output,cname=cname,ctype=ctype)
 
-def helper(query,form,comm): 
-    start = 10
-    return render_template('committeepage.html',form=form,type_form=query,start=start,comm=comm)
 
-def helperSum(form,type_form,subtype,cid):
-    if type_form=='donations involving':
-        return Committee.get_sum_involving(form.any_ent.data,form.from_year.data,form.to_year.data,cid)
-    if type_form=='all donations':
-        return Committee.get_sum_all(form.from_year.data,form.to_year.data,cid)
+def helperSum(form,type_form,subtype,cid,recipient):
+    if type_form=='donations involving' and recipient=="All":
+        return Committee.get_sum_involving(form.to_ent.data,form.from_date.data,form.to_date.data,cid)
+    if type_form=='donations involving' and recipient!="All":
+        return Committee.get_sum_involvingRecipient(form.to_ent.data,form.from_date.data,form.to_date.data,cid,recipient)
+    if type_form=='all donations' and recipient=="All":
+        return Committee.get_sum_all(form.from_date.data,form.to_date.data,cid)
+    if type_form=='all donations' and recipient!="All":
+        return Committee.get_sum_allRecipient(form.from_date.data,form.to_date.data,cid,recipient)
         
         
         
