@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from .models.states import State
 # from .models.states import Year
 from .models.candidates import Candidate_Vote
+from .models.candidates import Candidate_Donations
 from .models.correlation import Correlation
 
 
@@ -45,6 +46,8 @@ def candidate(cid):
     congresses = Candidate_Vote.get_all_congresses(cid)
     votetypes = Candidate_Vote.get_all_vote_types(cid)
     voteyears = Candidate_Vote.get_all_vote_years(cid)
+    donations = Candidate_Donations.get_all_donations(cid)
+    grouped_don = Candidate_Donations.grouped_donations(cid)
     if votes == "oops":
         flash('There are no voting records for Senator with id ' + cid)
     return render_template('/candidate.html',
@@ -52,42 +55,56 @@ def candidate(cid):
                             all_congresses = congresses,
                             all_vote_types = votetypes,
                             all_vote_years = voteyears,
-                            cid = cid)
+                            cid = cid,
+                            all_donations = donations,
+                            grouped_donations = grouped_don)
 @bp.route('/candidate/<cid>/congress/<congress>', methods=['GET', 'POST'])
 def candidatecongressfilt(cid, congress):
     votes = Candidate_Vote.get_all_votes_for_congress(cid, congress)
     congresses = Candidate_Vote.get_all_congresses(cid)
+    donations = Candidate_Donations.get_all_donations(cid)
+    grouped_don = Candidate_Donations.grouped_donations(cid)
     if votes == "oops":
         flash('There are no voting records for Senator with id ' + cid + ' and congress ' + congress)
     return render_template('/candidatecongressfilt.html',
                             all_votes = votes,
                             cid = cid,
                             all_congresses = congresses,
-                            congress = congress)
+                            congress = congress,
+                            all_donations = donations,
+                            grouped_donations = grouped_don)
 
 @bp.route('/candidate/<cid>/votetype/<votetype>', methods=['GET', 'POST'])
 def candidatevotetypefilt(cid, votetype):
     votes = Candidate_Vote.get_all_votes_for_votetype(cid, votetype)
     votetypes = Candidate_Vote.get_all_vote_types(cid)
+    donations = Candidate_Donations.get_all_donations(cid)
+    grouped_don = Candidate_Donations.grouped_donations(cid)
     if votes == "oops":
         flash('There are no voting records for Senator with id ' + cid + ' and vote ' + votetype)
     return render_template('/candidatevotetypefilt.html',
                             all_votes = votes,
                             cid = cid,
                             all_vote_types = votetypes,
-                            votetype = votetype)
+                            votetype = votetype,
+                            all_donations = donations,
+                            grouped_donations = grouped_don)
 
 @bp.route('/candidate/<cid>/voteyear/<voteyear>', methods=['GET', 'POST'])
 def candidatevoteyearfilt(cid, voteyear):
     votes = Candidate_Vote.get_all_votes_for_voteyear(cid, voteyear)
     voteyears = Candidate_Vote.get_all_vote_years(cid)
+    donations = Candidate_Donations.get_all_donations(cid)
+    grouped_don = Candidate_Donations.grouped_donations(cid)
     if votes == "oops":
         flash('There are no voting records for Senator with id ' + cid + ' and year ' + year)
     return render_template('/candidatevoteyearfilt.html',
                             all_votes = votes,
                             cid = cid,
                             all_vote_years = voteyears,
-                            voteyear = voteyear)
+                            voteyear = voteyear,
+                            all_donations = donations,
+                            grouped_donations = grouped_don)
 
 @bp.route('/candidate/', methods=['GET', 'POST'])
 def candidatehomepage():

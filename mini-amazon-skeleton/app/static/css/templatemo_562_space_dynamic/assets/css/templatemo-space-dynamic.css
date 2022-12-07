@@ -432,7 +432,9 @@ header
   padding-left: 0px;
   padding-right: 0px;
 }
-
+.thingy .a{
+  background:yellow;
+}
 .header-area .main-nav .nav li.submenu ul li a {
   opacity: 1;
   display: block;

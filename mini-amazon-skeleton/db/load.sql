@@ -14,7 +14,7 @@ SELECT pg_catalog.setval('public.products_id_seq',
 SELECT pg_catalog.setval('public.purchases_id_seq',
                          (SELECT MAX(id)+1 FROM Purchases),
                          false);
-\COPY Committee FROM 'commDataNew.csv' WITH DELIMITER ',' NULL '' CSV ;
+\COPY Committee FROM 'updatedcomm.csv' WITH DELIMITER ',' NULL '' CSV ;
 
 \COPY Issues FROM 'Issues.csv' WITH DELIMITER ',' NULL '' CSV;
 
@@ -43,3 +43,6 @@ SELECT pg_catalog.setval('public.states_id_seq',
 \COPY Receipts FROM 'Receipts.csv' WITH DELIMITER '|' NULL '' CSV;
 
 \COPY Donations_By_Industry FROM 'donations_industry.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Candidate_Donations FROM 'Candidate_Donations.csv' WITH DELIMITER ',' NULL '' CSV;
+

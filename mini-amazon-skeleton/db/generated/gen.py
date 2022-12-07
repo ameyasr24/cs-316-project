@@ -65,7 +65,6 @@ def gen_purchases(num_purchases, available_pids):
         print(f'{num_purchases} generated')
     return
 
-
 gen_users(num_users)
 available_pids = gen_products(num_products)
 gen_purchases(num_purchases, available_pids)
