@@ -6,10 +6,11 @@
 <form class="form-inline" action="" method="post">
 
   <select name="issue_category" class="Input" size="1">
+    <option hidden>Select Category</option>
     {% for subject in list_subjects %}
-    <option value="{{subject[0]}}">{{subject[0]}}</option>
+    <option value="{{subject[0]}}" {% if form.issue_category.data == subject[0] %} selected {% endif %}>{{subject[0]}}</option>
     {% endfor %}
-    <!-- <option value="Health">Health</option>
+    <!-- <option value="Health">Health</option>s
     <option value="International Affairs">International Affairs</option>
     <option value="Oil and gas">Oil and gas</option>
     <option value="Education">Education</option>
@@ -30,8 +31,9 @@
 -->
 
   <select name="politician" class="Input" size="1">
+    <option hidden>Select Your Senator</option>
     {% for senator in list_senators %}
-    <option value="{{senator[0]}}">{{senator[0]}}</option> 
+    <option value="{{senator[0]}}" {% if form.politician.data == senator[0] %} selected {% endif %}>{{senator[0]}}</option> 
     {% endfor %}
   </select>
 
@@ -45,6 +47,10 @@
   {{ form.search() }}
 </form>
 
+{% if form.politician.data %}
+<h3><a href={{cid_link}}>Click here to see all the legislation {{form.politician.data}} has voted on</a></h3>
+{% endif %}
+
 
 <h4 class="page-header">All issues:</h4>
 <div id="universal-table-wrapper">
@@ -52,31 +58,33 @@
 
 <table >
   <thead class="thead-dark">
+    {% for issue in list_issues %}
     <tr>
       <!-- <th scope="col">Legislation Number</th> -->
-      <th scope="col">Title</th>
+      <th scope="col" colspan="2">Title</th>
+      <td scope="row" colspan="10" style="text-align:left">{{issue.title}}</td>
+    </tr>
+    <tr>
       <th scope="col">Sponsor</th>
-      <th scope="col">Cosponsor 1</th>
-      <th scope="col">Cosponsor 2</th>
-      <th scope="col">Cosponsor 3</th>
-      <th scope="col">Cosponsor 4</th>
-      <th scope="col">Cosponsor 5</th>
-      <th scope="col">Subject 1</th>
-      <th scope="col">Subject 2</th>
-      <th scope="col">Subject 3</th>
-      <th scope="col">Subject 4</th>
-      <th scope="col">Subject 5</th>
+      <th scope="col">Cosponsor</th>
+      <th scope="col">Cosponsor</th>
+      <th scope="col">Cosponsor</th>
+      <th scope="col">Cosponsor</th>
+      <th scope="col">Cosponsor</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Subject</th>
       <th scope="col">Legislation URL</th>
     </tr>
   </thead>
   <tbody>
-    {% for issue in list_issues %}
       <tr>
         <!-- <td scope="row">{{issue.legislation_number}}</td> -->
         <!-- <td scope="row">{{issue.legislation_URL}}</td> -->
         <!-- <td>{{issue.legislation_URL}}</td> -->
-        <td scope="row">{{issue.title}}</td>
-        <td>{{issue.sponsor}}</td>
+        <td scope="row">{{issue.sponsor}}</td>
         <td>{{issue.cosponsor1}}</td>
         <td>{{issue.cosponsor2}}</td>
         <td>{{issue.cosponsor3}}</td>
@@ -89,8 +97,8 @@
         <td>{{issue.subject5}}</td>
         <td scope="row"><a href={{issue.legislation_URL}}>{{issue.legislation_URL}}</a></td>
       </tr>
-    {% endfor %}
   </tbody>
+  {% endfor %}
 </table>
 
 <table >
@@ -115,10 +123,19 @@
 </table>
 
 
-
+</div>
+<body>
+  <div></br></br></div>
+  {% if form.politician.data %}
+  <div class = "correlation-header"><h2> Aggregation of Data based on filters</h2></div>
+  <h1Visualization>
+    <img src= "{{ url_for('issues.visualize') }}" size="30">
+  </h1Visualization>
+  {% endif %}
+</body>
 </div>
 
-</div>
+
 <!-- 
 <h2>All issues:</h2>
 <table class='table table-hover table-bordered container'>
