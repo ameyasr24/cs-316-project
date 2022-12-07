@@ -5,8 +5,11 @@
 <br><br>
 
 <div class = "page-header"><a href="/state/{{all_race[0].state_id}}"><h1> Senate Campaign Donations in {{ all_race[0].state_id }} </h1></a></div>
-<div class = "race-year"><h3>in the {{all_race[0].year}} election</h3></div>
-<br><br>
+<br>
+
+<div class = "race-year"><h3>during the {{all_race[0].year}} election</h3></div>
+<br><br><br>
+
 <div id="universal-table-wrapper">
 
 <table  class='table table-hover table-bordered container'>
@@ -20,16 +23,31 @@
       </tr>
     </thead>
     <tbody>
+      {% set max_vote = namespace(value = 0) %}
+      {% for candidate in all_race%}
+        {% if candidate.percent_vote > max_vote.value %}
+          {% set max_vote.value = candidate.percent_vote %}
+        {% endif %}
+      {% endfor %}
       {% for candidate in all_race%}
         <tr>
           <th scope = "row">{{candidate.candidate_name}}</td>
           <td>{{candidate.party}}</td>
           <td>{{candidate.incumbent_status}}</td>
+          {% if candidate.percent_vote == max_vote.value %}
+          <td style = "background-color: var(--universal-red)">{{candidate.total_receipts}}</td>
+          {% else %}
           <td>{{candidate.total_receipts}}</td>
+          {% endif %}
           <td>{{candidate.percent_vote}}</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+
+<center>
+<b style="border-right:18px solid var(--universal-red);"></b> &nbsp; = total receipts of the winning candidate
+</center>
+
 {% endblock %}
