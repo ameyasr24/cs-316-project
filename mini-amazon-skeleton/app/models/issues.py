@@ -1,5 +1,11 @@
 from flask import current_app as app
 
+import seaborn as sns
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import io
+import base64
+import matplotlib.pyplot as plt
+
 class Issues:
     def __init__(self, legislation_number, legislation_URL, title, sponsor, cosponsor1, cosponsor2, cosponsor3, cosponsor4, cosponsor5, subject1, subject2, subject3, subject4, subject5):
         self.legislation_number = legislation_number
@@ -99,6 +105,7 @@ FROM Senate_Legislation_Topics
 
             SELECT *
             FROM T1
+            WHERE sponsor != 'None'
             ORDER BY sponsor
             
             ''',
@@ -126,6 +133,7 @@ FROM Senate_Legislation_Topics
 
             SELECT *
             FROM T1
+            WHERE subject != 'None'
             ORDER BY subject
             ''',
                               )
@@ -173,6 +181,39 @@ FROM Donations_By_Industry
                               senator_name=senator_name,
                               )
         return [Industries(*row) for row in rows]
+
+    
+
+
+    # #visualization component
+    # global x
+    # global y
+    # x = [s.issue for s in data]
+    # y = [float(s.committee_id) for s in data]
+    # return render_template('correlation.html',
+    #                        data=data,
+    #                        form = form,
+    #                        size_choices_states = len(form.state.choices),
+    #                        size_choices_issues = len(form.state.choices),
+    #                        optionsForm = optionsForm,
+    #                        stateTruthy = stateTruthy,
+    #                        candidateTruthy = candidateTruthy,
+    #                        passedTruthy = passedTruthy,
+    #                        issueTruthy = issueTruthy,
+    #         )
+
+
+    # @bp.route('/visualize')
+    # def visualize():
+    #     fig,ax=plt.subplots(figsize=(6,6))
+    #     ax=sns.set(style="darkgrid")
+    #     sns.barplot(x=x,y=y,estimator="sum").set(title="Aggregation of Total Donations")
+    #     canvas=FigureCanvas(fig)
+    #     img = io.BytesIO()
+    #     fig.savefig(img)
+    #     img.seek(0)
+    #     return send_file(img,mimetype='img/png')
+
 
     
             # WHERE LIKE(subject1, @subject) OR 
