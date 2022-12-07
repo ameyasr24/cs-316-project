@@ -5,28 +5,37 @@
 <br><br>
      
 <div class = "page-header"><h1> Senate Campaign Donations in {{ all_states[0].state_id }} </h1></div>
-<br>
+
+<br><br><br>
+
 <div class = "race-instructions"><h5>Select a year to explore a specific race.</h5></div>
+
+<br>
+
 <p>
   {% with messages = get_flashed_messages() %}
   {% if messages %}
-  <ul>
+  <select>
     {% for message in messages %}
     <li>{{ message }}</li>
     <br>
     {% endfor %}
-  </ul>
+  </select>
   {% else %}
   <div id="year-list">
-    <ul class="in-line">
+    <select onchange="location = this.value;">
+    <option disabled selected value> </option>
     {% for year in all_years%}
-    <li><a href="/state/{{year.state_id}}/{{year.year}}">{{year.year}}</a></li>
+    <option value = "/state/{{year.state_id}}/{{year.year}}">{{year.year}}</li>
     {% endfor %}
-    </ul>
+    </select>
   </div>
   {% endif %}
   {% endwith %}
 </p>
+
+<br>
+
 <div id="universal-table-wrapper">
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
