@@ -42,4 +42,7 @@ SELECT pg_catalog.setval('public.states_id_seq',
 
 \COPY Receipts FROM 'Receipts.csv' WITH DELIMITER '|' NULL '' CSV;
 
+\COPY Donations_By_Industry FROM 'donations_industry.csv' WITH DELIMITER ',' NULL '' CSV;
+
 \COPY Candidate_Donations FROM 'Candidate_Donations.csv' WITH DELIMITER ',' NULL '' CSV;
+

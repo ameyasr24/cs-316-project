@@ -6,25 +6,35 @@
 <form class="form-inline" action="" method="post">
 
   <select name="issue_category" class="Input" size="1">
-    <option value="Health">Health</option>
+    {% for subject in list_subjects %}
+    <option value="{{subject[0]}}">{{subject[0]}}</option>
+    {% endfor %}
+    <!-- <option value="Health">Health</option>
     <option value="International Affairs">International Affairs</option>
     <option value="Oil and gas">Oil and gas</option>
     <option value="Education">Education</option>
     <option value="Crime and Law Enforcement">Crime and Law Enforcement</option>
-    <option value="Armed Forces and National Security">Armed Forces and National Security</option>
+    <option value="Armed Forces and National Security">Armed Forces and National Security</option> -->
   </select>
 
-  <select name="politician" class="Input" size="1">
-    <option value="Grassley, Chuck [Sen.-R-IA]">Grassley, Chuck [Sen.-R-IA]</option> 
-    <!-- grassley: crime and law -->
-    <option value="Cruz, Ted [Sen.-R-TX]">Cruz, Ted [Sen.-R-TX]</option>
-    <!-- cruz: oil and gas -->
-    <option value="Murkowski, Lisa [Sen.-R-AK]">Murkowski, Lisa [Sen.-R-AK]</option>
-    <!-- Murkowski: education -->
-    <option value="Ossoff, Jon [Sen.-D-GA]">Ossoff, Jon [Sen.-D-GA]</option>
-    <option value="Tillis, Thomas [Sen.-R-NC]">Tillis, Thomas [Sen.-R-NC]</option>
-    <option value="Klobuchar, Amy [Sen.-D-MN]">Klobuchar, Amy [Sen.-D-MN]</option>
+
+
+ <!-- <select name="politician" class="Input" size="1">
+    <option value="Grassley, Chuck">Grassley, Chuck</option> 
+    <option value="Cruz, Ted">Cruz, Ted</option>
+    <option value="Murkowski, Lisa">Murkowski, Lisa</option>
+    <option value="Ossoff, Jon">Ossoff, Jon</option>
+    <option value="Tillis, Thomas">Tillis, Thomas</option>
+    <option value="Klobuchar, Amy">Klobuchar, Amy</option>
   </select>
+-->
+
+  <select name="politician" class="Input" size="1">
+    {% for senator in list_senators %}
+    <option value="{{senator[0]}}">{{senator[0]}}</option> 
+    {% endfor %}
+  </select>
+
 
   <!-- <p>
     {{ form.issue_category.label }} 
@@ -43,8 +53,7 @@
 <table >
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Legislation Number</th>
-      <th scope="col">Legislation URL</th>
+      <!-- <th scope="col">Legislation Number</th> -->
       <th scope="col">Title</th>
       <th scope="col">Sponsor</th>
       <th scope="col">Cosponsor 1</th>
@@ -57,14 +66,16 @@
       <th scope="col">Subject 3</th>
       <th scope="col">Subject 4</th>
       <th scope="col">Subject 5</th>
+      <th scope="col">Legislation URL</th>
     </tr>
   </thead>
   <tbody>
     {% for issue in list_issues %}
       <tr>
-        <td scope="row">{{issue.legislation_number}}</td>
-        <td>{{issue.legislation_URL}}</td>
-        <td>{{issue.title}}</td>
+        <!-- <td scope="row">{{issue.legislation_number}}</td> -->
+        <!-- <td scope="row">{{issue.legislation_URL}}</td> -->
+        <!-- <td>{{issue.legislation_URL}}</td> -->
+        <td scope="row">{{issue.title}}</td>
         <td>{{issue.sponsor}}</td>
         <td>{{issue.cosponsor1}}</td>
         <td>{{issue.cosponsor2}}</td>
@@ -76,10 +87,35 @@
         <td>{{issue.subject3}}</td>
         <td>{{issue.subject4}}</td>
         <td>{{issue.subject5}}</td>
+        <td scope="row"><a href={{issue.legislation_URL}}>{{issue.legislation_URL}}</a></td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
+
+<table >
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Industry</th>
+      <th scope="col">Total_Donations</th>
+      <th scope="col">Individual Donations</th>
+      <th scope="col">PAC Donations</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for donation in list_donations %}
+      <tr>
+        <td scope="row">{{donation.industry[0]}}</td>
+        <td>{{donation.total_donations[0]}}</td>
+        <td>{{donation.individual_donations[0]}}</td>
+        <td>{{donation.pac_donations}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
 </div>
 
 </div>
