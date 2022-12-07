@@ -28,281 +28,151 @@ class Committee:
         self.candidate_id=candidate_id
         self.candidate_name=candidate_name
 
-
+    #returns all tuples based on matching cid value
     @staticmethod 
-    def get(cid): #gets everything by cid value
-        return(app.db.execute('''
-SELECT *
-FROM Committee
-WHERE cid = :cid
-    
-''',
-                              cid=cid,
-                             ))
-
+    def get(cid): 
+        return(app.db.execute(''' 
+            SELECT *
+            FROM Committee
+            WHERE cid = :cid 
+            ''',
+             cid=cid,
+        ))
+   
+    #returns all data, filtered and ordered on date, sort, order, cycles to view, and committee type parameters
     @staticmethod
-    def get_all(order,sort, from_date, to_date): #just gets everyting in the table
+    def get_all(order,sort, from_date, to_date,view,type): 
         return (app.db.execute('''
-SELECT *
-FROM Committee c1
-WHERE transaction_date >=:from_date AND transaction_date<=:to_date
-ORDER BY  
-        CASE WHEN :sort='ascending' AND :order='name' THEN c1.cname  END ASC,
-        CASE WHEN :sort='descending' AND :order='name' THEN c1.cname  END DESC,
-        CASE WHEN :sort='ascending' AND :order='date' THEN c1.transaction_date END ASC,
-        CASE WHEN :sort='ascending' AND :order='transaction amount' THEN c1.transaction_amount  END ASC,
-        CASE WHEN :sort='descending' AND :order='date' THEN c1.transaction_date  END DESC,
-        CASE WHEN :sort='descending' AND :order='transaction amount' THEN c1.transaction_amount END DESC  
-    
-        
-''',
-                              sort=sort,
-                              order=order,
-                              from_date=from_date,
-                              to_date=to_date))
-    def get_all_view(order,sort,view,from_date,to_date): #just gets everyting in the table
-        return (app.db.execute('''
-SELECT *
-FROM Committee c1
-WHERE c1.cycle=:view AND transaction_date >=:from_date AND transaction_date<=:to_date
-ORDER BY  
-        CASE WHEN :sort='ascending' AND :order='name' THEN c1.cname  END ASC,
-        CASE WHEN :sort='descending' AND :order='name' THEN c1.cname  END DESC,
-        CASE WHEN :sort='ascending' AND :order='date' THEN c1.transaction_date END ASC,
-        CASE WHEN :sort='ascending' AND :order='transaction amount' THEN c1.transaction_amount  END ASC,
-        CASE WHEN :sort='descending' AND :order='date' THEN c1.transaction_date  END DESC,
-        CASE WHEN :sort='descending' AND :order='transaction amount' THEN c1.transaction_amount END DESC  
-    
-        
-''',
-                              sort=sort,
-                              view=view,
-                              order=order,
-                              from_date=from_date,
-                              to_date=to_date))
-    def get_all_type(order,sort,type,from_date,to_date): #just gets everyting in the table
-        return (app.db.execute('''
-SELECT *
-FROM Committee c1
-WHERE c1.ctype=:type AND transaction_date >=:from_date AND transaction_date<=:to_date
-ORDER BY  
-        CASE WHEN :sort='ascending' AND :order='name' THEN c1.cname  END ASC,
-        CASE WHEN :sort='descending' AND :order='name' THEN c1.cname  END DESC,
-        CASE WHEN :sort='ascending' AND :order='date' THEN c1.transaction_date END ASC,
-        CASE WHEN :sort='ascending' AND :order='transaction amount' THEN c1.transaction_amount  END ASC,
-        CASE WHEN :sort='descending' AND :order='date' THEN c1.transaction_date  END DESC,
-        CASE WHEN :sort='descending' AND :order='transaction amount' THEN c1.transaction_amount END DESC  
-''',
-                              sort=sort,
-                              type=type,
-                              order=order,
-                              from_date=from_date,
-                              to_date=to_date))
+            SELECT *
+            FROM Committee c1
+            WHERE transaction_date >=:from_date AND transaction_date<=:to_date
+                AND (CASE WHEN  :view NOT LIKE 'All' THEN  c1.cycle=:view  ELSE c1.cid!='' END)
+                AND (CASE WHEN :type NOT LIKE 'All' THEN  c1.ctype=:type ELSE c1.cid!='' END)
+            ORDER BY  
+                CASE WHEN :sort='ascending' AND :order='name' THEN c1.cname  END ASC,
+                CASE WHEN :sort='descending' AND :order='name' THEN c1.cname  END DESC,
+                CASE WHEN :sort='ascending' AND :order='date' THEN c1.transaction_date END ASC,
+                CASE WHEN :sort='ascending' AND :order='transaction amount' THEN c1.transaction_amount  END ASC,
+                CASE WHEN :sort='descending' AND :order='date' THEN c1.transaction_date  END DESC,
+                CASE WHEN :sort='descending' AND :order='transaction amount' THEN c1.transaction_amount END DESC  
+            ''',
+            sort=sort,
+            order=order,
+            from_date=from_date,
+            to_date=to_date,
+            view=view,
+            type=type))
 
-    def get_all_view_type(order,sort,view,type,from_date,to_date): #just gets everyting in the table
-        return (app.db.execute('''
-SELECT *
-FROM Committee c1
-WHERE c1.cycle=:view AND c1.ctype=:type AND transaction_date >=:from_date AND transaction_date<=:to_date
-ORDER BY  
-        CASE WHEN :sort='ascending' AND :order='name' THEN c1.cname  END ASC,
-        CASE WHEN :sort='descending' AND :order='name' THEN c1.cname  END DESC,
-        CASE WHEN :sort='ascending' AND :order='date' THEN c1.transaction_date END ASC,
-        CASE WHEN :sort='ascending' AND :order='transaction amount' THEN c1.transaction_amount  END ASC,
-        CASE WHEN :sort='descending' AND :order='date' THEN c1.transaction_date  END DESC,
-        CASE WHEN :sort='descending' AND :order='transaction amount' THEN c1.transaction_amount END DESC  
-    
-        
-''',
-                              sort=sort,
-                              view=view,
-                              type=type,
-                              order=order,
-                              from_date=from_date,
-                              to_date=to_date))
-
+    #returns data involving a particular entity (user can indicate if they want this entity as the donor, recipient, or both data)
+    #filtered and ordered on date, sort, order, cycles to view, and committee type parameters
     @staticmethod
-    def get_comm(name,order,sort,from_date,to_date):
+    def get_comm(name,order,sort,from_date,to_date,view,type):
         return(app.db.execute('''
-SELECT *
-FROM Committee  WHERE (cname=:name OR name_contributor=:name) AND transaction_date >=:from_date AND transaction_date<=:to_date
-ORDER BY  
-        CASE WHEN :sort='ascending' AND :order='name' THEN cname  END ASC,
-        CASE WHEN :sort='descending' AND :order='name' THEN cname  END DESC,
-        CASE WHEN :sort='ascending' AND :order='election cycle' THEN cycle END ASC,
-        CASE WHEN :sort='ascending' AND :order='transaction amount' THEN transaction_amount  END ASC,
-        CASE WHEN :sort='descending' AND :order='election cycle' THEN cycle  END DESC,
-        CASE WHEN :sort='descending' AND :order='transaction amount' THEN transaction_amount END DESC 
-    
-        
-''',
-                              name=name,
-                              from_date=from_date,
-                              to_date=to_date,
-                              sort=sort,
-                              order=order))
+            SELECT *
+            FROM Committee  
+            WHERE (cname=:name OR name_contributor=:name) 
+            AND transaction_date >=:from_date AND transaction_date<=:to_date
+            AND (CASE WHEN  :view NOT LIKE 'All' THEN  cycle=:view  ELSE cid!='' END)
+            AND (CASE WHEN :type NOT LIKE 'All' THEN  ctype=:type ELSE cid!='' END)
+            ORDER BY  
+                CASE WHEN :sort='ascending' AND :order='name' THEN cname  END ASC,
+                CASE WHEN :sort='descending' AND :order='name' THEN cname  END DESC,
+                CASE WHEN :sort='ascending' AND :order='date' THEN transaction_date END ASC,
+                CASE WHEN :sort='ascending' AND :order='transaction amount' THEN transaction_amount  END ASC,
+                CASE WHEN :sort='descending' AND :order='date' THEN transaction_date  END DESC,
+                CASE WHEN :sort='descending' AND :order='transaction amount' THEN transaction_amount END DESC 
+            ''',
+            name=name,
+            from_date=from_date,
+            to_date=to_date,
+            sort=sort,
+            order=order,
+            view=view,
+            type=type))
+
     @staticmethod
     def get_name(cid):
         rows = app.db.execute('''
-SELECT cname
-FROM Committee  WHERE cid=:cid
-        
-''',
-                              
-                              cid=cid)
+            SELECT cname
+            FROM Committee  WHERE cid=:cid
+            ''',                 
+        cid=cid)
         return rows[0]
+
     @staticmethod
     def get_ctype(cid):
         rows = app.db.execute('''
-SELECT ctype
-FROM Committee  WHERE cid=:cid
-        
-''',
-                              
-                              cid=cid)
+            SELECT ctype
+            FROM Committee  WHERE cid=:cid    
+            ''',               
+        cid=cid)
         return rows[0]
 
-
-    
-
     @staticmethod
-    def get_all_range(from_date, to_date, sort_by,aord,cid): #gets everything in the table given a range of dates
+    def get_all_range(from_date, to_date, sort_by,aord,cid,recipient,search_entity): #gets everything in the table given a range of dates
         rows = app.db.execute('''
             SELECT *
             FROM Committee
             WHERE  transaction_date >=:y1 AND transaction_date<=:y2 AND cid = :cid
+            AND (CASE WHEN :recipient NOT LIKE 'All' THEN  entity_tp=:recipient  ELSE cid!='' END)
+            AND (CASE WHEN :search_entity NOT LIKE '' THEN  name_contributor=:search_entity  ELSE cid!='' END)
             ORDER BY 
-        CASE WHEN :AD='ascending' AND :s='date' THEN transaction_date END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='date' THEN transaction_date END DESC
+                CASE WHEN :AD='ascending' AND :s='date' THEN transaction_date END ASC,
+                CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount END ASC,
+                CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount END DESC,
+                CASE WHEN :AD='descending' AND :s='date' THEN transaction_date END DESC
             ''',
                               
-                              y1=from_date,
-                              y2=to_date,
-                              s=sort_by,
-                              AD=aord,
-                              cid=cid
-                              )
-        return [Committee (*row) for row in rows]
-
-    @staticmethod
-    def get_all_Recipient(from_date, to_date, sort_by,aord,cid,recipient): #gets everything in the table given a range of dates
-        rows = app.db.execute('''
-            SELECT *
-            FROM Committee
-            WHERE  transaction_date >=:y1 AND transaction_date<=:y2 AND cid = :cid AND entity_tp=:recipient
-            ORDER BY 
-        CASE WHEN :AD='ascending' AND :s='date' THEN transaction_date END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='date' THEN transaction_date END DESC
-            ''',
-                              
-                              y1=from_date,
-                              y2=to_date,
-                              s=sort_by,
-                              recipient=recipient,
-                              AD=aord,
-                              cid=cid
-                              )
+            y1=from_date,
+            y2=to_date,
+            s=sort_by,
+            AD=aord,
+            cid=cid,
+            recipient=recipient,
+            search_entity=search_entity
+            )
         return [Committee (*row) for row in rows]
 
     
     @staticmethod
-    def get_all_involving(search_entity,from_date,to_date, sort_by,aord,cid):
-        rows = app.db.execute('''
-            SELECT *        FROM Committee
-            WHERE cid = :cid AND ( name_contributor=:entity) AND transaction_date>=:y1 AND transaction_date<=:y2
-           ORDER BY 
-        CASE WHEN :AD='ascending' AND :s='date' THEN transaction_date END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='date' THEN transaction_date END DESC
-            ''',
-                              entity=search_entity,
-                              y1=from_date,
-                              y2=to_date,
-                              s=sort_by,
-                              AD=aord,
-                              cid=cid
-                              )
-        return [Committee(*row) for row in rows]
-    @staticmethod
-    def get_all_involvingRecipient(search_entity,from_date,to_date, sort_by,aord,cid,recipient):
-        rows = app.db.execute('''
-            SELECT *        FROM Committee
-            WHERE cid = :cid AND ( name_contributor=:entity) AND transaction_date>=:y1 AND transaction_date<=:y2 AND entity_tp=:recipient
-           ORDER BY 
-        CASE WHEN :AD='ascending' AND :s='date' THEN transaction_date END ASC,
-        CASE WHEN :AD='ascending' AND :s='donation amount' THEN transaction_amount END ASC,
-        CASE WHEN :AD='descending' AND :s='donation amount' THEN transaction_amount END DESC,
-        CASE WHEN :AD='descending' AND :s='date' THEN transaction_date END DESC
-            ''',
-                              entity=search_entity,
-                              y1=from_date,
-                              y2=to_date,
-                              s=sort_by,
-                              AD=aord,
-                              cid=cid,
-                              recipient=recipient
-                              )
-        return [Committee(*row) for row in rows]
-
-    @staticmethod
-    def get_sum_all (from_date,to_date,cid):
+    def get_sum (from_date,to_date,cid, recipient,search_entity):
         rows = app.db.execute('''
             SELECT SUM(transaction_amount)
             FROM Committee
             WHERE transaction_date>=:y1 AND transaction_date<=:y2 AND cid = :cid
+                AND (CASE WHEN :recipient NOT LIKE 'All' THEN  entity_tp=:recipient  ELSE cid!='' END)
+                AND (CASE WHEN :search_entity NOT LIKE '' THEN  name_contributor=:search_entity  ELSE cid!='' END)
             ''',
                               
-                              y1=from_date,
-                              y2=to_date,
-                              cid=cid
-                              )
+            y1=from_date,
+            y2=to_date,
+            cid=cid,
+            recipient=recipient,
+            search_entity=search_entity
+            )
         return rows[0]
     @staticmethod
-    def get_sum_involving (any_ent, from_date,to_date,cid):
+    def sumAll (from_date,to_date,view, ctype,query):
         rows = app.db.execute('''
-            SELECT SUM(transaction_amount)
+            (SELECT SUM(transaction_amount)
             FROM Committee
-            WHERE transaction_date>=:y1 AND transaction_date<=:y2 AND cid = :cid AND (name_contributor=:entity) 
+            WHERE transaction_date>=:y1 AND transaction_date<=:y2 
+                AND (CASE WHEN :view NOT LIKE 'All' THEN  cycle=:view  ELSE cid!='' END)
+                AND (CASE WHEN :query NOT LIKE '' THEN  cname=:query  ELSE cid!='' END)
+                AND (CASE WHEN :ctype NOT LIKE 'All' THEN  ctype=:ctype  ELSE cid!='' END))
+            UNION
+            (SELECT SUM (-transaction_amount)
+            FROM Committee
+            WHERE transaction_date>=:y1 AND transaction_date<=:y2 
+                AND (CASE WHEN :view NOT LIKE 'All' THEN  cycle=:view  ELSE cid!='' END)
+                AND (CASE WHEN :query NOT LIKE '' THEN  name_contributor=:query  ELSE cid!='' END)
+                AND (CASE WHEN :ctype NOT LIKE 'All' THEN  ctype=:ctype  ELSE cid!='' END))
             ''',
                               
-                              y1=from_date,
-                              y2=to_date,
-                              entity=any_ent,
-                              cid=cid
-                              )
-        return rows[0]
-    @staticmethod
-    def get_sum_allRecipient (from_date,to_date,cid,recipient):
-        rows = app.db.execute('''
-            SELECT SUM(transaction_amount)
-            FROM Committee
-            WHERE transaction_date>=:y1 AND transaction_date<=:y2 AND cid = :cid AND entity_tp=:recipient
-            ''',
-                              
-                              y1=from_date,
-                              y2=to_date,
-                              recipient=recipient,
-                              cid=cid
-                              )
-        return rows[0]
-    @staticmethod
-    def get_sum_involvingRecipient (any_ent, from_date,to_date,cid,recipient):
-        rows = app.db.execute('''
-            SELECT SUM(transaction_amount)
-            FROM Committee
-            WHERE transaction_date>=:y1 AND transaction_date<=:y2 AND cid = :cid AND (name_contributor=:entity) AND cid = :cid AND entity_tp=:recipient 
-            ''',
-                              
-                              y1=from_date,
-                              y2=to_date,
-                              entity=any_ent,
-                              recipient=recipient,
-                              cid=cid
-                              )
-        return rows[0]
-    
+            y1=from_date,
+            y2=to_date,
+            query=query,
+            view=view,
+            ctype=ctype
+            )
+        return rows

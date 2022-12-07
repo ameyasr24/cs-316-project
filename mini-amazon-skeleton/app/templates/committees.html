@@ -6,19 +6,19 @@
   {{ form.hidden_tag() }}
   
 <div class="form-inline">
-  <p>
+  <div class="search-header-comms">
     <br>
     Search for a committee or recipient: 
-    {{ form.query }}
+    {{ form.query }} {{ form.total }}
     <br>
-    {{ form.from_date.label }}
-    <input type="date" {{form.from_date}} 
+    From Date: 
+    <input type="date" {{form.from_date}}    
     {% for error in form.from_date.errors %}
       <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
 
-    {{ form.to_date.label }} 
-    <input type="date" {{form.to_date}}
+    To Date: 
+    <input type="date" {{form.to_date}}    
     {% for error in form.to_date.errors %}
       <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
@@ -32,9 +32,9 @@
     {% for error in form.query.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
- <br>
- <input id = "candidate_search_bar_go" type="submit">
-</p>
+<input id = "candidate_search_bar_go" type="submit">
+</div>
+
 </div>
 {% if not err %}
 <p>
@@ -51,6 +51,8 @@
 </p>
 {{pagination.info}}
 {{pagination.links}}
+
+
 <div id="universal-table-wrapper">
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
@@ -68,13 +70,13 @@
 
     {% for c in all_committees %}
       <tr>
-        <td>{{c.ctype}}</td>
+        <td><a href="\committee\{{c.cid}}">{{c.ctype}}</a></td>
         <td>
           <a href="\committee\{{c.cid}}">{{c.cname}}</a></td>
-        <td>{{c.name_contributor}}</td>
-        <td width=8>${{c.transaction_amount}}</td>
-        <td width=10>{{c.transaction_date }}</td>
-        <td width=4>{{c.cycle}}</td>
+        <td><a href="\committee\{{c.cid}}">{{c.name_contributor}}</a></td>
+        <td width=8><a href="\committee\{{c.cid}}">${{c.transaction_amount}}</a></td>
+        <td width=10><a href="\committee\{{c.cid}}">{{c.transaction_date }}</a></td>
+        <td width=4><a href="\committee\{{c.cid}}">{{c.cycle}}</a></td>
 
       </tr></a>
     {% endfor %}
