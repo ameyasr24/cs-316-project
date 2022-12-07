@@ -252,3 +252,14 @@ def visualize():
     fig.savefig(img)
     img.seek(0)
     return send_file(img,mimetype='img/png')
+
+@bp.route('/visualize_states')
+def visualize_states(race_data):
+    fig,ax=plt.subplots(figsize=(3,3))
+    ax=sns.set(style="darkgrid")
+    sns.barplot(data = race_data, x=candidate_name, y = total_receipts).set(title = "Total Receipts")    
+    canvas=FigureCanvas(fig)
+    img = io.BytesIO()
+    fig.savefig(img)
+    img.seek(0)
+    return send_file(img,mimetype='img/png')
