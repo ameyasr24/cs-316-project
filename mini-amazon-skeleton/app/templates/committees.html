@@ -1,44 +1,86 @@
 {% extends "base.html" %}
 
 {% block content %}
-<br>
-<h4 class="page-header">Search for donations involving different PACs!</h4>
+<h4 class="page-header">Search for donations involving different committees!</h4>
 <form  action="" method="post">
   {{ form.hidden_tag() }}
+  
 <div class="form-inline">
   <p>
-    Search for a committee: 
+    <br>
+    Search for a committee or recipient: 
     {{ form.query }}
+    <br>
+    {{ form.from_date.label }}
+    <input type="date" {{form.from_date}} 
+    {% for error in form.from_date.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+
+    {{ form.to_date.label }} 
+    <input type="date" {{form.to_date}}
+    {% for error in form.to_date.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+    Committee type: {{form.committee_type}}
+    <br>
+    Election cycle: {{form.view}}
+    <br>
+    Sort by: {{form.order_by}} {{form.sort}}
+    <br>
+    {{form.rows}} rows per page
     {% for error in form.query.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
- 
-  {{ form.submit() }}
+ <br>
+ <input id = "candidate_search_bar_go" type="submit">
 </p>
-
 </div>
 {% if not err %}
-<h3>Committees:</h3>
+<p>
+  {% with messages = messages %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    <br>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
+{{pagination.info}}
+{{pagination.links}}
 <div id="universal-table-wrapper">
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Type</th>
+      <th scope="col">Committee Type</th>
+      <th scope="col">Committee Name</th>
+      <th scope="col">Recipient Name</th>
+      <th scope="col">Transaction Amount</th>
+      <th scope ="col">Transaction Date</th>
+      <th scope="col">Election Cycle</th>
+
     </tr>
   </thead>
   <tbody>
+
     {% for c in all_committees %}
       <tr>
-        <th scope="row">{{c.cid}}</th>
-        <td><a href="\committee\{{c.cid}}">{{c.cname}}</a></td>
-        <td>{{c.type}}</td>
+        <td>{{c.ctype}}</td>
+        <td>
+          <a href="\committee\{{c.cid}}">{{c.cname}}</a></td>
+        <td>{{c.name_contributor}}</td>
+        <td width=8>${{c.transaction_amount}}</td>
+        <td width=10>{{c.transaction_date }}</td>
+        <td width=4>{{c.cycle}}</td>
+
       </tr></a>
     {% endfor %}
-
   </tbody>
 </table>
+{{pagination.links}}
 </div>
 
 {% endif %}
