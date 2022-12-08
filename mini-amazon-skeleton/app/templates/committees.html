@@ -1,49 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h4 class="page-header">Search for donations involving different committees!</h4>
+<h4 class="page-header">Search for donations involving different committees! <br>
+</h4>
 <form  action="" method="post">
   {{ form.hidden_tag() }}
   
 <div class="form-inline">
   <div class="search-header-comms">
-    <br>
-    Search for a committee or recipient: 
-    {{ form.query }} {{ form.total }}
-    <br>
-    From Date: 
-    <input type="date" {{form.from_date}}    
-    {% for error in form.from_date.errors %}
-      <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
+    <div class="search-comms">
+      <p>
+      Search for a committee or recipient: 
+      {{ form.query(size=30)}}  
+      Committee type: {{form.committee_type}}
+      <br>
+      From date: 
+      <input type="date" {{form.from_date}}    
+      {% for error in form.from_date.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      To date: 
+      <input type="date" {{form.to_date}}    
+      {% for error in form.to_date.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
 
-    To Date: 
-    <input type="date" {{form.to_date}}    
-    {% for error in form.to_date.errors %}
+      Election cycle: {{form.view}}
+      <br>
+      Sort by: {{form.order_by}} {{form.sort}} Display sum of donations: {{ form.total }}
+      <br>
+      {{form.rows}} rows per page  
+      <br>
+      {% for error in form.query.errors %}
       <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-    Committee type: {{form.committee_type}}
-    <br>
-    Election cycle: {{form.view}}
-    <br>
-    Sort by: {{form.order_by}} {{form.sort}}
-    <br>
-    {{form.rows}} rows per page
-    {% for error in form.query.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-<input id = "candidate_search_bar_go" type="submit">
+      {% endfor %}
+    <input id = "candidate_search_bar_go" type="submit" value="Find donation records!">
+  </p>
+  </div>
 </div>
 
 </div>
-{% if not err %}
+
 <p>
   {% with messages = messages %}
   {% if messages %}
   <ul>
     {% for message in messages %}
-    <li>{{ message }}</li>
-    <br>
+    <li><strong>{{ message }}</strong></li>
     {% endfor %}
   </ul>
   {% endif %}
@@ -51,8 +54,7 @@
 </p>
 {{pagination.info}}
 {{pagination.links}}
-
-
+{% if not err %}
 <div id="universal-table-wrapper">
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
@@ -69,16 +71,15 @@
   <tbody>
 
     {% for c in all_committees %}
-      <tr>
-        <td><a href="\committee\{{c.cid}}">{{c.ctype}}</a></td>
-        <td>
-          <a href="\committee\{{c.cid}}">{{c.cname}}</a></td>
-        <td><a href="\committee\{{c.cid}}">{{c.name_contributor}}</a></td>
-        <td width=8><a href="\committee\{{c.cid}}">${{c.transaction_amount}}</a></td>
-        <td width=10><a href="\committee\{{c.cid}}">{{c.transaction_date }}</a></td>
-        <td width=4><a href="\committee\{{c.cid}}">{{c.cycle}}</a></td>
+      <tr class = 'clickable-row' data-href="\committee\{{c.cid}}">
+        <td>{{c.ctype}}</td>
+        <td>{{c.cname}}</td>
+        <td>{{c.name_contributor}}</td>
+        <td width=8>${{c.transaction_amount}}</td>
+        <td width=10>{{c.transaction_date }}</td>
+        <td width=4>{{c.cycle}}</td>
 
-      </tr></a>
+      </tr>
     {% endfor %}
   </tbody>
 </table>
@@ -89,6 +90,7 @@
 
   
 {% if err %} 
-<p>No committees found :( </p>
+<p>No committees found with the given parameters :( </p>
 {% endif %}
 {% endblock %}
+

@@ -87,12 +87,12 @@ def search():
     err=False
     
     #the following is for getting the searchedcomms if the user has inputted a specific query
-    if q:
+    if q is not "":
         searchedcomms=Committee.get_comm(q,o,s,f,t,v,c)
         #if searchedcomms is empty, this means that the query the user specified is not in our database, and we set err to True to return error message when we render the template
         if not searchedcomms:
             err=True
-        output.append('You searched for donations involving: '+ q)      
+        output.append("You searched for donations involving \"" + q + "\"")      
 
     #if the user resubmits the form, make another call to this same function with updated parameters to make another search.
     if form1.validate_on_submit():
@@ -110,15 +110,12 @@ def search():
     
     if tot and not err:
         total=0
-        total = Committee.sumAll(f,t, v,c, q)
-        output.append(len(total))
-        nontotal = total[1][0]
-        total = total[0][0]
-#figure out a way to distinguish between if it is 
-        if nontotal:
-            output.append('Total Donations from ' + q+' : $' +str(total) + 'Total Donations to ' + q+' : $' + str(nontotal))
-        elif total:
-            output.append('Total Donations from ' + q+' : $' + str(total))
+        total = Committee.sumTo(f,t, v,c, q)[0]
+        nontotal = Committee.sumFrom(f,t, v,c, q)[0]
+        if (total[0]) is not None:
+            output.append("Total donations distributed: $" + str(total[0]))
+        if (nontotal[0]) is not None :
+            output.append("Total donations received: $"+str(nontotal[0]))
     #get the current page that we are on in the pagination
     page=request.args.get('page',type=int,default=1)
 
@@ -136,19 +133,17 @@ def search():
 @bp.route('/committee/<cid>', methods=['GET', 'POST'])
 def committee_donations(cid):
     #after routing to the individual committee's page, get the committee name, type, and all rows usig that committee's cid
-    cname = Committee.get_name(cid)
-    ctype = Committee.get_ctype(cid)
+    info=Committee.getInfo(cid)
     searchedcomms=Committee.get(cid)
-
+    state=str(info[0])
+    cname=str(info[1])
+    ctype=str(info[2])
+    candidate_name=str(info[3])
     #create an empty array to display messages after searching
     output=[]
-
     #instantiate a new SearchCommittee() form
     form2 = SearchCommittee()
-
-    type_form='all donations'
-    subtype=0
-    f=''
+    err = False
     if form2.validate_on_submit():
         order = form2.order_by.data
         sort = form2.sort.data
@@ -158,15 +153,13 @@ def committee_donations(cid):
         from_date = form2.from_date.data
         to_date = form2.to_date.data
         recipient = form2.recipient.data
+        
+        searchedcomms=Committee.get_all_range(from_date, to_date,order,sort,cid,recipient,ent) 
+        if not searchedcomms:
+            err=True               
         if ent:
-            sentence='You searched for donations involving ' + ent
-            if recipient!="All":
-                sentence+= " and recipients of type "+ recipient
-            output.append(sentence)
-        elif not ent:
-            if recipient!="All":
-                sentence= "You searched for donations involving recipients of type "+ recipient
-        searchedcomms=Committee.get_all_range(from_date, to_date,order,sort,cid,recipient,ent)                
+            sentence="You searched for donations to \"" + ent + "\""
+            output.append(sentence)   
         if total:
             sumTotal = Committee.get_sum(from_date, to_date,cid,recipient,ent)
             if sumTotal:
@@ -174,8 +167,9 @@ def committee_donations(cid):
                 if not sumTotal:
                     sumTotal = 0
             else: sumTotal = 0
-            output.append('Total Donations: $' +str(sumTotal))
-        output.append('Date range: '+str(from_date)+' to ' + str(to_date))
-        output.append('Sorted by: ' + order + ' ' + sort)
-        
-    return render_template('committeepage.html', form=form2,type_form=type_form,all_committees=searchedcomms,messages=output,cname=cname,ctype=ctype)
+            if not err:
+                output.append('Total Donations: $' +str(sumTotal))
+
+        if err:
+            output.append('No donations found with the given parameters :(')
+    return render_template('committeepage.html', err=err,form=form2,all_committees=searchedcomms,messages=output,cname=cname,ctype=ctype,candidate_name=candidate_name,state=state)

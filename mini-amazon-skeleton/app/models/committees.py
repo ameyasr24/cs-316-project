@@ -91,24 +91,6 @@ class Committee:
             type=type))
 
     @staticmethod
-    def get_name(cid):
-        rows = app.db.execute('''
-            SELECT cname
-            FROM Committee  WHERE cid=:cid
-            ''',                 
-        cid=cid)
-        return rows[0]
-
-    @staticmethod
-    def get_ctype(cid):
-        rows = app.db.execute('''
-            SELECT ctype
-            FROM Committee  WHERE cid=:cid    
-            ''',               
-        cid=cid)
-        return rows[0]
-
-    @staticmethod
     def get_all_range(from_date, to_date, sort_by,aord,cid,recipient,search_entity): #gets everything in the table given a range of dates
         rows = app.db.execute('''
             SELECT *
@@ -152,27 +134,47 @@ class Committee:
             )
         return rows[0]
     @staticmethod
-    def sumAll (from_date,to_date,view, ctype,query):
+    def sumTo (from_date,to_date,view, ctype,query):
         rows = app.db.execute('''
             (SELECT SUM(transaction_amount)
             FROM Committee
             WHERE transaction_date>=:y1 AND transaction_date<=:y2 
                 AND (CASE WHEN :view NOT LIKE 'All' THEN  cycle=:view  ELSE cid!='' END)
-                AND (CASE WHEN :query NOT LIKE '' THEN  cname=:query  ELSE cid!='' END)
+                AND (CASE WHEN :query NOT LIKE '' THEN  cname=:query AND name_contributor!=:query
+                 WHEN :query LIKE '' THEN cid!=''
+                ELSE cycle='0000' END)
                 AND (CASE WHEN :ctype NOT LIKE 'All' THEN  ctype=:ctype  ELSE cid!='' END))
-            UNION
-            (SELECT SUM (-transaction_amount)
-            FROM Committee
-            WHERE transaction_date>=:y1 AND transaction_date<=:y2 
-                AND (CASE WHEN :view NOT LIKE 'All' THEN  cycle=:view  ELSE cid!='' END)
-                AND (CASE WHEN :query NOT LIKE '' THEN  name_contributor=:query  ELSE cid!='' END)
-                AND (CASE WHEN :ctype NOT LIKE 'All' THEN  ctype=:ctype  ELSE cid!='' END))
-            ''',
-                              
+            ''',                
             y1=from_date,
             y2=to_date,
             query=query,
             view=view,
             ctype=ctype
             )
-        return rows
+        return rows 
+    @staticmethod
+    def sumFrom (from_date,to_date,view, ctype,query):
+        rows = app.db.execute('''
+            (SELECT SUM (transaction_amount)
+            FROM Committee
+            WHERE transaction_date>=:y1 AND transaction_date<=:y2 
+                AND (CASE WHEN :view NOT LIKE 'All' THEN  cycle=:view  ELSE cid!='' END)
+                AND (CASE WHEN :query NOT LIKE '' THEN  name_contributor=:query AND cname!=:query
+                ELSE cycle='0000' END)
+                AND (CASE WHEN :ctype NOT LIKE 'All' THEN  ctype=:ctype  ELSE cid!='' END))
+            ''',                
+            y1=from_date,
+            y2=to_date,
+            query=query,
+            view=view,
+            ctype=ctype
+            )
+        return rows 
+    @staticmethod
+    def getInfo(cid):
+        rows = app.db.execute('''
+            SELECT state_,cname,ctype,candidate_name,candidate_id 
+            FROM Committee
+            WHERE cid=:cid''',
+            cid = cid)
+        return rows[0]
