@@ -13,9 +13,11 @@ Repository: https://github.com/ameyasr24/cs-316-project
 Data Sources: 
 https://www.fec.gov/data/browse-data/?tab=bulk-data
 https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU 
-https://www.congress.gov/search?q=%7B%22congress%22%3A%5B%22117%22%5D%2C%22source%22%3A%22legislation%22%2C%22chamber%22%3A%22Senate%22%2C%22type%22%3A%22bills%22%2C%22bill-status%22%3A%5B%22failed-one%22%2C%22passed-one%22%2C%22passed-both%22%5D%7D
+https://www.congress.gov/search?
+https://www.mockaroo.com/
+q=%7B%22congress%22%3A%5B%22117%22%5D%2C%22source%22%3A%22legislation%22%2C%22chamber%22%3A%22Senate%22%2C%22type%22%3A%22bills%22%2C%22bill-status%22%3A%5B%22failed-one%22%2C%22passed-one%22%2C%22passed-both%22%5D%7D
 Lewis, Jeffrey B., Keith Poole, Howard Rosenthal, Adam Boche, Aaron Rudkin, and Luke Sonnet (2021). Voteview: Congressional Roll-Call Votes Database. https://voteview.com/
 Congress Legislation: https://www.congress.gov/search?q=%7B%22source%22%3A%22legislation%22%2C%22congress%22%3A%5B%22117%22%2C%22116%22%2C%2294%22%2C%2295%22%2C%2296%22%2C%2297%22%2C%2298%22%2C%2299%22%2C%22100%22%2C%22101%22%2C%22102%22%2C%22103%22%2C%22104%22%2C%22105%22%2C%22106%22%2C%22107%22%2C%22108%22%2C%22109%22%2C%22110%22%2C%22111%22%2C%22112%22%2C%22113%22%2C%22114%22%2C115%5D%7D
 Open Secrets Donation Industries: https://www.opensecrets.org/members-of-congress
 CSS Styling template: https://templatemo.com/tm-562-space-dynamic
-
+Datables: https://datatables.net/
