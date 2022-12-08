@@ -168,7 +168,7 @@ path:hover {
 
 .candidate-header h2{
     text-align:center;
-    background-color: aliceblue;
+    background-color: transparent;
     padding: 10px 10px;
     color: purple
 }
@@ -252,6 +252,7 @@ path:hover {
 
 .race-year h3{
     text-align: center;
+<<<<<<< HEAD
 }
 
 
@@ -280,3 +281,6 @@ path:hover {
     max-width: 50px;
     height: auto;
   }
+=======
+}
+>>>>>>> main

@@ -6,25 +6,37 @@
 <form class="form-inline" action="" method="post">
 
   <select name="issue_category" class="Input" size="1">
-    <option value="Health">Health</option>
+    <option hidden>Select Category</option>
+    {% for subject in list_subjects %}
+    <option value="{{subject[0]}}" {% if form.issue_category.data == subject[0] %} selected {% endif %}>{{subject[0]}}</option>
+    {% endfor %}
+    <!-- <option value="Health">Health</option>s
     <option value="International Affairs">International Affairs</option>
     <option value="Oil and gas">Oil and gas</option>
     <option value="Education">Education</option>
     <option value="Crime and Law Enforcement">Crime and Law Enforcement</option>
-    <option value="Armed Forces and National Security">Armed Forces and National Security</option>
+    <option value="Armed Forces and National Security">Armed Forces and National Security</option> -->
   </select>
 
-  <select name="politician" class="Input" size="1">
-    <option value="Grassley, Chuck [Sen.-R-IA]">Grassley, Chuck [Sen.-R-IA]</option> 
-    <!-- grassley: crime and law -->
-    <option value="Cruz, Ted [Sen.-R-TX]">Cruz, Ted [Sen.-R-TX]</option>
-    <!-- cruz: oil and gas -->
-    <option value="Murkowski, Lisa [Sen.-R-AK]">Murkowski, Lisa [Sen.-R-AK]</option>
-    <!-- Murkowski: education -->
-    <option value="Ossoff, Jon [Sen.-D-GA]">Ossoff, Jon [Sen.-D-GA]</option>
-    <option value="Tillis, Thomas [Sen.-R-NC]">Tillis, Thomas [Sen.-R-NC]</option>
-    <option value="Klobuchar, Amy [Sen.-D-MN]">Klobuchar, Amy [Sen.-D-MN]</option>
+
+
+ <!-- <select name="politician" class="Input" size="1">
+    <option value="Grassley, Chuck">Grassley, Chuck</option> 
+    <option value="Cruz, Ted">Cruz, Ted</option>
+    <option value="Murkowski, Lisa">Murkowski, Lisa</option>
+    <option value="Ossoff, Jon">Ossoff, Jon</option>
+    <option value="Tillis, Thomas">Tillis, Thomas</option>
+    <option value="Klobuchar, Amy">Klobuchar, Amy</option>
   </select>
+-->
+
+  <select name="politician" class="Input" size="1">
+    <option hidden>Select Your Senator</option>
+    {% for senator in list_senators %}
+    <option value="{{senator[0]}}" {% if form.politician.data == senator[0] %} selected {% endif %}>{{senator[0]}}</option> 
+    {% endfor %}
+  </select>
+
 
   <!-- <p>
     {{ form.issue_category.label }} 
@@ -35,6 +47,10 @@
   {{ form.search() }}
 </form>
 
+{% if form.politician.data %}
+<h3><a href={{cid_link}}>Click here to see all the legislation {{form.politician.data}} has voted on</a></h3>
+{% endif %}
+
 
 <h4 class="page-header">All issues:</h4>
 <div id="universal-table-wrapper">
@@ -42,30 +58,33 @@
 
 <table >
   <thead class="thead-dark">
+    {% for issue in list_issues %}
     <tr>
-      <th scope="col">Legislation Number</th>
-      <th scope="col">Legislation URL</th>
-      <th scope="col">Title</th>
+      <!-- <th scope="col">Legislation Number</th> -->
+      <th scope="col" colspan="2">Title</th>
+      <td scope="row" colspan="10" style="text-align:left">{{issue.title}}</td>
+    </tr>
+    <tr>
       <th scope="col">Sponsor</th>
-      <th scope="col">Cosponsor 1</th>
-      <th scope="col">Cosponsor 2</th>
-      <th scope="col">Cosponsor 3</th>
-      <th scope="col">Cosponsor 4</th>
-      <th scope="col">Cosponsor 5</th>
-      <th scope="col">Subject 1</th>
-      <th scope="col">Subject 2</th>
-      <th scope="col">Subject 3</th>
-      <th scope="col">Subject 4</th>
-      <th scope="col">Subject 5</th>
+      <th scope="col">Cosponsor</th>
+      <th scope="col">Cosponsor</th>
+      <th scope="col">Cosponsor</th>
+      <th scope="col">Cosponsor</th>
+      <th scope="col">Cosponsor</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Legislation URL</th>
     </tr>
   </thead>
   <tbody>
-    {% for issue in list_issues %}
       <tr>
-        <td scope="row">{{issue.legislation_number}}</td>
-        <td>{{issue.legislation_URL}}</td>
-        <td>{{issue.title}}</td>
-        <td>{{issue.sponsor}}</td>
+        <!-- <td scope="row">{{issue.legislation_number}}</td> -->
+        <!-- <td scope="row">{{issue.legislation_URL}}</td> -->
+        <!-- <td>{{issue.legislation_URL}}</td> -->
+        <td scope="row">{{issue.sponsor}}</td>
         <td>{{issue.cosponsor1}}</td>
         <td>{{issue.cosponsor2}}</td>
         <td>{{issue.cosponsor3}}</td>
@@ -76,13 +95,47 @@
         <td>{{issue.subject3}}</td>
         <td>{{issue.subject4}}</td>
         <td>{{issue.subject5}}</td>
+        <td scope="row"><a href={{issue.legislation_URL}}>{{issue.legislation_URL}}</a></td>
+      </tr>
+  </tbody>
+  {% endfor %}
+</table>
+
+<table >
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Industry</th>
+      <th scope="col">Total_Donations</th>
+      <th scope="col">Individual Donations</th>
+      <th scope="col">PAC Donations</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for donation in list_donations %}
+      <tr>
+        <td scope="row">{{donation.industry[0]}}</td>
+        <td>{{donation.total_donations[0]}}</td>
+        <td>{{donation.individual_donations[0]}}</td>
+        <td>{{donation.pac_donations}}</td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
-</div>
+
 
 </div>
+<body>
+  <div></br></br></div>
+  {% if form.politician.data %}
+  <div class = "correlation-header"><h2> Aggregation of Data based on filters</h2></div>
+  <h1Visualization>
+    <img src= "{{ url_for('issues.visualize') }}" size="30">
+  </h1Visualization>
+  {% endif %}
+</body>
+</div>
+
+
 <!-- 
 <h2>All issues:</h2>
 <table class='table table-hover table-bordered container'>

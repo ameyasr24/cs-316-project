@@ -39,6 +39,7 @@ CREATE TABLE Committee (
     year VARCHAR(4),
     cycle INT,
     cname VARCHAR(200) ,
+    ctype VARCHAR(200),
     candidate_id  VARCHAR (9),
     candidate_name VARCHAR(200),
     PRIMARY KEY (tid)
@@ -223,6 +224,23 @@ CREATE TABLE Senate_Legislation_Topics (
     subject4 VARCHAR(255),
     subject5 VARCHAR(255)
 );
+
+CREATE TABLE Donations_By_Industry (
+    id INT NOT NULL PRIMARY KEY,
+    senator_name VARCHAR(255),
+    industry VARCHAR(255), 
+    total_donations DECIMAL (20,2),
+    individual_donations DECIMAL (20,2),
+    pac_donations DECIMAL (20,2)
+);
+
+
+CREATE TABLE Candidate_Donations (
+    icpsr INT NOT NULL,
+    contributor VARCHAR(255) NOT NULL,
+    donation_amount INT NOT NULL,
+    donation_date DATE NOT NULL
+)
 
 
 --implement search bar by category

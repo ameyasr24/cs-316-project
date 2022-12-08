@@ -432,7 +432,9 @@ header
   padding-left: 0px;
   padding-right: 0px;
 }
-
+.thingy .a{
+  background:yellow;
+}
 .header-area .main-nav .nav li.submenu ul li a {
   opacity: 1;
   display: block;
@@ -1582,3 +1584,19 @@ responsive
     margin-left: 0px;
   }
 }
+
+#info-box {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  background-color: #ffffff;
+  border: 2px solid var(--universal-purple);
+  border-radius: 5px;
+  padding: 5px;
+  font-family: 'Poppins';
+  width: fit-content;
+}
+
+.max-vote{background-color: red;}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class = "candidate-header"><a href="/candidate/{{cid}}"><h2> {{ all_votes[0].bioname }} </h2></a></div>
+<div style="text-align:center;"><a href="/candidate/{{cid}}" style="color:black;"><h2> {{ all_votes[0].bioname }} </h2></a></div>
 <div class = "candidate-party"><h5>{{all_votes[0].party}}</h5></div>
 <div class = "candidate-state"><h5><a href="/state/{{all_votes[0].state}}">State: {{all_votes[0].state}}</a></h5></div>
 <br><br>
@@ -59,8 +59,58 @@
         </tbody>
       </table>
     </div>
+    <br><br>
   </div>
   {% endif %}
   {% endwith %}
+  <h5 style="text-align:center;">Here are all the donations the candidate has received</h5>
+  <br><br>
+  <div id="universal-table-wrapper">
+    <div id="candidate-voting-table-scroll">
+      <table class="datatables">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Contributor</th>
+            <th scope="col">Donation Amount(USD)</th>
+            <th scope="col">Date of Donation</th>
+          </tr>
+       </thead>
+       <tbody>
+          {% for donation in all_donations%}
+            <tr>
+              <td>{{donation.contributor}}</td>
+              <td>{{donation.donation_amount}}</td>
+              <td>{{donation.donation_date}}</td>
+            </tr>
+         {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <br><br>
+  </div>
+  <h5 style="text-align:center;">Here is the total amount each organization has donated to the candidate</h5>
+  <br><br>
+  <div id="universal-table-wrapper">
+    <div id="candidate-voting-table-scroll">
+      <table class="datatables">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Contributor</th>
+            <th scope="col">Total Donation Amount(USD)</th>
+            <th scope="col">Number of Donations</th>
+          </tr>
+       </thead>
+       <tbody>
+          {% for gdonation in grouped_donations%}
+            <tr>
+              <td>{{gdonation.contributor}}</td>
+              <td>{{gdonation.donation_amoun}}</td>
+              <td>{{gdonation.number_donations}}</td>
+            </tr>
+         {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </p>
 {% endblock %}
