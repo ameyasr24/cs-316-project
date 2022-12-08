@@ -62,7 +62,7 @@ def committees():
         tot = form1.total.data
         return redirect(url_for('committees.search',order=o,rows=r,sort=s,query=q,view=v,committee_type=c,from_date=f,to_date=t,total=tot))
 
-    #render the template with form1 data, temp (the rows we would like to display for the current page), and the pagination object
+    #otherwise render the template with form1 data, temp (the rows we would like to display for the current page), and the pagination object
     return render_template('committees.html', form=form1,all_committees=temp,pagination=pagination)
 
 @bp.route('/committee/search', methods=['GET', 'POST'])
@@ -77,6 +77,8 @@ def search():
     f = datetime.strptime(request.args.get('from_date', default='2013-11-01'),'%Y-%m-%d')
     t = datetime.strptime(request.args.get('to_date',default='2022-11-01'),'%Y-%m-%d')
     tot = request.args.get('total')
+
+    #output stores messages to display after searching
     output=[]
 
     #here we are redeclaring form1 with the most recently searched parameters
@@ -108,14 +110,16 @@ def search():
         tot = form1.total.data
         return redirect(url_for('committees.search',order=o,rows=r,sort=s,query=q,view=v,messages=output,committee_type=c,from_date=f,to_date=t,total=tot))
     
+    #if the user wants to compute the total donations and there are in fact valid donations to sum up
     if tot and not err:
-        total=0
+        #total is all donations from the queried entity and nontotal is all donations to the queried entity
         total = Committee.sumTo(f,t, v,c, q)[0]
         nontotal = Committee.sumFrom(f,t, v,c, q)[0]
         if (total[0]) is not None:
             output.append("Total donations distributed: $" + str(total[0]))
         if (nontotal[0]) is not None :
             output.append("Total donations received: $"+str(nontotal[0]))
+
     #get the current page that we are on in the pagination
     page=request.args.get('page',type=int,default=1)
 
@@ -139,11 +143,15 @@ def committee_donations(cid):
     cname=str(info[1])
     ctype=str(info[2])
     candidate_name=str(info[3])
+
     #create an empty array to display messages after searching
     output=[]
+
     #instantiate a new SearchCommittee() form
     form2 = SearchCommittee()
     err = False
+
+    #make temporary variables for each of the form2 data
     if form2.validate_on_submit():
         order = form2.order_by.data
         sort = form2.sort.data
@@ -154,12 +162,19 @@ def committee_donations(cid):
         to_date = form2.to_date.data
         recipient = form2.recipient.data
         
+        #get all of the transactions with the inputted parameters
         searchedcomms=Committee.get_all_range(from_date, to_date,order,sort,cid,recipient,ent) 
+
+        #if there are no transactions, just return an error
         if not searchedcomms:
-            err=True               
+            err=True   
+
+        # display a certain message if the user searches for a specific committee            
         if ent:
             sentence="You searched for donations to \"" + ent + "\""
-            output.append(sentence)   
+            output.append(sentence)  
+         
+        #if the user wants to compute the total donations and there are in fact valid donations to sum up
         if total:
             sumTotal = Committee.get_sum(from_date, to_date,cid,recipient,ent)
             if sumTotal:
@@ -169,7 +184,7 @@ def committee_donations(cid):
             else: sumTotal = 0
             if not err:
                 output.append('Total Donations: $' +str(sumTotal))
-
+        #append an error message to output
         if err:
             output.append('No donations found with the given parameters :(')
     return render_template('committeepage.html', err=err,form=form2,all_committees=searchedcomms,messages=output,cname=cname,ctype=ctype,candidate_name=candidate_name,state=state)

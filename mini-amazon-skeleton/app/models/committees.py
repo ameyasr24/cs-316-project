@@ -90,8 +90,9 @@ class Committee:
             view=view,
             type=type))
 
+    #returns data on the committee's individual page given certain search parameters
     @staticmethod
-    def get_all_range(from_date, to_date, sort_by,aord,cid,recipient,search_entity): #gets everything in the table given a range of dates
+    def get_all_range(from_date, to_date, sort_by,aord,cid,recipient,search_entity): 
         rows = app.db.execute('''
             SELECT *
             FROM Committee
@@ -114,8 +115,8 @@ class Committee:
             search_entity=search_entity
             )
         return [Committee (*row) for row in rows]
-
     
+    #returns sum for a committee's individual page given certain search parameters
     @staticmethod
     def get_sum (from_date,to_date,cid, recipient,search_entity):
         rows = app.db.execute('''
@@ -133,6 +134,8 @@ class Committee:
             search_entity=search_entity
             )
         return rows[0]
+    
+    #returns sum of donations that the queried committee distributes (if no queried committee, sum of all tuples given parameters)
     @staticmethod
     def sumTo (from_date,to_date,view, ctype,query):
         rows = app.db.execute('''
@@ -152,6 +155,8 @@ class Committee:
             ctype=ctype
             )
         return rows 
+    
+    #returns sum of donations that the queried committee receives (if no queried committee, returns nothing)
     @staticmethod
     def sumFrom (from_date,to_date,view, ctype,query):
         rows = app.db.execute('''
@@ -170,6 +175,8 @@ class Committee:
             ctype=ctype
             )
         return rows 
+    
+    #returns helpful info to use on committee's individual page
     @staticmethod
     def getInfo(cid):
         rows = app.db.execute('''
