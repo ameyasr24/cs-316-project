@@ -3,49 +3,74 @@
 {% block content %}
 <br><br>
 <head>
-<div class = "page-header"><h2> Select your filters!!</h2></div>
+
 </head>
 
 
 <!--- Buttons and filters and such what have yous-->
 <br></br>
 
-<form class="form-inline" id = 'graphform' action="" method=post>
-  <div style="display:flex; flex-direction: row">
+<form class="form-inline" action="" method=post>
   {{ form.csrf_token }}
   {{ form.hidden_tag() }}
-  
-  <div style="display:flex; flex-direction: column">
+  <div style="display:flex; flex-direction: row; padding-bottom: 10px">
+    <div style = "display:flex; flex-direction: column; width: 500px;
+    margin: auto; float: left; border-color: blueviolet;">
+  <div class = "page-header"><h2> Select your filters!!</h2></div>
+  <div style=>
     {{form.issue.label}}
-    {{form.issue}}
+    {{form.issue(class = 'dropbtn')}}
   </div>
 
-  <div style="display:flex; flex-direction: column">
+  <div class="correlation_row">
     {{form.state.label}}
-    {{form.state}}
+    {{form.state(class = 'dropbtn')}}
   </div>
 
-  <div style="display:flex; flex-direction: column">
+  <div class="correlation_row">
     {{form.candidate.label}}
-    {{form.candidate}}
+    {{form.candidate(class = 'dropbtn')}}
   </div>
 
-  <div style="display:flex; flex-direction: column">
+  <div class="correlation_row">
     {{form.result.label}}
-    {{form.result}}
+    {{form.result(class = 'dropbtn')}}
   </div> 
-  <div style="display:flex; flex-direction: column">
-    {{form.x_axis.label}}
-    {{form.x_axis}}
-    {{form.facet_result.label}}
-    {{form.facet_result}}
-    {{form.run_graph(class='btn btn-primary', id='run_graph', type='submit')}}
-  </div> 
-  <button>
-    {{form.filter(class='btn btn-primary', id='filter_data', type='submit')}}   
-  </button>
-  
+  <div class = "correlation_row">
+    {{form.amount_threshold.label}}
+    {{form.amount_threshold(class = 'dropbtn')}}
+  </div>
+  <div class = "correlation_row">
+    {{form.filter(class='btn btn-primary', id='filter_data', type='submit')}}  
+  </div>
 </div>
+<div style = "display:flex; flex-direction: column">
+  <div class = "page-header"><h2> Design your graph!!</h2></div>
+<div class="correlation_row">
+    {{form.x_axis.label}}
+    {{form.x_axis(class = 'dropbtn')}}
+  </div> 
+<div class = "correlation_row">
+    {{form.facet_result.label}}
+    {{form.facet_result(class = 'dropbtn')}}
+</div>
+<div class = "correlation_row">
+  {{form.color_palette.label}}
+  {{form.color_palette(class = 'dropbtn')}}
+</div>
+<div class = "correlation_row">
+  {{form.type_graph.label}}
+  {{form.type_graph(class = 'dropbtn')}}
+</div>
+
+  <div class = "correlation_row">
+    {{form.run_graph(class='btn btn-primary', id='run_graph', type='submit')}}
+  </div>
+</div>
+</div>
+     
+  
+
 </form>
 
 
@@ -54,15 +79,15 @@
 
 <!--- Adds the table to the page-->
 <div id="universal-table-wrapper">
-<div id="candidate-voting-table-wrapper">
-<div id="candidate-voting-table-scroll">
-<table class = 'table table-hover table-bordered container'>
-  <thead class="thead-dark">
+  <div id= candidate-voting-table-scroll>
+    <table id = "correlation_table" class="datatables">
+      <thead class="thead-dark">
     <tr>
       <th scope="col">State</th>
       <th scope="col">Donator</th>
       <th scope="col">Amount</th>
       <th scope="col">Result</th>
+      <th scope = "col">Percentage</th>
       <th scope="col">Issue</th>
       <th scope="col">Candidate</th>
       
@@ -77,6 +102,7 @@
         <td>{{entry.donator_id}}</td>
         <td>{{entry.amount}}</td>
         <td>{{entry.result}}</td>
+        <td>{{entry.percent}}</td>
         <td>{{entry.issue}}</td>
         <td>{{entry.candidate_id}}</td>
       </tr>
@@ -85,23 +111,28 @@
   </table>
 </div>
 </div>
-</div>
 
 <!-- Adds graphs to page-->
 <body>
-  <div class = "correlation-header"><h2> Aggregation of Data based on filters</h2></div>
+  <div class = "correlation-header" style = "padding-top: 10px"><h2> Aggregation of Data based on filters</h2></div>
 
+  <div style="margin: auto;
+  width: 50%;
+  padding: 10px;">
+      <a href = "{{ url_for('index.visualize') }}" download = saved_graph>
+        <button class= "btn btn-primary" style="margin: auto;
+        max-width: 200px; width: auto;" id='download_graph'>
+            Download your graph!
+        </button>
+        </a>
+   
+    </div>
 
   <div>
-    <a href = "{{ url_for('index.visualize') }}" download>
-    <button class='btn btn-primary', id='download_graph', type='submit'>
-      Download please
-    </button>
-    </a>
     
-    <img src= "{{ url_for('index.visualize') }}" class="responsive_correlation"> 
- 
-  </div>
+    <img src= "{{ url_for('index.visualize') }}" alt = "Graph could not be generated. Try changing your parameters"> 
+</div>
+
 </body>
 {% endblock %}
 

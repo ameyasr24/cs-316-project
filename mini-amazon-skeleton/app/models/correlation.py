@@ -62,7 +62,7 @@ class Correlation:
         return [Correlation(*row) for row in rows]
 
 
-    def get_up_to_all(result1,state1,donator1,candidate1,issue1): #gets passed, state
+    def get_up_to_all(result1,state1,donator1,candidate1,issue1,amount1): #gets passed, state
         rows = app.db.execute('''
             SELECT *
             FROM Correlation
@@ -87,6 +87,10 @@ class Correlation:
                 (:candidate1 IS NOT NULL AND candidate_id = :candidate1)
                 OR (:candidate1 IS NULL)
                 )
+            AND (
+                (:amount1 IS NOT NULL AND amount > :amount1)
+                OR (:amount1 IS NULL)
+                )
 
                    
             ''',
@@ -95,7 +99,8 @@ class Correlation:
                               state1 = state1,
                               donator1 = donator1,
                               candidate1 = candidate1,
-                              issue1 = issue1                        
+                              issue1 = issue1,
+                              amount1 = amount1                        
                               )
         return [Correlation(*row) for row in rows]
 

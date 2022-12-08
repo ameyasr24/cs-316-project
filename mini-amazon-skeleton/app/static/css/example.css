@@ -252,10 +252,7 @@ path:hover {
 
 .race-year h3{
     text-align: center;
-<<<<<<< HEAD
 }
-
-
 
 /*correlation work*/
 
@@ -277,10 +274,23 @@ path:hover {
 }
 
 .responsive_correlation {
-    width: 100%;
-    max-width: 50px;
-    height: auto;
+    width: auto;
   }
-=======
-}
->>>>>>> main
+
+ .download_button {
+    border-radius: 12px;
+    padding: 14px 40px;
+    font-size: 24px;
+    width: 50%;
+    background-color: purple;
+ }
+
+ .download_button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+
+.correlation_row {
+    display: flex; 
+    flex-direction: row;
+  }

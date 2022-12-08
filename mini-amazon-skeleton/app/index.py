@@ -130,20 +130,21 @@ def candidatehomepage():
 
 
 ### CODE RELATING TO CORRELATION
-class SelectFilters(FlaskForm):
-    state = SelectField("Select a state")
-    issue = SelectField("Select an issue")
-    candidate = SelectField("Select a candidate")
-    result = SelectField("Select won options",choices=[("None","None"),("W","Win"),("L","Loss")])
+class SelectOptions(FlaskForm):
+    state = SelectField("Select a state: ")
+    issue = SelectField("Select an issue: ")
+    candidate = SelectField("Select a candidate: ")
+    result = SelectField("Select won options: ",choices=[("None","None"),("W","Win"),("L","Loss")])
     filter = SubmitField('Filter')
-    type = SelectField("Select type of graph", 
-    choices =[("Bar plot","Bar plot"),("Horizontal Bar Plot","Horizontal Bar Plot"),("Box-Whisker","Box-Whisker")],default = "Bar plot")
-    x_axis = SelectField("Select Independent Variable",
-    choices = [("Donator","Donator"),("Candidate","Candidate"),("Issue","Issue"),("Other","Other"),("State","State")], default = "Candidate")
-    facet_result = BooleanField("Facet by won election type")
-    color_palette = SelectField("Choose some nifty colors bro",
-    choices=[("Blues","Blues"),("Purples","Purples"),("icefire","icefire"),("vlag","vlag")],default = "Icefire")
+    type_graph = SelectField("Select type of graph: ", 
+    choices =[("Bar plot","Bar plot"),("Dotplot","Dotplot"),("Box-Whisker","Box-Whisker"),("Violin","Violin")],default = "Bar plot")
+    x_axis = SelectField("Select Independent Variable: ",
+    choices = [("Donator","Donator"),("Candidate","Candidate"),("Issue","Issue"),("State","State")], default = "Candidate")
+    facet_result = SelectField("Facet by election result?",choices=[(True,"Yes"),(False,"No")],default = "No")
+    color_palette = SelectField("Choose your pallete: ",
+    choices=[("Blues","Blues"),("Purples","Purples"),("icefire","icefire"),("vlag","vlag")],default = "icefire")
     run_graph = SubmitField("Create Graph")
+    amount_threshold = SelectField("Choose amount threshold",choices = [("None","None"),(5000,5000),(10000,10000),(50000,50000),(100000,1000000)],default = "None")
 
 
 
@@ -172,7 +173,7 @@ def correlation():
     
 
     # get all correlations
-    form = SelectFilters()
+    form = SelectOptions()
     form.state.choices = choice_states
     form.issue.choices = choice_issues
     form.candidate.choices = choice_candidates
@@ -198,11 +199,16 @@ def correlation():
         result = None
     else:
         result = form.result.data
+    
+    if form.amount_threshold.data == "None":
+        amount = None
+    else:
+        amount = form.amount_threshold.data
 
     if (state is None) & (issue is None) & (candidate is None) & (result is None):
         data = Correlation.get_all()
     else:
-        data = Correlation.get_up_to_all(result,state,None,candidate,issue)
+        data = Correlation.get_up_to_all(result,state,None,candidate,issue,amount)
 
 
     #visualization component
@@ -211,8 +217,16 @@ def correlation():
     global y
     global facet
     global color
+    global hues
+    global type_of
     facet = False
-
+    global x_label
+    print(form.color_palette.data)
+    hues = form.color_palette.data
+    type_of = form.type_graph.data
+    print(type_of)
+    print(type_of == "Bar Plot")
+    x_label = form.x_axis.data
   
     if form.facet_result.data == True:
             facet = True
@@ -238,14 +252,37 @@ def correlation():
             
 @bp.route('/visualize')
 def visualize():
-    fig,ax=plt.subplots(figsize=(6,6))
+    fig,ax=plt.subplots(figsize=(20,20))
+    ax=sns.set_style("dark")
+    ax=sns.set(rc={'figure.figsize':(11.7,8.27)})
     ax=sns.set(style="darkgrid")
-    plt.xticks(rotation=90)
-    if facet:
-        sns.barplot(x=x,y=y,estimator="sum",hue=color,palette = "icefire").set(title="Aggregation of Total Donations")
-    else:
-        sns.barplot(x=x,y=y,estimator="sum",palette = "Blues").set(title="Aggregation of Total Donations")
-        
+    plt.xticks(rotation=45)
+    plt.style.use('fivethirtyeight')
+    plt.xlabel(x_label)
+    plt.ylabel("Amount donated")
+    title_graph = "Aggregation of Total Donations with " + x_label
+    
+    if type_of == "Bar plot":
+        if facet:
+            sns.barplot(x=x,y=y,estimator="sum",hue=color,palette = hues).set(title=title_graph)
+        else:
+            sns.barplot(x=x,y=y,estimator="sum",palette = hues).set(title=title_graph)
+    elif type_of == "Violin":
+        if facet:
+            sns.violinplot(x=x,y=y,estimator="sum",hue=color,palette = hues).set(title=title_graph)
+        else:
+            sns.violinplot(x=x,y=y,estimator="sum",palette = hues).set(title=title_graph)
+    elif type_of == "Box-whisker":
+        if facet:
+            sns.boxplot(x=x,y=y,estimator="sum",hue=color,palette = hues).set(title=title_graph)
+        else:
+            sns.boxplot(x=x,y=y,estimator="sum",palette = hues).set(title=title_graph)
+    elif type_of == "Dotplot":
+        if facet:
+            sns.scatterplot(x=x,y=y,hue=color,palette = hues).set(title=title_graph)
+        else:
+            sns.scatterplot(x=x,y=y,palette = hues).set(title=title_graph)
+    
     canvas=FigureCanvas(fig)
     img = io.BytesIO()
     fig.savefig(img)
