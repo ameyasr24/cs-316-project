@@ -37,7 +37,7 @@ CREATE TABLE Committee (
     other_id  VARCHAR (9),
     did  VARCHAR (32),
     year VARCHAR(4),
-    cycle INT,
+    cycle VARCHAR(4),
     cname VARCHAR(200) ,
     ctype VARCHAR(200),
     candidate_id  VARCHAR (9),

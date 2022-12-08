@@ -138,11 +138,7 @@ h1.header-title {
   color:black;
 }
 .pagination-page-info b {
-  color: white;
-  background:var(--universal-blue);
-  padding-left: 2px;
-  padding: .1em .25em;
-  font-size: 150%;
+  
 }
 path.D{
   fill: var(--universal-blue);
@@ -169,7 +165,31 @@ path.R:hover {
 path.mixed:hover {
   fill: #a83ffe9c;
 }
+.search-header-comms{
+  background-color: lightblue;
+}
 
+.search-comms {
+  padding-top:2%;
+  padding-bottom:2%;
+  padding-left:2%;
+}
+.search-comms p{
+  line-height:250%;
+
+}
+.clickable-row {
+  cursor: pointer;
+  z-index:2;
+}
+
+tr:hover { 
+  background: white; 
+}
+td a { 
+  display: block; 
+  padding: 16px; 
+}
 .dropbtn {
   background-color: var(--universal-purple);
   color: aliceblue;
@@ -289,7 +309,7 @@ path.mixed:hover {
 
 .page-header h1{
   text-align: center;
-  
+  line-height:300%;
 }
 
 .race-instructions h5{
