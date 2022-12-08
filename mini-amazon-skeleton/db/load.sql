@@ -24,7 +24,8 @@ SELECT pg_catalog.setval('public.states_id_seq',
                          (SELECT MAX(id)+1 FROM States),
                          false);
                          
-\COPY Correlation from 'Correlation.csv' WITH DELIMITER ',' NULL '' CSV;
+\COPY Correlation FROM 'real_correlation_data.csv' (format csv, null "NULL", DELIMITER ',', HEADER);
+
 
 \COPY Candidate_Member_Votes FROM 'Candidate_Member_Votes.csv' WITH DELIMITER ',' NULL '' CSV;
 

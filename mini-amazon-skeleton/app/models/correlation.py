@@ -2,39 +2,32 @@ from flask import current_app as app
 
 
 class Correlation:
-    def __init__(self,state_id,donator_id,issue,candidate_id,committee_id,amount,passed):
-        self.state_id = state_id
+    def __init__(self,id,donator_id,state_id,amount,cand_num,candidate_id,party,result,percent,issue):
+        self.id = id
         self.donator_id = donator_id
-        self.candidate_id = candidate_id
-        self.committee_id = committee_id
-        self.issue = issue
+        self.state_id = state_id
         self.amount = amount
-        self.passed = passed
+        self.cand_num = cand_num
+        self.candidate_id = candidate_id
+        self.party = party
+        self.result = result
+        self.percent = percent
+        self.issue = issue
+
 
     @staticmethod
     def get_all(): #just gets everyting in the table
         rows = app.db.execute('''
-SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-FROM Correlation
-''',
+            SELECT *
+            FROM Correlation
+            ''',
                               )
         return [Correlation(*row) for row in rows]
 
-    @staticmethod
-    def get_states(state_id): #gets specific state
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE state_id = :state_id
-            ''',
-                              
-                              state_id = state_id,                              
-                              )
-        return [Correlation(*row) for row in rows]
     
     def get_unique_state(): #gets unique state names
         rows = app.db.execute('''
-            SELECT state_id, MAX(donator_id), MAX(candidate_id), MAX(committee_id), MAX(amount), MAX(passed), MAX(issue)
+            SELECT MAX(id),MAX(donator_id),state_id,MAX(amount),MAX(cand_num),MAX(candidate_id),MAX(party),MAX(result),MAX(percent),MAX(issue)
             FROM Correlation
             GROUP BY state_id
             ORDER BY state_id ASC
@@ -44,34 +37,12 @@ FROM Correlation
         return [Correlation(*row) for row in rows]
 
 
-    @staticmethod
-    def get_donator(donator): #gets specific donor
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE donator_id = :donator
-            ''',
-                              
-                              donator = donator,                              
-                              )
-        return [Correlation(*row) for row in rows]
 
-    @staticmethod
-    def get_candidate(candidate): #gets specific candidate
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE candidate_id = :candidate
-            ''',
-                              
-                              candidate = candidate,                              
-                              )
-        return [Correlation(*row) for row in rows]
 
     @staticmethod
     def get_unique_candidate(): #gets list of unique candidates
         rows = app.db.execute('''
-            SELECT MAX(passed), MAX(state_id), MAX(donator_id), candidate_id, MAX(committee_id), MAX(amount), MAX(issue)
+            SELECT MAX(id),MAX(donator_id),MAX(state_id),MAX(amount),MAX(cand_num),candidate_id,MAX(party),MAX(result),MAX(percent),MAX(issue)
             FROM Correlation
             GROUP BY candidate_id
             ''',
@@ -80,21 +51,9 @@ FROM Correlation
         return [Correlation(*row) for row in rows]
     
     @staticmethod
-    def get_issue(issue1): #gets gets specific issue
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE issue = :issue1
-            ''',
-                              
-                              issue1 = issue1,                              
-                              )
-        return [Correlation(*row) for row in rows]
-
-    @staticmethod
     def get_unique_issue(): #gets unique issues
         rows = app.db.execute('''
-            SELECT MAX(passed), MAX(state_id), MAX(donator_id), MAX(candidate_id), MAX(committee_id), MAX(amount), issue
+            SELECT MAX(id),MAX(donator_id),MAX(state_id),MAX(amount),MAX(cand_num),MAX(candidate_id),MAX(party),MAX(result),MAX(percent),issue
             FROM Correlation
             GROUP BY issue
             ''',
@@ -102,169 +61,48 @@ FROM Correlation
                               )
         return [Correlation(*row) for row in rows]
 
-    def get_passed(passed1): #gets specific passed
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE passed = :passed1
-            ''',
-                              
-                              passed1 = passed1,                              
-                              )
-        return [Correlation(*row) for row in rows]
 
-    def get_passed_issue_candidate_state(passed1,issue1,candidate1,state1): #gets passed, issue, candidate, state
+    def get_up_to_all(result1,state1,donator1,candidate1,issue1,amount1): #gets passed, state
         rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
+            SELECT *
             FROM Correlation
-            WHERE passed = :passed1
-            AND issue = :issue1
-            AND candidate_id = :candidate1
-            AND state_id = :state1
+            WHERE 
+            (
+                (:result1 IS NOT NULL AND result = :result1)
+                OR (:result1 IS NULL)
+                )
+            AND (
+                (:state1 IS NOT NULL AND state_id = :state1)
+                OR (:state1 IS NULL)
+                )
+            AND (
+                (:donator1 IS NOT NULL AND donator_id = :donator1)
+                OR (:donator1 IS NULL)
+                )
+            AND (
+                (:issue1 IS NOT NULL AND issue = :issue1)
+                OR (:issue1 IS NULL)
+                )
+            AND (
+                (:candidate1 IS NOT NULL AND candidate_id = :candidate1)
+                OR (:candidate1 IS NULL)
+                )
+            AND (
+                (:amount1 IS NOT NULL AND amount > :amount1)
+                OR (:amount1 IS NULL)
+                )
+
+                   
             ''',
                               
-                              passed1 = passed1,
-                              issue1 = issue1,
+                              result1 = result1,
+                              state1 = state1,
+                              donator1 = donator1,
                               candidate1 = candidate1,
-                              state1 = state1                              
-                              )
-        return [Correlation(*row) for row in rows]
-
-    def get_passed_issue_candidate(passed1,issue1,candidate1): #gets passed, issue, candidate
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE passed = :passed1
-            AND issue = :issue1
-            AND candidate_id = :candidate1
-            ''',
-                              
-                              passed1 = passed1,
                               issue1 = issue1,
-                              candidate1 = candidate1                            
+                              amount1 = amount1                        
                               )
         return [Correlation(*row) for row in rows]
 
-    def get_passed_issue_state(passed1,issue1,state1): #gets passed, issue, state
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE passed = :passed1
-            AND issue = :issue1
-            AND state_id = :state1
-            ''',
-                              
-                              passed1 = passed1,
-                              issue1 = issue1,
-                              state1 = state1                              
-                              )
-        return [Correlation(*row) for row in rows]
 
-    def get_passed_candidate_state(passed1,candidate1,state1): #gets passed candidate, state
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE passed = :passed1
-            AND candidate_id = :candidate1
-            AND state_id = :state1
-            ''',
-                              
-                              passed1 = passed1,
-                              candidate1 = candidate1,
-                              state1 = state1                              
-                              )
-        return [Correlation(*row) for row in rows]
-
-    def get_issue_candidate_state(issue1,candidate1,state1): #gets issue, candidate, state
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE issue = :issue1
-            AND candidate_id = :candidate1
-            AND state_id = :state1
-            ''',
-                              
-                              issue1 = issue1,
-                              candidate1 = candidate1,
-                              state1 = state1                              
-                              )
-        return [Correlation(*row) for row in rows]
-
-    def get_issue_candidate(issue1,candidate1): #gets issue, candidate
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE issue = :issue1
-            AND candidate_id = :candidate1
-
-            ''',
-                              
-                              issue1 = issue1,
-                              candidate1 = candidate1,
-                           
-                              )
-        return [Correlation(*row) for row in rows]
-
-    def get_issue_state(issue1,state1): #gets issue, state
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE issue = :issue1
-            AND state_id = :state1
-            ''',
-                              
-                              issue1 = issue1,
-                              state1 = state1                              
-                              )
-        return [Correlation(*row) for row in rows]    
-    def get_candidate_state(candidate1,state1): #gets candidate, state
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            AND candidate_id = :candidate1
-            AND state_id = :state1
-            ''',
-                              
-                              candidate1 = candidate1,
-                              state1 = state1                              
-                              )
-        return [Correlation(*row) for row in rows]
-
-    def get_passed_issue(passed1,issue1): #gets passed, issue
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE passed = :passed1
-            AND issue = :issue1
-            ''',
-                              
-                              passed1 = passed1,
-                              issue1 = issue1                         
-                              )
-        return [Correlation(*row) for row in rows]
-
-    def get_passed_candidate(passed1,candidate1): #gets passed, candidate
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE passed = :passed1
-            AND candidate_id = :candidate1
-            ''',
-                              
-                              passed1 = passed1,
-                              candidate1 = candidate1                            
-                              )
-        return [Correlation(*row) for row in rows]
-   
-    def get_passed_state(passed1,state1): #gets passed, state
-        rows = app.db.execute('''
-            SELECT state_id, donator_id, candidate_id, committee_id, amount, passed, issue
-            FROM Correlation
-            WHERE passed = :passed1
-            AND state_id = :state1
-            ''',
-                              
-                              passed1 = passed1,
-                              state1 = state1,                        
-                              )
-        return [Correlation(*row) for row in rows]
+    
