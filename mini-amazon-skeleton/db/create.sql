@@ -125,13 +125,16 @@ CREATE TABLE States (
 ); 
 
 CREATE TABLE Correlation (
-    state_id VARCHAR(255) NOT NULL,
+    id VARCHAR(255) NOT NULL,
     donator_id VARCHAR(255) NOT NULL,
-    issue VARCHAR(255) NOT NULL,
+    state_id VARCHAR(255) NOT NULL,
+    amount INT NOT NULL,
+    cand_num VARCHAR(255) NOT NULL,
     candidate_id VARCHAR(255) NOT NULL,
-    committee_id INTEGER NOT NULL,
-    amount DECIMAL(20,2) NOT NULL,
-    passed VARCHAR(255) NOT NULL
+    party VARCHAR(255) NOT NULL,
+    result VARCHAR(255) NOT NULL,
+    percent INT NOT NULL,
+    issue VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Candidate_Member_Votes (
