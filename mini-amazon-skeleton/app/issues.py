@@ -70,6 +70,9 @@ def issues():
             if name[0].lower() == candidate_name:
                 candidate_id = name[1]
                 break
+            elif name[0].lower().split(",")[0] == candidate_name.split(",")[0]:
+                candidate_id = name[1]
+                break
         
         cid_link = "/candidate/" + str(candidate_id)
 
