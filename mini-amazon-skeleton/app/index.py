@@ -312,26 +312,30 @@ def visualize():
     title_graph = "Aggregation of Total Donations with " + x_label
 
     #SETUP PLOT BASED ON PASSED TYPE OF GRAPH AND FACET
+    #Choose barplot
     if type_of == "Bar plot":
         if facet:
             sns.barplot(x=x,y=y,estimator="sum",hue=color,palette = hues,errorbar=None).set(title=title_graph)
         else:
             sns.barplot(x=x,y=y,estimator="sum",palette = hues,errorbar=None).set(title=title_graph)
+    #Choose violin
     elif type_of == "Violin":
         if facet:
             sns.violinplot(x=x,y=y,estimator="sum",hue=color,palette = hues,errorbar=None).set(title=title_graph)
         else:
             sns.violinplot(x=x,y=y,estimator="sum",palette = hues,errorbar=None).set(title=title_graph)
+    #Choose box-whisker
     elif type_of == "Box-whisker":
         if facet:
             sns.boxplot(x=x,y=y,estimator="sum",hue=color,palette = hues).set(title=title_graph)
         else:
             sns.boxplot(x=x,y=y,estimator="sum",palette = hues).set(title=title_graph)
+    #choose dotplot
     elif type_of == "Dotplot":
         if facet:
-            sns.scatterplot(x=x,y=y,hue=color,palette = hues,errorbar=None).set(title=title_graph)
+            sns.scatterplot(x=x,y=y,hue=color,palette = hues).set(title=title_graph)
         else:
-            sns.scatterplot(x=x,y=y,palette = hues,errorbar=None).set(title=title_graph)
+            sns.scatterplot(x=x,y=y,palette = hues).set(title=title_graph)
     #GET CANVAS
     canvas=FigureCanvas(fig)
     #PASS TO BYTES/BUFFER TO SEND TO HTML 
