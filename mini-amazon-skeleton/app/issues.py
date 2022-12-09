@@ -73,10 +73,7 @@ def issues():
 
         #formatting name for the output
         formatting_name = form.politician.data.split(", ")
-        if len(formatting_name) >= 2:
-            politician_name_formatted = formatting_name[1] + " " + formatting_name[0]
-        else:
-            all_issues = Issues.get_all_issue(form.issue_category.data)
+        politician_name_formatted = formatting_name[1] + " " + formatting_name[0]
 
         # print(donations[0].industry[0])
         # print(donations[form.politician.data].industry)
