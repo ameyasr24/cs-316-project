@@ -24,6 +24,7 @@ from .models.correlation import Correlation
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
+#route to state-specific pages
 @bp.route('/state/<state_abb>', methods=['GET', 'POST'])
 def state(state_abb):
     state = State.get_all(state_abb)
@@ -33,7 +34,7 @@ def state(state_abb):
                             all_years = year)
                             # ,all_years = year)
 
-
+#route to specific state election pages
 @bp.route('/state/<state_abb>/<year>/', methods=['GET', 'POST'])
 def staterace(state_abb, year):
     race = State.get_all_year(state_abb, year)
