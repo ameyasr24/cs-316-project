@@ -159,7 +159,7 @@ class SelectOptions(FlaskForm):
     filter = SubmitField('Filter')
     #Option to select the type of graph user would like
     type_graph = SelectField("Select type of graph: ", 
-    choices =[("Bar plot","Bar plot"),("Dotplot","Dotplot"),("Box-Whisker","Box-Whisker"),("Violin","Violin")],default = "Bar plot")
+    choices =[("Bar plot","Bar plot"),("Dotplot","Dotplot"),("Violin","Violin")],default = "Bar plot")
     #Option to hold state options
     x_axis = SelectField("Select Independent Variable: ",
     choices = [("Donator","Donator"),("Candidate","Candidate"),("Issue","Issue"),("State","State")], default = "Issue")
@@ -324,12 +324,6 @@ def visualize():
             sns.violinplot(x=x,y=y,estimator="sum",hue=color,palette = hues,errorbar=None).set(title=title_graph)
         else:
             sns.violinplot(x=x,y=y,estimator="sum",palette = hues,errorbar=None).set(title=title_graph)
-    #Choose box-whisker
-    elif type_of == "Box-whisker":
-        if facet:
-            sns.boxplot(x=x,y=y,estimator="sum",hue=color,palette = hues).set(title=title_graph)
-        else:
-            sns.boxplot(x=x,y=y,estimator="sum",palette = hues).set(title=title_graph)
     #choose dotplot
     elif type_of == "Dotplot":
         if facet:
