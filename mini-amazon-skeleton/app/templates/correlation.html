@@ -3,61 +3,91 @@
 {% block content %}
 <br><br>
 <head>
-<div class = "page-header"><h2> Select your filters!!</h2></div>
-{{optionsForm.hidden_tag()}}
-{{form.hidden_tag()}}
 
-<form class="form-inline" action="" method=post>
-    {{optionsForm.label}}
-    {{optionsForm.options}}
-    {{optionsForm.submit}}
-
-</form>
-<br></br>
-<form class="form-inline" action="" method=post>
-{% if stateTruthy %}
-  {{form.state.label}}
-  {{form.state}}
-{% endif %}
-{% if issueTruthy %}
-<p>
-  {{form.issue.label}}
-  {{form.issue }}
-</p>
-{% endif %}  
-{% if candidateTruthy %}
-<p>
-  {{form.candidate.label}}
-  {{form.candidate }}
-</p>
-{% endif %}  
-{% if passedTruthy %}
-<p>
-  {{form.passed.label}}
-  {{form.passed }}
-</p>
-{% endif %}
-{%if passedTruthy or stateTruthy or candidateTruthy or issueTruthy%}  
-<p>
-  {{form.submit()}}
-</p>
-{% endif %}
-</form>
-<br><br>
-<div id="universal-table-wrapper">
-
-<div class = "correlation-header"><h2>Donations and Related Info:</h2></div>
 </head>
-<div id="candidate-voting-table-wrapper">
-<div id="candidate-voting-table-scroll">
-<table>
-  <thead class="thead-dark">
+
+
+<!--- Buttons and filters and such what have yous-->
+<br></br>
+
+<form class="form-inline" action="" method=post>
+  {{ form.csrf_token }}
+  {{ form.hidden_tag() }}
+  <div style="display:flex; flex-direction: row; padding-bottom: 10px; background-color: rgb(170, 234, 250);">
+    <div style = "display:flex; flex-direction: column; width: 500px;
+    margin: auto; float: left;">
+  <div class = "page-header"><h2> Select your filters!!</h2></div>
+  <div style=>
+    {{form.issue.label}}
+    {{form.issue(class = 'dropbtn')}}
+  </div>
+
+  <div class="correlation_row">
+    {{form.state.label}}
+    {{form.state(class = 'dropbtn')}}
+  </div>
+
+  <div class="correlation_row">
+    {{form.candidate.label}}
+    {{form.candidate(class = 'dropbtn')}}
+  </div>
+
+  <div class="correlation_row">
+    {{form.result.label}}
+    {{form.result(class = 'dropbtn')}}
+  </div> 
+  <div class = "correlation_row">
+    {{form.amount_threshold.label}}
+    {{form.amount_threshold(class = 'dropbtn')}}
+  </div>
+  <div class = "correlation_row">
+    {{form.filter(class='btn btn-primary', id='filter_data', type='submit')}}  
+  </div>
+</div>
+<div style = "display:flex; flex-direction: column">
+  <div class = "page-header"><h2> Design your graph!!</h2></div>
+<div class="correlation_row">
+    {{form.x_axis.label}}
+    {{form.x_axis(class = 'dropbtn')}}
+  </div> 
+<div class = "correlation_row">
+    {{form.facet_result.label}}
+    {{form.facet_result(class = 'dropbtn')}}
+</div>
+<div class = "correlation_row">
+  {{form.color_palette.label}}
+  {{form.color_palette(class = 'dropbtn')}}
+</div>
+<div class = "correlation_row">
+  {{form.type_graph.label}}
+  {{form.type_graph(class = 'dropbtn')}}
+</div>
+
+  <div class = "correlation_row">
+    {{form.run_graph(class='btn btn-primary', id='run_graph', type='submit')}}
+  </div>
+</div>
+</div>
+     
+  
+
+</form>
+
+
+<br></br>
+<div class = "correlation-header" style="padding-top: 10px;"><h2>Donations and Related Info:</h2></div>
+
+<!--- Adds the table to the page-->
+<div id="universal-table-wrapper">
+  <div id= candidate-voting-table-scroll>
+    <table id = "correlation_table" class="datatables">
+      <thead class="thead-dark">
     <tr>
       <th scope="col">State</th>
       <th scope="col">Donator</th>
       <th scope="col">Amount</th>
-      <th scope="col">Committee</th>
-      <th scope="col">Passed</th>
+      <th scope="col">Result</th>
+      <th scope = "col">Percentage</th>
       <th scope="col">Issue</th>
       <th scope="col">Candidate</th>
       
@@ -70,24 +100,39 @@
       <tr>
         <td scope="row">{{entry.state_id}}</td>
         <td>{{entry.donator_id}}</td>
-        <td>{{entry.committee_id}}</td>
-        <td>{{entry.candidate_id}}</td>
         <td>{{entry.amount}}</td>
-        <td>{{entry.passed}}</td>
+        <td>{{entry.result}}</td>
+        <td>{{entry.percent}}</td>
         <td>{{entry.issue}}</td>
+        <td>{{entry.candidate_id}}</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
 </div>
 </div>
-</div>
-<br></br>
+
+<!-- Adds graphs to page-->
 <body>
-  <div class = "correlation-header"><h2> Aggregation of Data based on filters</h2></div>
-  <h1Visualization>
-    <img src= "{{ url_for('index.visualize') }}">
-  </h1Visualization>
+  <div class = "correlation-header" style = "padding-top: 10px"><h2> Aggregation of Data based on filters</h2></div>
+
+  <div style="margin: auto;
+  width: 50%;
+  padding: 10px;">
+      <a href = "{{ url_for('index.visualize') }}" download = saved_graph>
+        <button class= "btn btn-primary" style="margin: auto;
+        max-width: 200px; width: auto;" id='download_graph'>
+            Download your graph!
+        </button>
+        </a>
+   
+    </div>
+
+  <div>
+    
+    <img src= "{{ url_for('index.visualize') }}" alt = "Graph could not be generated. Try changing your parameters"> 
+</div>
+
 </body>
 {% endblock %}
 
