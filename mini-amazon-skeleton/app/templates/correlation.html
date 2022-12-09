@@ -9,60 +9,71 @@
 
 <!--- Buttons and filters and such what have yous-->
 <br></br>
-
+<!-- Adds graphs to page-->
 <form class="form-inline" action="" method=post>
   {{ form.csrf_token }}
   {{ form.hidden_tag() }}
-  <div style="display:flex; flex-direction: row; padding-bottom: 10px; background-color: rgb(170, 234, 250);">
+  <!-- Set up grid-->
+  <div style="display:flex; flex-direction: row; padding-bottom: 10px; background-color: rgb(210, 246, 255);">
     <div style = "display:flex; flex-direction: column; width: 500px;
     margin: auto; float: left;">
+  <!-- setup filters-->  
   <div class = "page-header"><h2> Select your filters!!</h2></div>
+  <!-- Adds issue dropdown-->
   <div style=>
     {{form.issue.label}}
     {{form.issue(class = 'dropbtn')}}
   </div>
-
+<!-- Adds state dropdown-->
   <div class="correlation_row">
     {{form.state.label}}
     {{form.state(class = 'dropbtn')}}
   </div>
-
+<!-- Adds candidate dropdown-->
   <div class="correlation_row">
     {{form.candidate.label}}
     {{form.candidate(class = 'dropbtn')}}
   </div>
-
+<!-- Adds result dropdown-->
   <div class="correlation_row">
     {{form.result.label}}
     {{form.result(class = 'dropbtn')}}
   </div> 
+  <!-- Adds threshold dropdown-->
   <div class = "correlation_row">
     {{form.amount_threshold.label}}
     {{form.amount_threshold(class = 'dropbtn')}}
   </div>
+  <!-- Adds filter button-->
   <div class = "correlation_row">
     {{form.filter(class='btn btn-primary', id='filter_data', type='submit')}}  
   </div>
 </div>
+<!-- Setup graph options column-->
 <div style = "display:flex; flex-direction: column">
+  <!-- Graph options header-->
   <div class = "page-header"><h2> Design your graph!!</h2></div>
+<!-- Adds state dropdown-->
 <div class="correlation_row">
     {{form.x_axis.label}}
     {{form.x_axis(class = 'dropbtn')}}
   </div> 
+  <!-- Adds facet_result dropdown-->
 <div class = "correlation_row">
     {{form.facet_result.label}}
     {{form.facet_result(class = 'dropbtn')}}
 </div>
+<!-- Adds color_palette dropdown-->
 <div class = "correlation_row">
   {{form.color_palette.label}}
   {{form.color_palette(class = 'dropbtn')}}
 </div>
+<!-- Adds type of graph dropdown-->
 <div class = "correlation_row">
   {{form.type_graph.label}}
   {{form.type_graph(class = 'dropbtn')}}
 </div>
-
+<!-- Adds run graph button-->
   <div class = "correlation_row">
     {{form.run_graph(class='btn btn-primary', id='run_graph', type='submit')}}
   </div>
@@ -73,13 +84,14 @@
 
 </form>
 
-
+<!-- Tablel label-->
 <br></br>
 <div class = "correlation-header" style="padding-top: 10px;"><h2>Donations and Related Info:</h2></div>
 
 <!--- Adds the table to the page-->
 <div id="universal-table-wrapper">
   <div id= candidate-voting-table-scroll>
+    <!-- Select labels-->
     <table id = "correlation_table" class="datatables">
       <thead class="thead-dark">
     <tr>
@@ -92,7 +104,7 @@
       <th scope="col">Candidate</th>
       
       
-      
+      <!-- Select options-->
     </tr>
   </thead>
   <tbody>
@@ -115,22 +127,22 @@
 <!-- Adds graphs to page-->
 <body>
   <div class = "correlation-header" style = "padding-top: 10px"><h2> Aggregation of Data based on filters</h2></div>
-
+<!-- Graph button added-->
   <div style="margin: auto;
   width: 50%;
-  padding: 10px;">
+  padding: 10px; text-align: center;">
       <a href = "{{ url_for('index.visualize') }}" download = saved_graph>
-        <button class= "btn btn-primary" style="margin: auto;
-        max-width: 200px; width: auto;" id='download_graph'>
+        <button class= "btn btn-primary" style="
+        width: 100%; font-size: 40px;" id='download_graph'>
             Download your graph!
         </button>
         </a>
    
     </div>
-
+<!-- Graph vadded-->
   <div>
     
-    <img src= "{{ url_for('index.visualize') }}" alt = "Graph could not be generated. Try changing your parameters"> 
+    <img src= "{{ url_for('index.visualize') }}" alt = "Graph could not be generated. Try changing your parameters. Potential issues include too much data or not enough data."> 
 </div>
 
 </body>

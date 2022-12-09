@@ -10,6 +10,9 @@
 
 <div class = "race-instructions"><h5>Select a year to explore a specific race.</h5></div>
 
+<br>
+
+<!-- dropdown to select specific state senate races from specific years -->
 <p>
   {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -34,6 +37,7 @@
 
 <br>
 
+<!-- create table -->
 <div id="universal-table-wrapper">
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
@@ -49,7 +53,7 @@
   <tbody>
     {% for candidate in all_states%}
       <tr>
-        <th scope = "row">{{candidate.year}}</th>
+        <th scope = "row">{{candidate.year}}</th> 
         <td>{{candidate.candidate_name}}</td>
         <td>{{candidate.party}}</td>
         <td>{{candidate.incumbent_status}}</td>

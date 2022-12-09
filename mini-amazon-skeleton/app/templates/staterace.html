@@ -12,6 +12,7 @@
 
 <div id="universal-table-wrapper">
 
+<!-- create table -->
 <table  class='table table-hover table-bordered container'>
     <thead class="thead-dark">
       <tr>
@@ -23,6 +24,7 @@
       </tr>
     </thead>
     <tbody>
+      <!-- find the  highest percent vote from the race -->
       {% set max_vote = namespace(value = 0) %}
       {% for candidate in all_race%}
         {% if candidate.percent_vote > max_vote.value %}
@@ -34,6 +36,7 @@
           <th scope = "row">{{candidate.candidate_name}}</td>
           <td>{{candidate.party}}</td>
           <td>{{candidate.incumbent_status}}</td>
+          <!-- highlight the total receipts of the winning candidate in red -->
           {% if candidate.percent_vote == max_vote.value %}
           <td style = "background-color: var(--universal-red)">{{candidate.total_receipts}}</td>
           {% else %}
@@ -46,6 +49,7 @@
   </table>
 </div>
 
+<!-- explanation of highlighting -->
 <center>
 <b style="border-right:18px solid var(--universal-red);"></b> &nbsp; = total receipts of the winning candidate
 </center>

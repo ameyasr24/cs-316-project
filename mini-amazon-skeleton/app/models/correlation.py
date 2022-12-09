@@ -14,9 +14,9 @@ class Correlation:
         self.percent = percent
         self.issue = issue
 
-
+    #GETS ALL DATA IN THE DATABSE
     @staticmethod
-    def get_all(): #just gets everyting in the table
+    def get_all(): 
         rows = app.db.execute('''
             SELECT *
             FROM Correlation
@@ -24,8 +24,8 @@ class Correlation:
                               )
         return [Correlation(*row) for row in rows]
 
-    
-    def get_unique_state(): #gets unique state names
+    #GETS UNIQUE STATE NAMES
+    def get_unique_state(): 
         rows = app.db.execute('''
             SELECT MAX(id),MAX(donator_id),state_id,MAX(amount),MAX(cand_num),MAX(candidate_id),MAX(party),MAX(result),MAX(percent),MAX(issue)
             FROM Correlation
@@ -38,9 +38,9 @@ class Correlation:
 
 
 
-
+    #GETS UNIQUE CANDIDATES
     @staticmethod
-    def get_unique_candidate(): #gets list of unique candidates
+    def get_unique_candidate(): 
         rows = app.db.execute('''
             SELECT MAX(id),MAX(donator_id),MAX(state_id),MAX(amount),MAX(cand_num),candidate_id,MAX(party),MAX(result),MAX(percent),MAX(issue)
             FROM Correlation
@@ -50,8 +50,9 @@ class Correlation:
                               )
         return [Correlation(*row) for row in rows]
     
+    #GETS UNIQUE ISSUES
     @staticmethod
-    def get_unique_issue(): #gets unique issues
+    def get_unique_issue(): 
         rows = app.db.execute('''
             SELECT MAX(id),MAX(donator_id),MAX(state_id),MAX(amount),MAX(cand_num),MAX(candidate_id),MAX(party),MAX(result),MAX(percent),issue
             FROM Correlation
@@ -61,8 +62,8 @@ class Correlation:
                               )
         return [Correlation(*row) for row in rows]
 
-
-    def get_up_to_all(result1,state1,donator1,candidate1,issue1,amount1): #gets passed, state
+    #BASED ON PASSED DATA, EITHER FILTER IF NOT NULL OR GET ALL IF NULL FOR RESULT STATE DONATOR CANDIDATE ISSUE AMOUNT
+    def get_up_to_all(result1,state1,donator1,candidate1,issue1,amount1):
         rows = app.db.execute('''
             SELECT *
             FROM Correlation
