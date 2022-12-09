@@ -3,6 +3,8 @@
 {% block content %}
 <br><br>
 
+<h3>Choose a policy topic of interest and your Senator: </h3>
+
 <!-- category selector -->
 <form class="form-inline" action="" method="post">
 
@@ -35,6 +37,7 @@
 {% if form.politician.data %}
 <h4 class="page-header">Legislation your Senator has sponsored:</h4>
 {% else %}
+<div></br></div>
 <h4 class="page-header">All legislation:</h4>
 {% endif %}
 <div id="universal-table-wrapper">
