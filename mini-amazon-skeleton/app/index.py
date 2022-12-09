@@ -43,13 +43,18 @@ def staterace(state_abb, year):
     return render_template('/staterace.html',
                             all_race = race)
 
+# route for each individual candidate's main page
 @bp.route('/candidate/<cid>', methods=['GET', 'POST'])
 def candidate(cid):
+    # for the first table
     votes = Candidate_Vote.get_all_votes(cid)
+    # next three lines are for the drop down menus
     congresses = Candidate_Vote.get_all_congresses(cid)
     votetypes = Candidate_Vote.get_all_vote_types(cid)
     voteyears = Candidate_Vote.get_all_vote_years(cid)
+    # for the second table
     donations = Candidate_Donations.get_all_donations(cid)
+    # for the third table
     grouped_don = Candidate_Donations.grouped_donations(cid)
     if votes == "oops":
         flash('There are no voting records for Senator with id ' + cid)
@@ -61,6 +66,8 @@ def candidate(cid):
                             cid = cid,
                             all_donations = donations,
                             grouped_donations = grouped_don)
+
+# route for candidates page based on what congress was selected
 @bp.route('/candidate/<cid>/congress/<congress>', methods=['GET', 'POST'])
 def candidatecongressfilt(cid, congress):
     votes = Candidate_Vote.get_all_votes_for_congress(cid, congress)
@@ -77,6 +84,7 @@ def candidatecongressfilt(cid, congress):
                             all_donations = donations,
                             grouped_donations = grouped_don)
 
+# route for candidates page based on what vote type was selected
 @bp.route('/candidate/<cid>/votetype/<votetype>', methods=['GET', 'POST'])
 def candidatevotetypefilt(cid, votetype):
     votes = Candidate_Vote.get_all_votes_for_votetype(cid, votetype)
@@ -93,6 +101,7 @@ def candidatevotetypefilt(cid, votetype):
                             all_donations = donations,
                             grouped_donations = grouped_don)
 
+# route for candidates page based on what year was selected
 @bp.route('/candidate/<cid>/voteyear/<voteyear>', methods=['GET', 'POST'])
 def candidatevoteyearfilt(cid, voteyear):
     votes = Candidate_Vote.get_all_votes_for_voteyear(cid, voteyear)
@@ -109,17 +118,21 @@ def candidatevoteyearfilt(cid, voteyear):
                             all_donations = donations,
                             grouped_donations = grouped_don)
 
+# home page which includes all the candidate names and allows the user to move on to the individual candidate page
 @bp.route('/candidate/', methods=['GET', 'POST'])
 def candidatehomepage():
+    # gets the name of all candidates
     names = Candidate_Vote.get_all_candidates()
     if names == "oops":
         flash('There are no candidates in the data')
     candidate_name = request.args.get('name_candidate_search')
+    # gets the icpsr given the candidate name from the search bar
     candidate_icpsr = 0
     for name in names:
         if name[0] == candidate_name:
             candidate_icpsr = name[1]
             break
+    # reroutes to a candidate page if it exists
     if candidate_icpsr != 0:
         candidate_page = "/candidate/" + str(candidate_icpsr)
         return redirect(candidate_page, code=302)

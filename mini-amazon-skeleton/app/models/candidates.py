@@ -25,7 +25,7 @@ class Candidate_Vote:
             return rows
         return "oops"
 
-    def get_all_candidates():
+    def get_all_candidates(): # gets the name of every candidate as well as their icpsr code
         rows = app.db.execute('''
         SELECT DISTINCT c.bioname, CAST(c.icpsr as INTEGER), cpc.party
         FROM Candidate_Members c, Candidate_Party_Codes cpc
@@ -35,7 +35,7 @@ class Candidate_Vote:
             return rows
         return "oops"
 
-    def get_all_congresses(cid):
+    def get_all_congresses(cid): # gets every congress in which a candidate was a member of
         rows = app.db.execute('''
         SELECT DISTINCT cvd.congress AS congress
         FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm
@@ -46,7 +46,7 @@ class Candidate_Vote:
                               cid=cid)
         return rows
 
-    def get_all_vote_types(cid):
+    def get_all_vote_types(cid): # gets every way a candidate had voted during their time in office
         rows = app.db.execute('''
         SELECT DISTINCT vcc.descr AS descr
         FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm
@@ -57,7 +57,7 @@ class Candidate_Vote:
                               cid=cid)
         return rows
 
-    def get_all_vote_years(cid): # gets all votes by a specific candidate
+    def get_all_vote_years(cid): # gets all votes by a specific candidate given a year
         rows = app.db.execute('''
         SELECT DISTINCT CAST(EXTRACT(YEAR FROM cvd.vote_date) AS INTEGER) AS vote_year
         FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm
@@ -68,7 +68,7 @@ class Candidate_Vote:
                               cid=cid)
         return rows
 
-    def get_all_votes_for_congress(cid, congress): # gets all votes by a specific candidate
+    def get_all_votes_for_congress(cid, congress): # gets all votes by a specific candidate given a congress
         rows = app.db.execute('''
         SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result, cpc.party AS party, cm.state_abbrev AS state
         FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm, Candidate_Party_Codes cpc
@@ -81,7 +81,7 @@ class Candidate_Vote:
             return rows
         return "oops"
 
-    def get_all_votes_for_votetype(cid, votetype): # gets all votes by a specific candidate
+    def get_all_votes_for_votetype(cid, votetype): # gets all votes by a specific candidate given the way they voted
         rows = app.db.execute('''
         SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result, cpc.party AS party, cm.state_abbrev AS state
         FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm, Candidate_Party_Codes cpc
@@ -94,7 +94,7 @@ class Candidate_Vote:
             return rows
         return "oops"
 
-    def get_all_votes_for_voteyear(cid, voteyear): # gets all votes by a specific candidate
+    def get_all_votes_for_voteyear(cid, voteyear): # gets all votes by a specific candidate given the year
         rows = app.db.execute('''
         SELECT DISTINCT cm.bioname AS bioname, vcc.descr AS descr, cvd.congress AS congress, cvd.rollnumber AS rollnumber, cvd.vote_date AS vote_date, cvd.vote_desc AS vote_desc, cvd.dtl_desc AS dtl_desc, cvd.vote_result AS vote_result, cpc.party AS party, cm.state_abbrev AS state
         FROM Candidate_Member_Votes cmv, Vote_Cast_Code vcc, Candidate_Vote_Data cvd, Candidate_Members cm, Candidate_Party_Codes cpc
@@ -127,7 +127,7 @@ class Candidate_Donations:
             return rows
         return "oops"
 
-    def grouped_donations(cid):
+    def grouped_donations(cid): # gets all donations to a specific candidate and then groups by the contributor
         rows = app.db.execute('''
         SELECT DISTINCT contributor, SUM(donation_amount) AS donation_amoun, COUNT(donation_amount) AS number_donations
         FROM Candidate_Donations
