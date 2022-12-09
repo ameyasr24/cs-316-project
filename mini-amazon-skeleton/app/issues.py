@@ -23,11 +23,14 @@ import textwrap
 from flask import Blueprint
 bp = Blueprint('issues', __name__)
 
+#this method is for my search and filtering
 class SearchIssue(FlaskForm):
     issue_category = StringField('Issue')
     politician = StringField('politician')
     search = SubmitField('Search')
 
+#i use this method to format the visualization, bar chart x-axis labels text needs to be wrapped if too long
+#source: https://medium.com/dunder-data/automatically-wrap-graph-labels-in-matplotlib-and-seaborn-a48740bc9ce
 def wrap_labels(ax, width, break_long_words=False):
     labels = []
     for label in ax.get_xticklabels():
@@ -37,10 +40,12 @@ def wrap_labels(ax, width, break_long_words=False):
     ax.set_xticklabels(labels, rotation=0)
     
 
+
 @bp.route('/issues', methods=['GET', 'POST'])
 def issues():
     form = SearchIssue()
 
+    #these are the default results if you don't submit anything to the filters
     all_issues = Issues.get_all()
 
     donations = Industries.get_all()
@@ -53,6 +58,7 @@ def issues():
 
     cid_link = "/candidate/"
 
+    #creating these variables for the visualization
     global x
     global total_y
     global individual_y
@@ -72,6 +78,7 @@ def issues():
         # print(donations[0].industry[0])
         # print(donations[form.politician.data].industry)
 
+        #data to send for visualization
         x = [s.industry[0] for s in donations]
         total_y = [float(s.total_donations[0]) for s in donations]
         individual_y = [float(s.individual_donations[0]) for s in donations]
@@ -81,6 +88,7 @@ def issues():
         candidate_name = form.politician.data
         candidate_name = candidate_name.lower()
 
+        #name matching to connect issue's page to candidate page
         candidate_id = 0
         for name in names:
             if name[0].lower() == candidate_name:
@@ -102,6 +110,7 @@ def issues():
                            politician_name_formatted=politician_name_formatted
                             )
 
+#method to create bar charts for donation amounts
 @bp.route('/industry/visualize')
 def visualize():
     # print("visualize:", x)
@@ -160,22 +169,7 @@ def visualize():
 
 
 
-#     #visualization component
-#     global x
-#     global y
-#     x = [s.issue for s in data]
-#     y = [float(s.committee_id) for s in data]
-#     return render_template('correlation.html',
-#                            data=data,
-#                            form = form,
-#                            size_choices_states = len(form.state.choices),
-#                            size_choices_issues = len(form.state.choices),
-#                            optionsForm = optionsForm,
-#                            stateTruthy = stateTruthy,
-#                            candidateTruthy = candidateTruthy,
-#                            passedTruthy = passedTruthy,
-#                            issueTruthy = issueTruthy,
-#             )
+
 
 
             

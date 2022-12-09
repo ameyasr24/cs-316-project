@@ -185,34 +185,7 @@ FROM Donations_By_Industry
     
 
 
-    # #visualization component
-    # global x
-    # global y
-    # x = [s.issue for s in data]
-    # y = [float(s.committee_id) for s in data]
-    # return render_template('correlation.html',
-    #                        data=data,
-    #                        form = form,
-    #                        size_choices_states = len(form.state.choices),
-    #                        size_choices_issues = len(form.state.choices),
-    #                        optionsForm = optionsForm,
-    #                        stateTruthy = stateTruthy,
-    #                        candidateTruthy = candidateTruthy,
-    #                        passedTruthy = passedTruthy,
-    #                        issueTruthy = issueTruthy,
-    #         )
 
-
-    # @bp.route('/visualize')
-    # def visualize():
-    #     fig,ax=plt.subplots(figsize=(6,6))
-    #     ax=sns.set(style="darkgrid")
-    #     sns.barplot(x=x,y=y,estimator="sum").set(title="Aggregation of Total Donations")
-    #     canvas=FigureCanvas(fig)
-    #     img = io.BytesIO()
-    #     fig.savefig(img)
-    #     img.seek(0)
-    #     return send_file(img,mimetype='img/png')
 
 
     
