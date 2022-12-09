@@ -48,7 +48,7 @@
 </form>
 
 {% if form.politician.data %}
-<h3><a href={{cid_link}}>Click here to see all the legislation {{form.politician.data}} has voted on</a></h3>
+<h3><a href={{cid_link}}>Click here to see all the legislation {{politician_name_formatted}} has voted on</a></h3>
 {% endif %}
 
 
@@ -62,7 +62,8 @@
     <tr>
       <!-- <th scope="col">Legislation Number</th> -->
       <th scope="col" colspan="2">Title</th>
-      <td scope="row" colspan="10" style="text-align:left">{{issue.title}}</td>
+      <!-- <td scope="row" colspan="10" style="text-align:left">{{issue.title}}</td> -->
+      <td scope="row" colspan="9" style="text-align:left"><a href={{issue.legislation_URL}}>{{issue.title}}</a></td>
     </tr>
     <tr>
       <th scope="col">Sponsor</th>
@@ -76,7 +77,7 @@
       <th scope="col">Subject</th>
       <th scope="col">Subject</th>
       <th scope="col">Subject</th>
-      <th scope="col">Legislation URL</th>
+      <!-- <th scope="col">Legislation URL</th> -->
     </tr>
   </thead>
   <tbody>
@@ -95,7 +96,7 @@
         <td>{{issue.subject3}}</td>
         <td>{{issue.subject4}}</td>
         <td>{{issue.subject5}}</td>
-        <td scope="row"><a href={{issue.legislation_URL}}>{{issue.legislation_URL}}</a></td>
+        <!-- <td scope="row"><a href={{issue.legislation_URL}}>{{issue.legislation_URL}}</a></td> -->
       </tr>
   </tbody>
   {% endfor %}
@@ -125,10 +126,11 @@
 
 </div>
 <body>
-  <div></br></br></div>
+  <div></br></div>
   {% if form.politician.data %}
   <div class = "correlation-header"><h2> Aggregation of Data based on filters</h2></div>
   <h1Visualization>
+    <div></br></div>
     <img src= "{{ url_for('issues.visualize') }}" size="30">
   </h1Visualization>
   {% endif %}

@@ -17,6 +17,9 @@ from .models.issues import Issues
 from .models.issues import Industries
 from .models.candidates import Candidate_Vote
 
+import textwrap
+
+
 from flask import Blueprint
 bp = Blueprint('issues', __name__)
 
@@ -24,6 +27,14 @@ class SearchIssue(FlaskForm):
     issue_category = StringField('Issue')
     politician = StringField('politician')
     search = SubmitField('Search')
+
+def wrap_labels(ax, width, break_long_words=False):
+    labels = []
+    for label in ax.get_xticklabels():
+        text = label.get_text()
+        labels.append(textwrap.fill(text, width=width,
+                      break_long_words=break_long_words))
+    ax.set_xticklabels(labels, rotation=0)
     
 
 @bp.route('/issues', methods=['GET', 'POST'])
@@ -47,11 +58,16 @@ def issues():
     global individual_y
     global pac_y
 
+    politician_name_formatted = ""
 
     if form.validate_on_submit():
         all_issues = Issues.get_all_issue(form.issue_category.data)
         all_issues = Issues.get_all_issue_politician(form.issue_category.data, form.politician.data)
         donations = Industries.get_donations_senator(form.politician.data) #has all the donation amounts
+
+        #formatting name for the output
+        formatting_name = form.politician.data.split(", ")
+        politician_name_formatted = formatting_name[1] + " " + formatting_name[0]
 
         # print(donations[0].industry[0])
         # print(donations[form.politician.data].industry)
@@ -83,6 +99,7 @@ def issues():
                            list_senators=senators,
                            list_subjects=subjects,
                            cid_link=cid_link,
+                           politician_name_formatted=politician_name_formatted
                             )
 
 @bp.route('/industry/visualize')
@@ -94,16 +111,40 @@ def visualize():
     fig = Figure()
     ax = fig.subplots(1,3)
     fig.set_figheight(20)
-    fig.set_figwidth(30)
+    fig.set_figwidth(45)
+
     ax[0].bar(x,total_y)
-    ax[0].set(title="Total Donations")
+    # ax[0].set(title="Total Donations")
+
+    ax[0].set_xticklabels(x, fontsize=20)
+    current_values = ax[0].get_yticks()
+    ax[0].set_yticklabels(['{:,.0f}'.format(x) for x in current_values], fontsize=20)
+    wrap_labels(ax[0], 10)
+
+    ax[0].set_title("Total Donations", fontsize=40)
+
     ax[1].bar(x,individual_y)
-    ax[1].set(title="Individual Donations")
+    # ax[1].set(title="Individual Donations")
+
+    ax[1].set_xticklabels(x, fontsize=20)
+    current_values = ax[1].get_yticks()
+    ax[1].set_yticklabels(['{:,.0f}'.format(x) for x in current_values], fontsize=20)
+    wrap_labels(ax[1], 10)
+
+    ax[1].set_title("Individual Donations", fontsize=40)
+
     ax[2].bar(x,pac_y)
-    ax[2].set(title="PAC Donations")
+    #ax[2].set(title="PAC Donations")
+
+    ax[2].set_xticklabels(x, fontsize=20)
+    current_values = ax[2].get_yticks()
+    ax[2].set_yticklabels(['{:,.0f}'.format(x) for x in current_values], fontsize=20)
+    wrap_labels(ax[2], 10)
+
+    ax[2].set_title("PAC Donations", fontsize=40)
     # Save it to a temporary buffer.
     img = io.BytesIO()
-    fig.savefig(img)
+    fig.savefig(img, bbox_inches="tight")
     img.seek(0)
 
 
